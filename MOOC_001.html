@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo: La Revolución Nacional de 1952 en Bolivia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ESTILOS CSS PERSONALIZADOS */
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f0f4f8; /* Un fondo suave para todo el cuerpo */
+            color: #1a202c; /* Color de texto principal (gris oscuro) */
+        }
+
+        /* Estilo para la barra de progreso fija en la parte superior */
+        #progressBarContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px; /* Altura de la barra de progreso */
+            background-color: #e2e8f0; /* Color de fondo del contenedor de la barra */
+            z-index: 1000; /* Asegura que esté por encima de otros contenidos */
+        }
+        #progressBar {
+            height: 100%;
+            width: 0%; /* Inicialmente 0, se actualizará con JS */
+            background-color: #4a5568; /* Color de la barra de progreso (gris oscuro) */
+            transition: width 0.3s ease-out; /* Transición suave para el ancho */
+        }
+
+        /* Contenedor principal del módulo, con padding superior para no ser tapado por la barra */
+        .module-container {
+            padding-top: 28px; /* Espacio para la barra de progreso y un poco más */
+            max-width: 900px; /* Ancho máximo del contenido */
+            margin: 0 auto; /* Centrar el contenido */
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        /* Estilos para la página de portada */
+        #coverPage {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        #coverPage h1 {
+            font-size: 2.5rem; /* Tamaño del título principal */
+            font-weight: 700; /* Negrita */
+            color: #2c5282; /* Azul oscuro para el título */
+            margin-bottom: 0.75rem;
+        }
+        #coverPage .module-description {
+            font-size: 1.125rem; /* Tamaño de la descripción */
+            color: #4a5568; /* Gris oscuro para la descripción */
+            margin-bottom: 1.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #coverPage .professor-info {
+            font-size: 0.875rem;
+            color: #718096; /* Gris medio */
+            margin-bottom: 2rem;
+        }
+        #startModuleBtn {
+            background-color: #38a169; /* Verde para el botón de inicio */
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.375rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        #startModuleBtn:hover {
+            background-color: #2f855a; /* Verde más oscuro al pasar el ratón */
+        }
+        #startModuleBtn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        /* Estilos para el encabezado del módulo (visible después de la portada) */
+        .module-header {
+            background-color: #3182ce; /* Azul principal */
+            color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+        .module-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .module-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Estilos para las secciones de contenido */
+        .module-section {
+            background-color: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem; /* Bordes redondeados más sutiles */
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            opacity: 0; /* Para animación de aparición */
+            transform: translateY(20px); /* Para animación de aparición */
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .module-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .module-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c5282; /* Azul oscuro */
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #bee3f8; /* Borde inferior azul claro */
+        }
+        .module-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2b6cb0; /* Azul un poco más claro */
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .module-section p, .module-section ul li {
+            margin-bottom: 1rem;
+            color: #2d3748; /* Gris oscuro para el texto del párrafo */
+            font-size: 1rem;
+        }
+        .module-section strong { color: #2c5282; font-weight: 600; }
+        .module-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.375rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .module-section .reflection-question {
+            background-color: #ebf8ff; /* Fondo azul muy claro */
+            border-left: 4px solid #63b3ed; /* Borde izquierdo azul */
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem;
+        }
+        .module-section .reflection-question p:first-child { font-weight: 600; color: #2c5282; }
+        .module-section .reflection-question p:last-child { margin-bottom: 0; }
+
+        /* Estilos para bloques de código (o texto preformateado) */
+        .code-block {
+            background-color: #1a202c; /* Fondo oscuro para código */
+            color: #f7fafc; /* Texto claro */
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto; /* Scroll horizontal si es necesario */
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            white-space: pre-wrap; /* Mantiene los saltos de línea y espacios */
+        }
+
+        /* Estilos para listas con iconos (simulados) */
+        .icon-list { margin-top: 1.5rem; }
+        .icon-list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            background-color: #f7fafc; /* Fondo gris muy claro para cada item */
+            padding: 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e2e8f0;
+        }
+        .icon-list-item .item-icon {
+            flex-shrink: 0;
+            width: 2rem; /* Ancho del icono */
+            height: 2rem; /* Alto del icono */
+            margin-right: 1rem;
+            background-color: #4299e1; /* Color de fondo del icono (azul) */
+            border-radius: 50%; /* Círculo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white; /* Color del "icono" (texto o SVG) */
+            font-weight: bold;
+            font-size: 0.8rem; /* Para iniciales o símbolos simples */
+        }
+        /* Clases específicas para iconos (pueden ser iniciales o símbolos) */
+        .icon-mines::before { content: "⛏️"; font-size: 1.2rem; } /* Ejemplo con emoji */
+        .icon-land::before { content: "🌱"; font-size: 1.2rem; }
+        .icon-vote::before { content: "🗳️"; font-size: 1.2rem; }
+        .icon-education::before { content: "📚"; font-size: 1.2rem; }
+
+        .icon-list-item .item-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c5282;
+            margin-bottom: 0.25rem;
+        }
+        .icon-list-item .item-content p {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 0;
+        }
+        .icon-list-item .item-content .use-case {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+
+        /* Estilos para actividades interactivas */
+        .interactive-activity {
+            background-color: #e3f2fd; /* Fondo azul muy claro para actividades */
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #bbdefb; /* Borde azul claro */
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.07), 0 1px 2px 0 rgba(0,0,0,0.05);
+            opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .interactive-activity.visible { opacity: 1; transform: translateY(0); }
+
+        .interactive-activity h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #1e40af; /* Azul más oscuro para títulos de actividad */
+            margin-bottom: 1rem;
+        }
+        .interactive-activity .instruction {
+            font-size: 1rem;
+            color: #1e3a8a; /* Azul oscuro para instrucciones */
+            margin-bottom: 1rem;
+            background-color: #ffffff;
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            border-left: 3px solid #60a5fa;
+        }
+
+        /* Estilos para opciones de quiz y emparejamiento */
+        .quiz-option, .matching-option-label, .true-false-option {
+            display: block;
+            background-color: white;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #cbd5e0; /* Borde gris */
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .quiz-option:hover, .matching-option-label:hover, .true-false-option:hover {
+            background-color: #f0f4f8; /* Fondo gris claro al pasar el ratón */
+            border-color: #a0aec0;
+        }
+        .quiz-option input[type="radio"], .matching-option-label input[type="radio"], .true-false-option input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        .quiz-option.selected, .matching-option-label.selected, .true-false-option.selected {
+            background-color: #ebf8ff; /* Azul muy claro para seleccionado */
+            border-color: #90cdf4; /* Borde azul */
+        }
+        .quiz-option.correct, .matching-option-label.correct, .true-false-option.correct {
+            background-color: #c6f6d5; /* Verde para correcto */
+            border-color: #68d391; /* Borde verde */
+        }
+        .quiz-option.incorrect, .matching-option-label.incorrect, .true-false-option.incorrect {
+            background-color: #fed7d7; /* Rojo para incorrecto */
+            border-color: #fc8181; /* Borde rojo */
+        }
+
+        /* Feedback visual para actividades */
+        .feedback-message {
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+            font-size: 0.9rem;
+        }
+        .feedback-message.correct {
+            background-color: #c6f6d5; color: #2f855a; border-left: 4px solid #38a169;
+        }
+        .feedback-message.incorrect {
+            background-color: #fed7d7; color: #c53030; border-left: 4px solid #e53e3e;
+        }
+        .feedback-message.info {
+            background-color: #e0f2fe; color: #0c4a6e; border-left: 4px solid #38bdf8;
+        }
+
+
+        /* Estilos para botones de acción en actividades */
+        .activity-btn {
+            background-color: #3182ce; /* Azul */
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.25rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            margin-right: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+        .activity-btn:hover { background-color: #2b6cb0; /* Azul más oscuro */ }
+        .activity-btn:disabled { background-color: #a0aec0; cursor: not-allowed; }
+        .reset-btn { background-color: #718096; /* Gris */ }
+        .reset-btn:hover { background-color: #4a5568; /* Gris más oscuro */ }
+
+        /* Estilos para textarea en ejercicios */
+        textarea.prompt-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.25rem;
+            min-height: 100px;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        textarea.prompt-input:focus {
+            border-color: #4299e1; /* Borde azul al enfocar */
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+            outline: none;
+        }
+        .char-count, .keyword-feedback {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+        .keyword-feedback.met { color: #38a169; }
+        .keyword-feedback.not-met { color: #c53030; }
+
+        /* Estilos para la actividad de emparejamiento */
+        .matching-pair {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f0f4f8; /* Fondo ligeramente diferente para cada par */
+            border-radius: 0.25rem;
+        }
+        .matching-pair .concept {
+            font-weight: 600;
+            color: #2c5282;
+            margin-bottom: 0.75rem;
+        }
+        .matching-feedback { margin-top: 0.5rem; font-weight: bold; }
+
+        /* Resumen y Conclusión */
+        .summary-section, .conclusion-section {
+            background-color: #edf2f7; /* Gris claro */
+            padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 0.375rem;
+            border-left: 5px solid #4299e1; /* Borde azul */
+        }
+        .summary-section h2, .conclusion-section h2 {
+            color: #2c5282; font-size: 1.5rem; margin-bottom: 1rem;
+        }
+        .summary-section ul { list-style-type: disc; margin-left: 1.5rem; }
+
+        /* Bibliografía */
+        .bibliography-section {
+             background-color: #f7fafc; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 0.375rem;
+        }
+        .bibliography-section h2 { color: #4a5568; font-size: 1.4rem; margin-bottom: 1rem; }
+        .bibliography-section ul li a { color: #3182ce; text-decoration: underline; }
+        .bibliography-section ul li a:hover { color: #2b6cb0; }
+
+        /* Botón de Volver Arriba */
+        #backToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4a5568; /* Gris oscuro */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: none; /* Oculto inicialmente */
+            z-index: 999;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #backToTopBtn:hover { background-color: #2d3748; /* Gris más oscuro */ }
+
+        /* Menú de Navegación lateral (hamburguesa) */
+        #navToggle {
+            position: fixed;
+            top: 15px; /* Debajo de la barra de progreso */
+            right: 15px;
+            z-index: 1001; /* Encima de la barra de progreso, debajo del modal */
+            background-color: rgba(44, 82, 130, 0.8); /* Azul oscuro semi-transparente */
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+         #navToggle svg { width: 24px; height: 24px; }
+
+        #navMenu {
+            position: fixed;
+            top: 0;
+            right: -300px; /* Inicialmente oculto */
+            width: 280px;
+            height: 100%;
+            background-color: #2c5282; /* Azul oscuro */
+            color: white;
+            padding: 4rem 1.5rem 1.5rem; /* Espacio para el botón de cerrar si se añade */
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            transition: right 0.3s ease-in-out;
+            z-index: 1000; /* Detrás del toggle pero encima del contenido */
+            overflow-y: auto;
+        }
+        #navMenu.open { right: 0; }
+        #navMenu h3 {
+            font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; padding-bottom: 0.5rem;
+            border-bottom: 1px solid #4299e1; /* Azul más claro para separar */
+        }
+        #navMenu ul { list-style: none; padding: 0; }
+        #navMenu ul li a {
+            display: block;
+            padding: 0.75rem 0.5rem;
+            color: #e2e8f0; /* Texto gris claro */
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: 0.95rem;
+        }
+        #navMenu ul li a:hover, #navMenu ul li a.active-link {
+            background-color: #4299e1; /* Azul más claro al pasar o activo */
+            color: white;
+        }
+        #navMenu ul li a.completed-link {
+            color: #a0aec0; /* Color para enlaces de secciones completadas */
+            text-decoration: line-through;
+        }
+         #navMenu ul li a.completed-link:hover {
+            color: #718096;
+        }
+
+
+        /* Marcador de lectura */
+        .mark-as-read-btn {
+            display: inline-block;
+            background-color: #48bb78; /* Verde */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .mark-as-read-btn:hover { background-color: #38a169; }
+        .mark-as-read-btn.completed {
+            background-color: #a0aec0; /* Gris */
+            color: #4a5568;
+            cursor: default;
+            text-decoration: line-through;
+        }
+
+        /* Animación de aparición (usada por JS) */
+        .fade-in {
+            animation: fadeInAnimation 0.5s ease-out forwards;
+        }
+        @keyframes fadeInAnimation {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal para confirmación y resultados finales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* Encima de todo */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        .modal-content h2 { margin-top: 0; color: #2c5282; font-size: 1.5rem; margin-bottom: 1rem; }
+        .modal-content p { margin-bottom: 1.5rem; color: #4a5568; }
+        .modal-buttons { text-align: right; }
+        .modal-buttons button {
+            padding: 0.6rem 1.2rem; border-radius: 0.25rem; font-weight: 500;
+            margin-left: 0.5rem; cursor: pointer; transition: background-color 0.2s;
+        }
+        .modal-btn-confirm { background-color: #38a169; color: white; }
+        .modal-btn-confirm:hover { background-color: #2f855a; }
+        .modal-btn-cancel { background-color: #e2e8f0; color: #4a5568; }
+        .modal-btn-cancel:hover { background-color: #cbd5e0; }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .module-header h1 { font-size: 1.75rem; }
+            .module-section h2 { font-size: 1.3rem; }
+            #coverPage h1 { font-size: 2rem; }
+            #coverPage .module-description { font-size: 1rem; }
+            #navMenu { width: 250px; padding-top: 3.5rem; }
+            .modal-content { width: 95%; }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="progressBarContainer">
+        <div id="progressBar"></div>
+    </div>
+
+    <button id="navToggle" aria-label="Abrir menú de navegación">
+        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+    </button>
+
+    <nav id="navMenu">
+        <h3>Navegación del Módulo</h3>
+        <ul id="sectionNavigation">
+            </ul>
+    </nav>
+
+    <div id="coverPage" class="fade-in">
+        </div>
+
+    <div class="module-container" id="moduleContainer" style="display: none;">
+        <header class="module-header" id="moduleHeaderInfo">
+            </header>
+
+        <section class="module-section" id="learningObjectivesSection">
+            <h2>🎯 Objetivos de Aprendizaje</h2>
+            <ul id="learningObjectivesList" class="list-disc pl-5 space-y-2 text-gray-700">
+                </ul>
+            <button class="mark-as-read-btn" data-section-id="learningObjectivesSection" onclick="markSectionAsRead(this)">Marcar como leído</button>
+        </section>
+
+        <div id="moduleSections">
+            </div>
+
+        <div id="moduleActivities">
+            </div>
+
+        <section class="summary-section module-section" id="summarySection">
+            </section>
+
+        <section class="conclusion-section module-section" id="conclusionSection">
+            </section>
+
+        <section class="bibliography-section module-section" id="bibliographySection">
+             </section>
+
+        <div id="finalResultsSection" class="module-section text-center p-6 bg-blue-50 rounded-lg" style="display: none;">
+            <h2 class="text-2xl font-semibold text-blue-700 mb-4">¡Módulo Completado!</h2>
+            <p class="text-lg text-blue-600 mb-2">Tu puntuación final es: <strong id="finalScoreDisplay" class="text-blue-800">0/0</strong></p>
+            <p class="text-md text-gray-600 mb-2">Tiempo total en el módulo: <strong id="totalTimeDisplay">00:00</strong></p>
+            <p class="text-md text-gray-600 mb-4">Progreso de lectura: <strong id="completionProgressDisplay">0%</strong></p>
+            <button onclick="showCustomModal('confirmRestart', '¿Reiniciar Módulo?', 'Se borrará todo tu progreso y puntuaciones. ¿Estás seguro?')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition duration-150">
+                Reiniciar Módulo Completo
+            </button>
+        </div>
+
+    </div>
+
+    <button id="backToTopBtn" title="Volver Arriba" onclick="scrollToTop()">↑</button>
+
+    <div id="customModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modalTitle">Título del Modal</h2>
+            <p id="modalMessage">Mensaje del modal.</p>
+            <div class="modal-buttons">
+                <button id="modalCancelBtn" class="modal-btn-cancel">Cancelar</button>
+                <button id="modalConfirmBtn" class="modal-btn-confirm">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos del MOOC (JSON)
+        const moocData = {
+          "moduleInfo": {
+            "title": "La Revolución Nacional de 1952 en Bolivia: Un Antes y un Después",
+            "description": "Descubre las causas, eventos clave y profundas transformaciones que la Revolución de 1952 trajo a Bolivia. Un viaje para entender cómo este hito cambió la historia del país.",
+            "professorName": "Prof. Inti Qhispi P.",
+            "subjectName": "Historia de Bolivia Contemporánea",
+            "youtubeVideoId": "9_A3iRdzYyA",
+            "youtubeThumbnailUrl": "https://i.ytimg.com/vi/9_A3iRdzYyA/hqdefault.jpg"
+          },
+          "learningObjectives": [
+            "Identificar las principales causas socioeconómicas y políticas que condujeron a la Revolución de 1952.",
+            "Describir los acontecimientos más importantes ocurridos durante la insurrección popular de abril de 1952.",
+            "Analizar el impacto de las medidas fundamentales implementadas por el gobierno revolucionario: nacionalización de minas, reforma agraria, voto universal y reforma educativa.",
+            "Evaluar las consecuencias a corto y largo plazo de la Revolución Nacional en la estructura social y política de Bolivia."
+          ],
+          "sections": [
+            {
+              "id": "section1-antecedentes",
+              "title": "Bolivia antes de 1952: ¿Por qué una Revolución?",
+              "contentParagraphs": [
+                "A mediados del siglo XX, Bolivia estaba marcada por profundas desigualdades. Un pequeño grupo, conocido como la 'Rosca' minero-feudal, controlaba la riqueza generada por la minería del estaño y vastas extensiones de tierra, mientras la mayoría de la población, especialmente indígenas y campesinos, vivían en la pobreza y sin derechos políticos plenos.",
+                "Los campesinos estaban sometidos al pongueaje, una forma de servidumbre. Los mineros trabajaban en condiciones inhumanas por salarios miserables. La Guerra del Chaco (1932-1935) contra Paraguay, aunque desastrosa, generó una mayor conciencia nacional y cuestionamientos al orden establecido, sembrando las semillas del cambio."
+              ],
+              "image": {
+                "url": "https://placehold.co/600x400/6c757d/ffffff?text=Bolivia+Pre-1952:+Miner%C3%ADa+y+Campo",
+                "altText": "Representación de la minería y la vida campesina en Bolivia antes de 1952."
+              },
+              "codeBlock": null,
+              "reflectionQuestion": "¿Cómo crees que la exclusión social y económica puede llevar a un pueblo a buscar cambios radicales?",
+              "iconListItems": null
+            },
+            {
+              "id": "section2-insurreccion",
+              "title": "Abril de 1952: El Pueblo en Armas",
+              "contentParagraphs": [
+                "El 9 de abril de 1952, estalló la insurrección. Lo que comenzó como un levantamiento liderado por el Movimiento Nacionalista Revolucionario (MNR) y sectores de la policía, pronto se convirtió en una movilización popular masiva. Mineros armados con dinamita, campesinos y ciudadanos de las ciudades se enfrentaron al ejército.",
+                "Tras tres días de intensos combates, especialmente en La Paz y Oruro, las fuerzas leales al gobierno militar fueron derrotadas. El MNR, con Víctor Paz Estenssoro como presidente (quien regresó del exilio), asumió el poder, marcando el inicio de una nueva era para Bolivia."
+              ],
+              "image": {
+                "url": "https://placehold.co/600x400/8B0000/ffffff?text=Insurrecci%C3%B3n+Popular+-+Abril+1952",
+                "altText": "Ilustración de la insurrección popular durante la Revolución de Abril de 1952."
+              },
+              "codeBlock": "Cronología Clave:\n9 de Abril: Inicio de la insurrección en La Paz.\n10 de Abril: Mineros se unen masivamente a la lucha. Combates se extienden.\n11 de Abril: El ejército se rinde. El MNR toma el control.",
+              "reflectionQuestion": "El papel de los mineros fue crucial. ¿Qué motivaciones crees que los impulsaron a arriesgar sus vidas de esa manera?",
+              "iconListItems": null
+            },
+            {
+              "id": "section3-transformaciones",
+              "title": "Las Grandes Transformaciones: Un Nuevo País",
+              "contentParagraphs": [
+                "El gobierno revolucionario implementó rápidamente una serie de medidas transformadoras que cambiaron la faz de Bolivia:"
+              ],
+              "image": {
+                "url": "https://placehold.co/600x400/006400/ffffff?text=Reformas+Revolucionarias+Clave",
+                "altText": "Collage simbólico de las reformas: minería, tierra, voto y educación."
+              },
+              "codeBlock": null,
+              "reflectionQuestion": "¿Cuál de estas cuatro grandes medidas consideras que tuvo el impacto más inmediato y profundo en la vida de la gente común y por qué?",
+              "iconListItems": [
+                {"iconClass": "icon-mines", "heading": "Nacionalización de las Minas (Octubre 1952)", "description": "El Estado boliviano tomó el control de las minas de los 'barones del estaño' (Patiño, Hochschild, Aramayo), creando la Corporación Minera de Bolivia (COMIBOL). Esto significó que la riqueza minera se quedaría en el país, aunque la gestión estatal enfrentaría muchos desafíos.", "useCase": "Impacto: Soberanía económica y redistribución (teórica) de la riqueza minera."},
+                {"iconClass": "icon-land", "heading": "Reforma Agraria (Agosto 1953)", "description": "Bajo el lema 'La tierra es para quien la trabaja', se abolieron el latifundio y el pongueaje. Millones de hectáreas fueron distribuidas a comunidades indígenas y campesinos, otorgándoles propiedad sobre la tierra que cultivaban.", "useCase": "Impacto: Dignificación del campesinado y cambio en la estructura de tenencia de la tierra."},
+                {"iconClass": "icon-vote", "heading": "Voto Universal (Julio 1952)", "description": "Se eliminaron las restricciones que impedían votar a la mayoría de la población. Se concedió el derecho al voto a todos los bolivianos mayores de 21 años, incluyendo analfabetos, indígenas y mujeres, integrándolos plenamente a la vida política.", "useCase": "Impacto: Expansión democrática y ciudadana sin precedentes."},
+                {"iconClass": "icon-education", "heading": "Reforma Educativa (Enero 1955)", "description": "Se impulsó la educación pública, especialmente en áreas rurales, con el objetivo de castellanizar y alfabetizar a la población indígena. Se crearon normales rurales para formar maestros y se buscó una educación más ligada a la realidad boliviana.", "useCase": "Impacto: Mayor acceso a la educación, aunque con debates sobre su enfoque cultural."}
+              ]
+            },
+             {
+              "id": "section4-legado",
+              "title": "Consecuencias y Legado: La Huella de 1952",
+              "contentParagraphs": [
+                "La Revolución de 1952 es considerada uno de los eventos más importantes de la historia boliviana del siglo XX. Incorporó a las masas populares a la vida política y económica del país, desmanteló el poder de la oligarquía tradicional y sentó las bases para un Estado más inclusivo.",
+                "Sin embargo, su legado es complejo. Hubo avances significativos en derechos sociales y participación ciudadana. No obstante, también surgieron nuevos problemas: dependencia económica, inestabilidad política en años posteriores, y debates sobre la dirección que tomó el país. A pesar de todo, la Revolución Nacional marcó un antes y un después, y sus efectos se sienten hasta hoy.",
+                "El MNR se mantuvo en el poder hasta 1964, cuando un golpe militar derrocó a Paz Estenssoro, iniciando un largo periodo de dictaduras militares en Bolivia."
+              ],
+              "image": {
+                "url": "https://placehold.co/600x400/4682B4/ffffff?text=Legado+de+la+Revoluci%C3%B3n+Nacional",
+                "altText": "Imagen conceptual representando el impacto y legado duradero de la Revolución de 1952."
+              },
+              "codeBlock": null,
+              "reflectionQuestion": "Considerando sus logros y desafíos posteriores, ¿cómo crees que la Revolución de 1952 sigue influyendo en la Bolivia del siglo XXI?",
+              "iconListItems": null
+            }
+          ],
+          "activities": {
+            "quiz": {
+              "instruction": "Pon a prueba tus conocimientos sobre la Revolución del 52. Selecciona la respuesta correcta.",
+              "questions": [
+                {
+                  "text": "¿Cuál de estos grupos NO era parte de la 'Rosca' minero-feudal que dominaba Bolivia antes de 1952?",
+                  "options": ["a) Grandes propietarios de minas de estaño.", "b) Terratenientes con vastas haciendas.", "c) Líderes sindicales de los trabajadores mineros."],
+                  "correctValue": "c",
+                  "feedbackCorrect": "¡Correcto! Los líderes sindicales representaban a los trabajadores, no a la oligarquía.",
+                  "feedbackIncorrect": "Incorrecto. La 'Rosca' incluía a los barones del estaño y grandes terratenientes. Los líderes sindicales eran sus opositores."
+                },
+                {
+                  "text": "¿Qué importante derecho se universalizó en Bolivia como resultado directo de la Revolución de 1952?",
+                  "options": ["a) El derecho a la propiedad privada ilimitada.", "b) El derecho al voto para todos los ciudadanos adultos.", "c) El derecho a la libre exportación de minerales."],
+                  "correctValue": "b",
+                  "feedbackCorrect": "¡Así es! El Voto Universal fue una conquista clave, incluyendo a mujeres, indígenas y analfabetos.",
+                  "feedbackIncorrect": "Incorrecto. Piensa en la inclusión política de grandes sectores antes excluidos. Revisa la sección de transformaciones."
+                },
+                {
+                  "text": "La Nacionalización de las Minas implicó que el Estado boliviano tomara control de las minas que antes pertenecían a:",
+                  "options": ["a) Pequeños mineros cooperativistas.", "b) Empresas extranjeras de diversos países.", "c) Los 'barones del estaño' (Patiño, Hochschild, Aramayo)."],
+                  "correctValue": "c",
+                  "feedbackCorrect": "¡Excelente! La nacionalización se centró en las grandes fortunas de los barones del estaño.",
+                  "feedbackIncorrect": "No exactamente. El objetivo principal eran las grandes empresas de los llamados 'barones del estaño'. Revisa la sección 3."
+                }
+              ]
+            },
+            "exercise": {
+              "instruction": "Imagina que eres un joven periodista en 1953, entusiasmado con la <strong class='text-blue-900 font-bold'>Reforma Agraria</strong>. Escribe un prompt para un asistente de IA (como Google Gemini) que te ayude a generar ideas para un artículo que explique su importancia a la población urbana que quizás no entiende completamente el campo.",
+              "placeholder": "Ej: 'Gemini, dame 3 ideas de enfoques para un artículo periodístico que explique de forma sencilla y conmovedora el impacto de la Reforma Agraria en las familias campesinas bolivianas y por qué es vital para el futuro del país. El público objetivo son lectores de la ciudad...'",
+              "keywords": ["reforma agraria", "campesinos", "artículo", "impacto", "ciudad"],
+              "minLength": 60
+            },
+            "problemSolving": {
+              "instruction": "Eres un dirigente del MNR en 1952 y debes explicarle a un grupo de ciudadanos escépticos por qué la <strong class='text-blue-900 font-bold'>Nacionalización de las Minas</strong> es beneficiosa para Bolivia, a pesar de los riesgos económicos. Escribe un prompt para una IA que te ayude a construir argumentos convincentes y fáciles de entender.",
+              "placeholder": "Ej: 'Actúa como un asesor político. Necesito 3 argumentos clave, explicados de forma simple, para defender la Nacionalización de las Minas frente a un público que teme represalias internacionales o mala gestión estatal. Enfócate en soberanía y beneficio popular...'",
+              "keywords": ["nacionalización", "minas", "argumentos", "beneficios", "soberanía"],
+              "minLength": 70
+            },
+            "matching": {
+              "instruction": "Empareja cada concepto clave de la Revolución de 1952 con su descripción correcta.",
+              "pairs": [
+                {"concept": "Víctor Paz Estenssoro", "options": [{"value": "a", "text": "Principal producto de exportación afectado por la nacionalización."}, {"value": "b", "text": "Líder del MNR y figura central de la Revolución."}, {"value": "c", "text": "Sistema de trabajo servil abolido por la Reforma Agraria."}], "correctValue": "b", "feedbackCorrect": "Correcto ✅ ¡Paz Estenssoro fue un líder clave!", "feedbackIncorrect": "Incorrecto ❌ Intenta de nuevo."},
+                {"concept": "COMIBOL", "options": [{"value": "a", "text": "Organización de terratenientes pre-revolucionaria."}, {"value": "b", "text": "Sigla de la ley de Reforma Educativa."}, {"value": "c", "text": "Empresa estatal creada para administrar las minas nacionalizadas."}], "correctValue": "c", "feedbackCorrect": "Correcto ✅ COMIBOL gestionó las minas.", "feedbackIncorrect": "Incorrecto ❌ Revisa el rol de COMIBOL."},
+                {"concept": "Pongueaje", "options": [{"value": "a", "text": "Forma de trabajo gratuito que fue abolida."}, {"value": "b", "text": "Un tipo de mineral explotado en Bolivia."}, {"value": "c", "text": "Partido político opositor al MNR."}], "correctValue": "a", "feedbackCorrect": "Correcto ✅ El pongueaje fue una forma de servidumbre eliminada.", "feedbackIncorrect": "Incorrecto ❌ El pongueaje era una forma de explotación laboral."},
+                {"concept": "Guerra del Chaco", "options": [{"value": "a", "text": "Conflicto que antecedió y evidenció la crisis del viejo orden."}, {"value": "b", "text": "Nombre de la insurrección de abril de 1952."}, {"value": "c", "text": "Tratado firmado tras la nacionalización minera."}], "correctValue": "a", "feedbackCorrect": "Correcto ✅ La Guerra del Chaco fue un antecedente importante.", "feedbackIncorrect": "Incorrecto ❌ La Guerra del Chaco tuvo un impacto significativo antes de la revolución."}
+              ]
+            },
+            "trueFalse": {
+              "instruction": "Indica si las siguientes afirmaciones sobre la Revolución de 1952 son Verdaderas o Falsas.",
+              "questions": [
+                {
+                  "text": "La Revolución de 1952 fue exclusivamente un golpe militar sin participación popular.",
+                  "correctValue": "false",
+                  "feedbackCorrect": "¡Correcto! Fue una insurrección con amplia participación popular, especialmente de mineros y campesinos.",
+                  "feedbackIncorrect": "Incorrecto. La participación popular fue un elemento distintivo y crucial de la Revolución."
+                },
+                {
+                  "text": "Antes de 1952, las mujeres bolivianas ya tenían pleno derecho al voto en todas las elecciones.",
+                  "correctValue": "false",
+                  "feedbackCorrect": "¡Correcto! El Voto Universal, que incluyó a las mujeres sin restricciones, fue una conquista de la Revolución.",
+                  "feedbackIncorrect": "Incorrecto. El Voto Universal de 1952 fue el que otorgó este derecho plenamente a las mujeres."
+                },
+                {
+                  "text": "Uno de los objetivos de la Reforma Agraria fue consolidar el poder de los grandes terratenientes.",
+                  "correctValue": "false",
+                  "feedbackCorrect": "¡Correcto! Al contrario, la Reforma Agraria buscó terminar con el latifundio y distribuir la tierra a los campesinos.",
+                  "feedbackIncorrect": "Incorrecto. La Reforma Agraria buscó precisamente lo opuesto: desmantelar el poder de los latifundistas."
+                }
+              ]
+            }
+          },
+          "summary": {
+            "title": "Resumen del Módulo: La Revolución Nacional de 1952",
+            "contentPoints": [
+              "Bolivia pre-1952 estaba dominada por la 'Rosca' minero-feudal, con gran exclusión social.",
+              "La insurrección de abril de 1952, liderada por el MNR y apoyada por mineros y campesinos, derrocó al viejo régimen.",
+              "Las medidas clave incluyeron la Nacionalización de las Minas, la Reforma Agraria, el Voto Universal y la Reforma Educativa.",
+              "Estas transformaciones reconfiguraron profundamente la sociedad, la economía y la política boliviana, incorporando a las masas populares."
+            ],
+            "closingRemark": "Comprender la Revolución de 1952 es esencial para entender la Bolivia contemporánea y sus luchas por la justicia social y la soberanía."
+          },
+          "conclusion": {
+            "title": "Conclusión: El Legado Vivo de 1952",
+            "message": "¡Felicidades por completar este módulo sobre la Revolución Nacional de 1952! Has explorado un momento decisivo que redefinió Bolivia. Las transformaciones de este periodo siguen resonando hoy.",
+            "callToAction": "Te animamos a seguir investigando y reflexionando sobre cómo estos eventos históricos moldean nuestro presente y futuro. ¡La historia está viva!"
+          },
+          "bibliography": [
+            {"text": "Klein, Herbert S. (2011). *A Concise History of Bolivia*. Cambridge University Press.", "url": "https://www.cambridge.org/core/books/concise-history-of-bolivia/E6E375F2A235A8A39FAAE6460A832441"},
+            {"text": "Dunkerley, James. (2000). *Warriors and Scribes: Essays on the History and Politics of Latin America*. Verso.", "url": "https://www.versobooks.com/products/1035-warriors-and-scribes"},
+            {"text": "Fundación PIEB. (Varios Artículos y Publicaciones sobre Historia de Bolivia).", "url": "http://www.pieb.com.bo"},
+            {"text": "Archivo Histórico de la Minería Nacional - COMIBOL (Para investigación avanzada)", "url": "https://www.comibol.gob.bo/index.php/archivo-historico/"}
+          ]
+        };
+
+        // Variables globales
+        let currentScore = 0;
+        let totalPossibleScore = 0;
+        let startTime;
+        let moduleStarted = false;
+        let readSections = new Set();
+        let totalReadableSections = 0;
+
+        // Elementos del DOM
+        const coverPage = document.getElementById('coverPage');
+        const moduleContainer = document.getElementById('moduleContainer');
+        const startModuleBtn = document.getElementById('startModuleBtn');
+        const progressBar = document.getElementById('progressBar');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        const navMenu = document.getElementById('navMenu');
+        const navToggle = document.getElementById('navToggle');
+        const sectionNavigation = document.getElementById('sectionNavigation');
+        const finalScoreDisplay = document.getElementById('finalScoreDisplay');
+        const totalTimeDisplay = document.getElementById('totalTimeDisplay');
+        const completionProgressDisplay = document.getElementById('completionProgressDisplay');
+        const finalResultsSection = document.getElementById('finalResultsSection');
+
+        // Funciones del Modal
+        const customModal = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        let currentModalAction = null;
+
+        function showCustomModal(action, title, message) {
+            currentModalAction = action;
+            modalTitle.textContent = title;
+            modalMessage.innerHTML = message; // Usar innerHTML para permitir strong/br etc.
+            customModal.classList.add('visible');
+        }
+
+        modalConfirmBtn.addEventListener('click', () => {
+            if (currentModalAction === 'confirmRestart') {
+                resetModuleState(); // Llama a la función que reinicia todo el módulo
+            }
+            // Aquí puedes añadir más 'else if' para otras acciones del modal si las necesitas.
+            customModal.classList.remove('visible');
+        });
+
+        modalCancelBtn.addEventListener('click', () => {
+            customModal.classList.remove('visible');
+        });
+
+
+        // --- INICIALIZACIÓN DEL MÓDULO ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderCoverPage();
+            renderModuleHeader();
+            renderLearningObjectives();
+            renderSections();
+            renderActivities();
+            renderSummary();
+            renderConclusion();
+            renderBibliography();
+            setupActivityInteractions();
+            updateProgressBar();
+            updateNavigationMenu();
+
+
+            if (moduleStarted) {
+                coverPage.style.display = 'none';
+                moduleContainer.style.display = 'block';
+                moduleContainer.classList.add('fade-in');
+                if (!startTime && moduleStarted) startTime = Date.now(); // Iniciar tiempo si se recarga y ya había empezado
+            } else {
+                 startModuleBtn.disabled = false;
+            }
+
+            // Event Listeners
+            window.addEventListener('scroll', handleScroll);
+            navToggle.addEventListener('click', toggleNavMenu);
+
+            // Cierra el menú si se hace clic fuera de él (en el moduleContainer)
+            moduleContainer.addEventListener('click', ()
+            => {
+                if (navMenu.classList.contains('open')) {
+                    navMenu.classList.remove('open');
+                }
+            });
+            // Detiene la propagación si se hace clic dentro del menú para no cerrarlo
+            navMenu.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+            
+            // Observador para animaciones de scroll
+            const elementsToReveal = document.querySelectorAll('.module-section, .interactive-activity');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1 });
+            elementsToReveal.forEach(el => observer.observe(el));
+
+            updateScoreDisplay();
+            updateCompletionProgress();
+        });
+
+        function renderCoverPage() {
+            const { title, description, professorName, subjectName, youtubeThumbnailUrl, youtubeVideoId } = moocData.moduleInfo;
+            coverPage.innerHTML = `
+                <img src="${youtubeThumbnailUrl}" alt="Miniatura del video del módulo" class="w-full max-w-md mx-auto mb-6 rounded-lg shadow-lg aspect-video object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x338/cccccc/333333?text=Video+Introductorio';">
+                <h1 class="text-3xl md:text-4xl font-bold text-blue-800 mb-3">${title}</h1>
+                <p class="module-description text-gray-600 mb-4">${description}</p>
+                <p class="professor-info text-sm text-gray-500 mb-8">Un módulo de ${subjectName} por ${professorName}</p>
+                <button id="startModuleBtnCover" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-md text-lg transition duration-150 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 disabled:opacity-50" disabled>Cargando...</button>
+            `;
+            const startBtnCover = document.getElementById('startModuleBtnCover');
+            if (startBtnCover) {
+                 startBtnCover.disabled = false; // Habilitar el botón una vez cargado
+                 startBtnCover.textContent = "🚀 Comenzar Módulo";
+                 startBtnCover.addEventListener('click', startModule);
+            }
+        }
+
+        function startModule() {
+            moduleStarted = true;
+            startTime = Date.now();
+            saveState();
+            coverPage.style.display = 'none';
+            moduleContainer.style.display = 'block';
+            setTimeout(() => moduleContainer.classList.add('fade-in'), 50); // Pequeño delay para asegurar transición
+            updateProgressBar();
+            updateNavigationMenu(); // Para que aparezcan los links
+        }
+        
+        function renderModuleHeader() {
+            const headerInfo = document.getElementById('moduleHeaderInfo');
+            if(headerInfo) {
+                headerInfo.innerHTML = `
+                    <h1>${moocData.moduleInfo.title}</h1>
+                    <p>${moocData.moduleInfo.description}</p>
+                `;
+            }
+        }
+
+        function renderLearningObjectives() {
+            const objectivesList = document.getElementById('learningObjectivesList');
+            if(objectivesList) {
+                moocData.learningObjectives.forEach(obj => {
+                    const li = document.createElement('li');
+                    li.textContent = obj;
+                    objectivesList.appendChild(li);
+                });
+            }
+            totalReadableSections++; // Contar objetivos como una sección leíble
+        }
+
+        function renderSections() {
+            const sectionsContainer = document.getElementById('moduleSections');
+            if (!sectionsContainer) return;
+
+            moocData.sections.forEach(section => {
+                totalReadableSections++; // Contar cada sección de contenido
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'module-section';
+                sectionEl.id = section.id;
+                sectionEl.setAttribute('data-title', section.title); // Para el menú de navegación
+
+                let contentHTML = `<h2>${section.title}</h2>`;
+                section.contentParagraphs.forEach(p => contentHTML += `<p>${p.replace(/\n/g, "<br>")}</p>`);
+
+                if (section.image && section.image.url) {
+                    contentHTML += `<img src="${section.image.url}" alt="${section.image.altText}" loading="lazy" class="my-4 rounded-md shadow-sm mx-auto block" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/333333?text=Imagen+no+disponible';">`;
+                }
+
+                if (section.codeBlock) {
+                    contentHTML += `<div class="code-block"><pre>${section.codeBlock}</pre></div>`;
+                }
+
+                if (section.iconListItems && section.iconListItems.length > 0) {
+                    contentHTML += '<div class="icon-list mt-6">';
+                    section.iconListItems.forEach(item => {
+                        contentHTML += `
+                            <div class="icon-list-item">
+                                <div class="item-icon ${item.iconClass}"></div>
+                                <div class="item-content">
+                                    <h4>${item.heading}</h4>
+                                    <p>${item.description}</p>
+                                    ${item.useCase ? `<p class="use-case">${item.useCase}</p>` : ''}
+                                </div>
+                            </div>`;
+                    });
+                    contentHTML += '</div>';
+                }
+
+                if (section.reflectionQuestion) {
+                    contentHTML += `
+                        <div class="reflection-question mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                            <p class="font-semibold text-blue-700 mb-2">🤔 Para Reflexionar:</p>
+                            <p class="text-sm text-blue-600">${section.reflectionQuestion}</p>
+                        </div>`;
+                }
+
+                contentHTML += `<button class="mark-as-read-btn ${readSections.has(section.id) ? 'completed' : ''}" data-section-id="${section.id}" onclick="markSectionAsRead(this)">
+                                ${readSections.has(section.id) ? 'Leído ✔' : 'Marcar como leído'}
+                               </button>`;
+                sectionEl.innerHTML = contentHTML;
+                sectionsContainer.appendChild(sectionEl);
+            });
+        }
+
+        function renderActivities() {
+            const activitiesContainer = document.getElementById('moduleActivities');
+            if (!activitiesContainer || !moocData.activities) return;
+
+            // --- QUIZ ---
+            if (moocData.activities.quiz) {
+                totalPossibleScore += moocData.activities.quiz.questions.length;
+                const quiz = moocData.activities.quiz;
+                const activityEl = createActivityContainer('quizActivity', `🧩 ${quiz.title || 'Actividad: Quiz'}`, quiz.instruction);
+                
+                const questionsContainer = document.createElement('div');
+                quiz.questions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'mb-6 p-4 bg-white rounded shadow';
+                    questionDiv.innerHTML = `<p class="font-semibold mb-2">${index + 1}. ${q.text}</p>`;
+                    q.options.forEach(opt => {
+                        const label = document.createElement('label');
+                        label.className = 'quiz-option block';
+                        label.innerHTML = `<input type="radio" name="quizQ${index}" value="${opt.substring(0,1)}"> ${opt}`;
+                        questionDiv.appendChild(label);
+                    });
+                    questionDiv.innerHTML += `<div class="feedback-message mt-2" id="quizFeedbackQ${index}" style="display:none;"></div>`;
+                    questionsContainer.appendChild(questionDiv);
+                });
+                activityEl.appendChild(questionsContainer);
+                activityEl.innerHTML += `
+                    <button id="submitQuizBtn" class="activity-btn bg-blue-600 hover:bg-blue-700">Enviar Respuestas</button>
+                    <button id="resetQuizBtn" class="activity-btn reset-btn" disabled>Reiniciar Quiz</button>
+                    <div id="quizGlobalFeedback" class="feedback-message mt-3" style="display:none;"></div>`;
+                activitiesContainer.appendChild(activityEl);
+            }
+
+            // --- EXERCISE (Prompt Writing) ---
+            if (moocData.activities.exercise) {
+                totalPossibleScore += 1; // 1 point for attempting and self-awarding
+                const exercise = moocData.activities.exercise;
+                const activityEl = createActivityContainer('exerciseActivity', `✍️ ${exercise.title || 'Actividad: Ejercicio Práctico'}`, exercise.instruction);
+                activityEl.innerHTML += `
+                    <textarea id="exercisePrompt" class="prompt-input w-full p-2 border rounded" placeholder="${exercise.placeholder}"></textarea>
+                    <div class="flex justify-between items-center mt-1">
+                        <p id="exerciseCharCount" class="char-count text-xs text-gray-500">0 caracteres</p>
+                        <p id="exerciseKeywordFeedback" class="keyword-feedback text-xs"></p>
+                    </div>
+                    <div id="exerciseFeedback" class="feedback-message mt-3" style="display:none;"></div>
+                    <button id="submitExerciseBtn" class="activity-btn bg-blue-600 hover:bg-blue-700 mt-3">Enviar Prompt</button>
+                    <button id="awardExercisePointsBtn" class="activity-btn bg-green-500 hover:bg-green-600 mt-3" disabled>Autoevaluar y Darme Punto</button>
+                    <button id="resetExerciseBtn" class="activity-btn reset-btn mt-3" disabled>Reiniciar Ejercicio</button>
+                `;
+                activitiesContainer.appendChild(activityEl);
+            }
+            
+            // --- PROBLEM SOLVING (Prompt Writing) ---
+            if (moocData.activities.problemSolving) {
+                totalPossibleScore += 1; // 1 point for attempting and self-awarding
+                const ps = moocData.activities.problemSolving;
+                const activityEl = createActivityContainer('problemSolvingActivity', `💡 ${ps.title || 'Actividad: Resolución de Problemas'}`, ps.instruction);
+                activityEl.innerHTML += `
+                    <textarea id="problemSolvingPrompt" class="prompt-input w-full p-2 border rounded" placeholder="${ps.placeholder}"></textarea>
+                    <div class="flex justify-between items-center mt-1">
+                        <p id="problemSolvingCharCount" class="char-count text-xs text-gray-500">0 caracteres</p>
+                        <p id="problemSolvingKeywordFeedback" class="keyword-feedback text-xs"></p>
+                    </div>
+                    <div id="problemSolvingFeedback" class="feedback-message mt-3" style="display:none;"></div>
+                    <button id="submitProblemSolvingBtn" class="activity-btn bg-blue-600 hover:bg-blue-700 mt-3">Enviar Solución</button>
+                    <button id="awardProblemSolvingPointsBtn" class="activity-btn bg-green-500 hover:bg-green-600 mt-3" disabled>Autoevaluar y Darme Punto</button>
+                    <button id="resetProblemSolvingBtn" class="activity-btn reset-btn mt-3" disabled>Reiniciar Problema</button>
+                `;
+                activitiesContainer.appendChild(activityEl);
+            }
+
+            // --- MATCHING ACTIVITY ---
+            if (moocData.activities.matching) {
+                totalPossibleScore += moocData.activities.matching.pairs.length;
+                const matching = moocData.activities.matching;
+                const activityEl = createActivityContainer('matchingActivity', `🔄 ${matching.title || 'Actividad: Emparejamiento'}`, matching.instruction);
+                const pairsContainer = document.createElement('div');
+                matching.pairs.forEach((pair, index) => {
+                    const pairDiv = document.createElement('div');
+                    pairDiv.className = 'matching-pair mb-6 p-4 bg-white rounded shadow';
+                    pairDiv.innerHTML = `<p class="concept font-semibold text-blue-700">${index + 1}. ${pair.concept}</p>`;
+                    pair.options.forEach(opt => {
+                        const label = document.createElement('label');
+                        label.className = 'matching-option-label block';
+                        label.innerHTML = `<input type="radio" name="matchQ${index}" value="${opt.value}"> ${opt.text}`;
+                        pairDiv.appendChild(label);
+                    });
+                    pairDiv.innerHTML += `<div id="matchingFeedbackQ${index}" class="matching-feedback mt-2 text-sm"></div>`;
+                    pairsContainer.appendChild(pairDiv);
+                });
+                activityEl.appendChild(pairsContainer);
+                activityEl.innerHTML += `
+                    <button id="submitMatchingBtn" class="activity-btn bg-blue-600 hover:bg-blue-700">Verificar Emparejamientos</button>
+                    <button id="resetMatchingBtn" class="activity-btn reset-btn" disabled>Reiniciar Emparejamiento</button>
+                    <div id="matchingGlobalFeedback" class="feedback-message mt-3" style="display:none;"></div>`;
+                activitiesContainer.appendChild(activityEl);
+            }
+            
+            // --- TRUE/FALSE ACTIVITY ---
+            if (moocData.activities.trueFalse) {
+                totalPossibleScore += moocData.activities.trueFalse.questions.length;
+                const tf = moocData.activities.trueFalse;
+                const activityEl = createActivityContainer('activityTrueFalse', `✔️ ${tf.title || 'Actividad: Verdadero o Falso'}`, tf.instruction);
+                const questionsContainer = document.createElement('div');
+                tf.questions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'mb-4 p-4 bg-white rounded shadow';
+                    questionDiv.innerHTML = `<p class="font-semibold mb-2">${index + 1}. ${q.text}</p>`;
+                    
+                    const trueLabel = document.createElement('label');
+                    trueLabel.className = 'true-false-option block';
+                    trueLabel.innerHTML = `<input type="radio" name="trueFalseQ${index}" value="true"> Verdadero`;
+                    questionDiv.appendChild(trueLabel);
+
+                    const falseLabel = document.createElement('label');
+                    falseLabel.className = 'true-false-option block';
+                    falseLabel.innerHTML = `<input type="radio" name="trueFalseQ${index}" value="false"> Falso`;
+                    questionDiv.appendChild(falseLabel);
+                    
+                    questionDiv.innerHTML += `<div id="trueFalseFeedbackQ${index}" class="feedback-message mt-2" style="display:none;"></div>`;
+                    questionsContainer.appendChild(questionDiv);
+                });
+                activityEl.appendChild(questionsContainer);
+                activityEl.innerHTML += `
+                    <button id="submitTrueFalseBtn" class="activity-btn bg-blue-600 hover:bg-blue-700">Enviar Respuestas</button>
+                    <button id="resetTrueFalseBtn" class="activity-btn reset-btn" disabled>Reiniciar V/F</button>
+                    <div id="trueFalseGlobalFeedback" class="feedback-message mt-3" style="display:none;"></div>`;
+                activitiesContainer.appendChild(activityEl);
+            }
+        }
+
+        function createActivityContainer(id, title, instruction) {
+            const activityEl = document.createElement('div');
+            activityEl.id = id;
+            activityEl.className = 'interactive-activity module-section'; // module-section para animación
+            activityEl.setAttribute('data-title', title); // Para el menú de navegación
+            activityEl.innerHTML = `
+                <h3 class="text-xl font-semibold text-blue-800 mb-3">${title}</h3>
+                <p class="instruction bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md mb-4">${instruction}</p>
+            `;
+            return activityEl;
+        }
+        
+        function renderSummary() {
+            const summarySection = document.getElementById('summarySection');
+            if (!summarySection || !moocData.summary) return;
+            totalReadableSections++; // Contar resumen como sección leíble
+            summarySection.setAttribute('data-title', moocData.summary.title || "Resumen del Módulo");
+            let html = `<h2>${moocData.summary.title}</h2>`;
+            if (moocData.summary.contentPoints && moocData.summary.contentPoints.length > 0) {
+                html += '<ul class="list-disc pl-6 space-y-1 text-gray-700">';
+                moocData.summary.contentPoints.forEach(point => {
+                    html += `<li>${point}</li>`;
+                });
+                html += '</ul>';
+            }
+            if (moocData.summary.closingRemark) {
+                html += `<p class="mt-4 italic text-gray-600">${moocData.summary.closingRemark}</p>`;
+            }
+            html += `<button class="mark-as-read-btn ${readSections.has('summarySection') ? 'completed' : ''}" data-section-id="summarySection" onclick="markSectionAsRead(this)">
+                     ${readSections.has('summarySection') ? 'Leído ✔' : 'Marcar como leído'}
+                     </button>`;
+            summarySection.innerHTML = html;
+        }
+
+        function renderConclusion() {
+            const conclusionSection = document.getElementById('conclusionSection');
+            if (!conclusionSection || !moocData.conclusion) return;
+            totalReadableSections++; // Contar conclusión como sección leíble
+            conclusionSection.setAttribute('data-title', moocData.conclusion.title || "Conclusión");
+            let html = `<h2>${moocData.conclusion.title}</h2>`;
+            if (moocData.conclusion.message) {
+                html += `<p class="text-gray-700">${moocData.conclusion.message}</p>`;
+            }
+            if (moocData.conclusion.callToAction) {
+                html += `<p class="mt-4 font-semibold text-blue-600">${moocData.conclusion.callToAction}</p>`;
+            }
+            html += `<button class="mark-as-read-btn ${readSections.has('conclusionSection') ? 'completed' : ''}" data-section-id="conclusionSection" onclick="markSectionAsRead(this)">
+                     ${readSections.has('conclusionSection') ? 'Leído ✔' : 'Marcar como leído'}
+                     </button>`;
+            conclusionSection.innerHTML = html;
+        }
+
+        function renderBibliography() {
+            const bibSection = document.getElementById('bibliographySection');
+            if (!bibSection || !moocData.bibliography || moocData.bibliography.length === 0) {
+                if(bibSection) bibSection.style.display = 'none';
+                return;
+            }
+            totalReadableSections++; // Contar bibliografía como sección leíble
+            bibSection.setAttribute('data-title', "Bibliografía y Recursos");
+            let html = `<h2>📚 Bibliografía y Recursos Adicionales</h2>`;
+            html += '<ul class="list-disc pl-6 space-y-2">';
+            moocData.bibliography.forEach(item => {
+                html += `<li><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 hover:underline">${item.text}</a></li>`;
+            });
+            html += '</ul>';
+            html += `<button class="mark-as-read-btn ${readSections.has('bibliographySection') ? 'completed' : ''}" data-section-id="bibliographySection" onclick="markSectionAsRead(this)">
+                     ${readSections.has('bibliographySection') ? 'Leído ✔' : 'Marcar como leído'}
+                    </button>`;
+            bibSection.innerHTML = html;
+        }
+
+
+        // --- LÓGICA DE ACTIVIDADES ---
+        function setupActivityInteractions() {
+            // Quiz
+            const submitQuizBtn = document.getElementById('submitQuizBtn');
+            const resetQuizBtn = document.getElementById('resetQuizBtn');
+            if (submitQuizBtn) {
+                submitQuizBtn.addEventListener('click', handleSubmitQuiz);
+                resetQuizBtn.addEventListener('click', handleResetQuiz);
+                // Marcar opciones seleccionadas en el quiz
+                document.querySelectorAll('#quizActivity .quiz-option input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        // Quitar 'selected' de otras opciones en la misma pregunta
+                        const questionName = e.target.name;
+                        document.querySelectorAll(`#quizActivity input[name="${questionName}"]`).forEach(rb => {
+                            rb.parentElement.classList.remove('selected');
+                        });
+                        // Añadir 'selected' a la actual
+                        e.target.parentElement.classList.add('selected');
+                    });
+                });
+            }
+
+            // Exercise (Prompt)
+            const submitExerciseBtn = document.getElementById('submitExerciseBtn');
+            const resetExerciseBtn = document.getElementById('resetExerciseBtn');
+            const awardExercisePointsBtn = document.getElementById('awardExercisePointsBtn');
+            const exercisePromptTextarea = document.getElementById('exercisePrompt');
+            if (submitExerciseBtn) {
+                exercisePromptTextarea.addEventListener('input', () => handlePromptInput('exercise'));
+                submitExerciseBtn.addEventListener('click', () => handleSubmitPrompt('exercise'));
+                awardExercisePointsBtn.addEventListener('click', () => handleAwardPoints('exercise'));
+                resetExerciseBtn.addEventListener('click', () => handleResetPrompt('exercise'));
+            }
+
+            // Problem Solving (Prompt)
+            const submitProblemSolvingBtn = document.getElementById('submitProblemSolvingBtn');
+            const resetProblemSolvingBtn = document.getElementById('resetProblemSolvingBtn');
+            const awardProblemSolvingPointsBtn = document.getElementById('awardProblemSolvingPointsBtn');
+            const problemSolvingPromptTextarea = document.getElementById('problemSolvingPrompt');
+            if (submitProblemSolvingBtn) {
+                problemSolvingPromptTextarea.addEventListener('input', () => handlePromptInput('problemSolving'));
+                submitProblemSolvingBtn.addEventListener('click', () => handleSubmitPrompt('problemSolving'));
+                awardProblemSolvingPointsBtn.addEventListener('click', () => handleAwardPoints('problemSolving'));
+                resetProblemSolvingBtn.addEventListener('click', () => handleResetPrompt('problemSolving'));
+            }
+            
+            // Matching
+            const submitMatchingBtn = document.getElementById('submitMatchingBtn');
+            const resetMatchingBtn = document.getElementById('resetMatchingBtn');
+            if (submitMatchingBtn) {
+                submitMatchingBtn.addEventListener('click', handleSubmitMatching);
+                resetMatchingBtn.addEventListener('click', handleResetMatching);
+                document.querySelectorAll('#matchingActivity .matching-option-label input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        const questionName = e.target.name;
+                        document.querySelectorAll(`#matchingActivity input[name="${questionName}"]`).forEach(rb => {
+                            rb.parentElement.classList.remove('selected');
+                        });
+                        e.target.parentElement.classList.add('selected');
+                    });
+                });
+            }
+
+            // True/False
+            const submitTrueFalseBtn = document.getElementById('submitTrueFalseBtn');
+            const resetTrueFalseBtn = document.getElementById('resetTrueFalseBtn');
+            if (submitTrueFalseBtn) {
+                submitTrueFalseBtn.addEventListener('click', handleSubmitTrueFalse);
+                resetTrueFalseBtn.addEventListener('click', handleResetTrueFalse);
+                 document.querySelectorAll('#activityTrueFalse .true-false-option input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        const questionName = e.target.name;
+                        document.querySelectorAll(`#activityTrueFalse input[name="${questionName}"]`).forEach(rb => {
+                            rb.parentElement.classList.remove('selected');
+                        });
+                        e.target.parentElement.classList.add('selected');
+                    });
+                });
+            }
+        }
+        
+        function updateScore(points) {
+            currentScore += points;
+            updateScoreDisplay();
+            saveState();
+        }
+
+        function updateScoreDisplay() {
+            const scoreElements = document.querySelectorAll('.current-score');
+            scoreElements.forEach(el => el.textContent = currentScore);
+            const totalPossibleElements = document.querySelectorAll('.total-possible-score');
+            totalPossibleElements.forEach(el => el.textContent = totalPossibleScore);
+            
+            if(finalScoreDisplay) finalScoreDisplay.textContent = `${currentScore}/${totalPossibleScore}`;
+
+            if (readSections.size === totalReadableSections && allActivitiesAttempted()) {
+                 finalResultsSection.style.display = 'block';
+                 finalResultsSection.classList.add('visible'); // Para animación si la tiene
+                 updateTotalTime();
+            }
+        }
+        
+        function updateTotalTime() {
+            if (moduleStarted && startTime) {
+                const now = Date.now();
+                const diffMs = now - startTime;
+                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+                if(totalTimeDisplay) totalTimeDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+        }
+        setInterval(updateTotalTime, 1000); // Actualizar cada segundo si el módulo ha empezado
+
+
+        function disableActivity(activityType, submitBtnId, resetBtnId, awardBtnId = null) {
+            document.getElementById(submitBtnId).disabled = true;
+            document.getElementById(resetBtnId).disabled = false;
+            if (awardBtnId) document.getElementById(awardBtnId).disabled = true;
+
+            const activityData = moocData.activities[activityType];
+            if (activityType === 'quiz' || activityType === 'matching' || activityType === 'trueFalse') {
+                const questions = activityData.questions || activityData.pairs;
+                questions.forEach((q, index) => {
+                    document.querySelectorAll(`input[name="${activityType === 'matching' ? 'matchQ' : activityType + 'Q'}${index}"]`).forEach(input => {
+                        input.disabled = true;
+                    });
+                });
+            } else if (activityType === 'exercise' || activityType === 'problemSolving') {
+                document.getElementById(`${activityType}Prompt`).disabled = true;
+            }
+             document.getElementById(activityType + 'Activity').dataset.attempted = 'true';
+             saveState();
+             updateCompletionProgress(); // Check if all done
+        }
+        
+        function enableActivity(activityType, submitBtnId, resetBtnId, awardBtnId = null) {
+            document.getElementById(submitBtnId).disabled = false;
+            document.getElementById(resetBtnId).disabled = true;
+            if (awardBtnId) document.getElementById(awardBtnId).disabled = true;
+
+            const activityData = moocData.activities[activityType];
+             if (activityType === 'quiz' || activityType === 'matching' || activityType === 'trueFalse') {
+                const questions = activityData.questions || activityData.pairs;
+                questions.forEach((q, index) => {
+                    document.querySelectorAll(`input[name="${activityType === 'matching' ? 'matchQ' : activityType + 'Q'}${index}"]`).forEach(input => {
+                        input.disabled = false;
+                        input.checked = false;
+                        input.parentElement.classList.remove('selected', 'correct', 'incorrect');
+                    });
+                     const feedbackEl = document.getElementById(`${activityType}FeedbackQ${index}`);
+                     if(feedbackEl) feedbackEl.style.display = 'none';
+                });
+                const globalFeedback = document.getElementById(`${activityType}GlobalFeedback`);
+                if(globalFeedback) globalFeedback.style.display = 'none';
+
+            } else if (activityType === 'exercise' || activityType === 'problemSolving') {
+                const textarea = document.getElementById(`${activityType}Prompt`);
+                textarea.disabled = false;
+                textarea.value = '';
+                document.getElementById(`${activityType}CharCount`).textContent = '0 caracteres';
+                const keywordFeedback = document.getElementById(`${activityType}KeywordFeedback`);
+                if (keywordFeedback) keywordFeedback.textContent = '';
+                const feedbackDiv = document.getElementById(`${activityType}Feedback`);
+                if(feedbackDiv) feedbackDiv.style.display = 'none';
+            }
+            const activityElement = document.getElementById(activityType + 'Activity');
+            if (activityElement) {
+                activityElement.dataset.attempted = 'false';
+                // Restaurar la puntuación si se reinicia la actividad
+                const lastScore = parseInt(activityElement.dataset.lastScore || "0");
+                updateScore(-lastScore); // Restar la puntuación anterior de esta actividad
+                activityElement.dataset.lastScore = "0"; // Resetear la puntuación de esta actividad
+            }
+            saveState();
+            updateCompletionProgress();
+        }
+
+        // --- QUIZ SPECIFIC HANDLERS ---
+        function handleSubmitQuiz() {
+            const quizData = moocData.activities.quiz;
+            let score = 0;
+            let allAnswered = true;
+
+            quizData.questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="quizQ${index}"]:checked`);
+                const feedbackEl = document.getElementById(`quizFeedbackQ${index}`);
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                    return; // Salta esta pregunta si no está respondida
+                }
+
+                const userAnswer = selectedOption.value;
+                const correctAnswer = q.correctValue;
+                const optionLabel = selectedOption.parentElement;
+
+                optionLabel.classList.remove('selected');
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    optionLabel.classList.add('correct');
+                    feedbackEl.textContent = q.feedbackCorrect;
+                    feedbackEl.className = 'feedback-message correct';
+                } else {
+                    optionLabel.classList.add('incorrect');
+                    feedbackEl.textContent = q.feedbackIncorrect;
+                    feedbackEl.className = 'feedback-message incorrect';
+                    // También marcar la correcta
+                    const correctOptEl = document.querySelector(`input[name="quizQ${index}"][value="${correctAnswer}"]`);
+                    if (correctOptEl) correctOptEl.parentElement.classList.add('correct');
+                }
+                feedbackEl.style.display = 'block';
+            });
+
+            const globalFeedback = document.getElementById('quizGlobalFeedback');
+            if (!allAnswered) {
+                globalFeedback.textContent = "Por favor, responde todas las preguntas antes de enviar.";
+                globalFeedback.className = 'feedback-message incorrect';
+                globalFeedback.style.display = 'block';
+                return;
+            }
+            
+            globalFeedback.textContent = `Obtuviste ${score} de ${quizData.questions.length} respuestas correctas.`;
+            globalFeedback.className = score === quizData.questions.length ? 'feedback-message correct' : (score > 0 ? 'feedback-message info' : 'feedback-message incorrect');
+            globalFeedback.style.display = 'block';
+
+            const activityElement = document.getElementById('quizActivity');
+            const previousScore = parseInt(activityElement.dataset.lastScore || "0");
+            updateScore(score - previousScore); // Actualiza el score global con la diferencia
+            activityElement.dataset.lastScore = score; // Guarda el score actual de esta actividad
+
+            disableActivity('quiz', 'submitQuizBtn', 'resetQuizBtn');
+        }
+
+        function handleResetQuiz() {
+            enableActivity('quiz', 'submitQuizBtn', 'resetQuizBtn');
+        }
+
+        // --- PROMPT EXERCISE/PROBLEM SOLVING HANDLERS ---
+        function handlePromptInput(activityType) {
+            const textarea = document.getElementById(`${activityType}Prompt`);
+            const charCountEl = document.getElementById(`${activityType}CharCount`);
+            const keywordFeedbackEl = document.getElementById(`${activityType}KeywordFeedback`);
+            const activityData = moocData.activities[activityType === 'exercise' ? 'exercise' : 'problemSolving'];
+
+            charCountEl.textContent = `${textarea.value.length} caracteres`;
+
+            if (activityData.keywords && activityData.keywords.length > 0) {
+                let keywordsFound = 0;
+                activityData.keywords.forEach(kw => {
+                    if (textarea.value.toLowerCase().includes(kw.toLowerCase())) {
+                        keywordsFound++;
+                    }
+                });
+                keywordFeedbackEl.textContent = `Palabras clave: ${keywordsFound}/${activityData.keywords.length}`;
+                keywordFeedbackEl.className = keywordsFound === activityData.keywords.length ? 'keyword-feedback met' : 'keyword-feedback not-met';
+            }
+        }
+
+        function handleSubmitPrompt(activityType) {
+            const textarea = document.getElementById(`${activityType}Prompt`);
+            const feedbackDiv = document.getElementById(`${activityType}Feedback`);
+            const activityData = moocData.activities[activityType === 'exercise' ? 'exercise' : 'problemSolving'];
+            
+            let message = "";
+            let metMinLength = textarea.value.length >= activityData.minLength;
+            let metKeywords = true;
+            if (activityData.keywords && activityData.keywords.length > 0) {
+                metKeywords = activityData.keywords.every(kw => textarea.value.toLowerCase().includes(kw.toLowerCase()));
+            }
+
+            if (metMinLength && metKeywords) {
+                message = "¡Buen trabajo! Tu prompt parece cumplir los criterios básicos. Ahora puedes autoevaluarte.";
+                feedbackDiv.className = "feedback-message correct";
+                document.getElementById(`award${activityType.charAt(0).toUpperCase() + activityType.slice(1)}PointsBtn`).disabled = false;
+            } else {
+                message = "Tu prompt aún no cumple todos los criterios. ";
+                if (!metMinLength) message += `Necesita al menos ${activityData.minLength} caracteres. `;
+                if (!metKeywords) message += "Asegúrate de incluir las palabras clave sugeridas. ";
+                feedbackDiv.className = "feedback-message incorrect";
+                document.getElementById(`award${activityType.charAt(0).toUpperCase() + activityType.slice(1)}PointsBtn`).disabled = true;
+            }
+            feedbackDiv.innerHTML = message;
+            feedbackDiv.style.display = 'block';
+            
+            document.getElementById(`submit${activityType.charAt(0).toUpperCase() + activityType.slice(1)}Btn`).disabled = true;
+            document.getElementById(`reset${activityType.charAt(0).toUpperCase() + activityType.slice(1)}Btn`).disabled = false;
+            textarea.disabled = true;
+
+            // No se otorgan puntos aquí, solo con el botón de autoevaluar
+            // Marcar como intentado para el progreso general
+            const activityElement = document.getElementById(activityType + 'Activity');
+            if (!activityElement.dataset.awarded) { // Solo marca como intentado si aún no se ha auto-otorgado el punto
+                 activityElement.dataset.attempted = 'true'; // Se considera 'attempted' al enviar, no al auto-premiar.
+            }
+            saveState();
+            updateCompletionProgress();
+        }
+        
+        function handleAwardPoints(activityType) {
+            const activityElement = document.getElementById(activityType + 'Activity');
+            const feedbackDiv = document.getElementById(`${activityType}Feedback`);
+
+            if (!activityElement.dataset.awarded || activityElement.dataset.awarded === "false") {
+                updateScore(1);
+                activityElement.dataset.lastScore = "1"; // Guarda el score de esta actividad
+                activityElement.dataset.awarded = "true"; // Marcar que ya se otorgó el punto
+                
+                feedbackDiv.innerHTML = "¡Punto otorgado! Has completado este ejercicio.";
+                feedbackDiv.className = "feedback-message correct";
+                feedbackDiv.style.display = 'block';
+
+                document.getElementById(`award${activityType.charAt(0).toUpperCase() + activityType.slice(1)}PointsBtn`).disabled = true;
+                document.getElementById(`reset${activityType.charAt(0).toUpperCase() + activityType.slice(1)}Btn`).disabled = false;
+                // submit ya debería estar deshabilitado.
+            }
+            saveState();
+            updateCompletionProgress(); // Para verificar si todo está completo
+        }
+
+        function handleResetPrompt(activityType) {
+            const activityElement = document.getElementById(activityType + 'Activity');
+            const awarded = activityElement.dataset.awarded === "true";
+            
+            if (awarded) {
+                updateScore(-1); // Restar el punto si ya se había otorgado
+                activityElement.dataset.lastScore = "0";
+            }
+            activityElement.dataset.awarded = "false"; // Resetear el estado de premiado
+            activityElement.dataset.attempted = "false"; // Resetear estado de intentado
+
+            enableActivity(activityType, `submit${activityType.charAt(0).toUpperCase() + activityType.slice(1)}Btn`, `reset${activityType.charAt(0).toUpperCase() + activityType.slice(1)}Btn`, `award${activityType.charAt(0).toUpperCase() + activityType.slice(1)}PointsBtn`);
+            document.getElementById(`${activityType}KeywordFeedback`).textContent = '';
+        }
+
+
+        // --- MATCHING ACTIVITY HANDLERS ---
+        function handleSubmitMatching() {
+            const matchingData = moocData.activities.matching;
+            let score = 0;
+            let allAnswered = true;
+
+            matchingData.pairs.forEach((pair, index) => {
+                const selectedOption = document.querySelector(`input[name="matchQ${index}"]:checked`);
+                const feedbackEl = document.getElementById(`matchingFeedbackQ${index}`);
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                    feedbackEl.textContent = "Por favor, selecciona una opción.";
+                    feedbackEl.style.color = "orange";
+                    return;
+                }
+
+                const userAnswer = selectedOption.value;
+                const correctAnswer = pair.correctValue;
+                const optionLabel = selectedOption.parentElement;
+                
+                optionLabel.classList.remove('selected');
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    optionLabel.classList.add('correct');
+                    feedbackEl.textContent = pair.feedbackCorrect || "¡Correcto!";
+                    feedbackEl.style.color = "green";
+                } else {
+                    optionLabel.classList.add('incorrect');
+                    feedbackEl.textContent = pair.feedbackIncorrect || "Incorrecto.";
+                    feedbackEl.style.color = "red";
+                     // Marcar la correcta también
+                    const correctOptEl = document.querySelector(`input[name="matchQ${index}"][value="${correctAnswer}"]`);
+                    if (correctOptEl) correctOptEl.parentElement.classList.add('correct');
+                }
+            });
+
+            const globalFeedback = document.getElementById('matchingGlobalFeedback');
+            if (!allAnswered && globalFeedback) {
+                 globalFeedback.textContent = "Por favor, completa todos los emparejamientos.";
+                 globalFeedback.className = 'feedback-message incorrect';
+                 globalFeedback.style.display = 'block';
+                 return;
+            }
+            
+            if (globalFeedback) {
+                globalFeedback.textContent = `Obtuviste ${score} de ${matchingData.pairs.length} emparejamientos correctos.`;
+                globalFeedback.className = score === matchingData.pairs.length ? 'feedback-message correct' : (score > 0 ? 'feedback-message info' : 'feedback-message incorrect');
+                globalFeedback.style.display = 'block';
+            }
+
+            const activityElement = document.getElementById('matchingActivity');
+            const previousScore = parseInt(activityElement.dataset.lastScore || "0");
+            updateScore(score - previousScore);
+            activityElement.dataset.lastScore = score;
+
+            disableActivity('matching', 'submitMatchingBtn', 'resetMatchingBtn');
+        }
+
+        function handleResetMatching() {
+            enableActivity('matching', 'submitMatchingBtn', 'resetMatchingBtn');
+            document.querySelectorAll('.matching-feedback').forEach(el => el.textContent = '');
+        }
+
+        // --- TRUE/FALSE ACTIVITY HANDLERS ---
+        function handleSubmitTrueFalse() {
+            const tfData = moocData.activities.trueFalse;
+            let score = 0;
+            let allAnswered = true;
+
+            tfData.questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="trueFalseQ${index}"]:checked`);
+                const feedbackEl = document.getElementById(`trueFalseFeedbackQ${index}`);
+                
+                if (!selectedOption) {
+                    allAnswered = false;
+                    return;
+                }
+
+                const userAnswer = selectedOption.value; // "true" o "false" (string)
+                const correctAnswer = String(q.correctValue); // Asegurar que sea string para comparar
+                const optionLabel = selectedOption.parentElement;
+
+                optionLabel.classList.remove('selected');
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    optionLabel.classList.add('correct');
+                    feedbackEl.textContent = q.feedbackCorrect;
+                    feedbackEl.className = 'feedback-message correct';
+                } else {
+                    optionLabel.classList.add('incorrect');
+                    feedbackEl.textContent = q.feedbackIncorrect;
+                    feedbackEl.className = 'feedback-message incorrect';
+                    // Marcar la correcta
+                    const correctOptEl = document.querySelector(`input[name="trueFalseQ${index}"][value="${correctAnswer}"]`);
+                    if (correctOptEl) correctOptEl.parentElement.classList.add('correct');
+                }
+                feedbackEl.style.display = 'block';
+            });
+            
+            const globalFeedback = document.getElementById('trueFalseGlobalFeedback');
+            if (!allAnswered) {
+                globalFeedback.textContent = "Por favor, responde todas las afirmaciones.";
+                globalFeedback.className = 'feedback-message incorrect';
+                globalFeedback.style.display = 'block';
+                return;
+            }
+
+            globalFeedback.textContent = `Obtuviste ${score} de ${tfData.questions.length} respuestas correctas.`;
+            globalFeedback.className = score === tfData.questions.length ? 'feedback-message correct' : (score > 0 ? 'feedback-message info' : 'feedback-message incorrect');
+            globalFeedback.style.display = 'block';
+
+            const activityElement = document.getElementById('activityTrueFalse');
+            const previousScore = parseInt(activityElement.dataset.lastScore || "0");
+            updateScore(score - previousScore);
+            activityElement.dataset.lastScore = score;
+
+            disableActivity('trueFalse', 'submitTrueFalseBtn', 'resetTrueFalseBtn');
+        }
+
+        function handleResetTrueFalse() {
+            enableActivity('trueFalse', 'submitTrueFalseBtn', 'resetTrueFalseBtn');
+        }
+
+
+        // --- SCROLL & NAVIGATION ---
+        function handleScroll() {
+            if (!moduleStarted) return;
+            updateProgressBar();
+            toggleBackToTopButton();
+            updateActiveNavLinkOnScroll();
+        }
+
+        function updateProgressBar() {
+            if (!moduleContainer || moduleContainer.style.display === 'none') {
+                 progressBar.style.width = '0%';
+                 return;
+            }
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolledPercentage = (window.scrollY / scrollableHeight) * 100;
+            progressBar.style.width = `${scrolledPercentage}%`;
+        }
+        
+        function toggleBackToTopButton() {
+            if (window.scrollY > 300) {
+                backToTopBtn.style.display = 'block';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleNavMenu() {
+            navMenu.classList.toggle('open');
+        }
+
+        function updateNavigationMenu() {
+            if (!moduleStarted) {
+                sectionNavigation.innerHTML = '<li><em class="text-sm p-2 block">Comienza el módulo para ver la navegación.</em></li>';
+                return;
+            }
+            sectionNavigation.innerHTML = ''; // Limpiar
+            const sectionsForNav = [
+                document.getElementById('learningObjectivesSection'),
+                ...document.querySelectorAll('#moduleSections .module-section'),
+                ...document.querySelectorAll('#moduleActivities .interactive-activity'),
+                document.getElementById('summarySection'),
+                document.getElementById('conclusionSection'),
+                document.getElementById('bibliographySection')
+            ];
+
+            sectionsForNav.forEach(section => {
+                if (section && section.id) {
+                    const title = section.getAttribute('data-title') || section.querySelector('h2, h3')?.textContent || section.id;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${section.id}`;
+                    a.textContent = title;
+                    a.onclick = (e) => {
+                        e.preventDefault();
+                        document.getElementById(section.id).scrollIntoView({ behavior: 'smooth' });
+                        navMenu.classList.remove('open'); // Cerrar menú al hacer clic
+                    };
+                    if (readSections.has(section.id) || (section.classList.contains('interactive-activity') && section.dataset.attempted === 'true')) {
+                        a.classList.add('completed-link');
+                    }
+                    li.appendChild(a);
+                    sectionNavigation.appendChild(li);
+                }
+            });
+        }
+        
+        function updateActiveNavLinkOnScroll() {
+            if (!moduleStarted || !navMenu.classList.contains('open')) return; // Optimización: solo actualizar si el menú está abierto o es necesario
+
+            let currentSectionId = '';
+            const sectionsForNav = [
+                document.getElementById('learningObjectivesSection'),
+                ...document.querySelectorAll('#moduleSections .module-section'),
+                ...document.querySelectorAll('#moduleActivities .interactive-activity'),
+                document.getElementById('summarySection'),
+                document.getElementById('conclusionSection'),
+                document.getElementById('bibliographySection')
+            ];
+
+            sectionsForNav.forEach(section => {
+                if (section) {
+                    const sectionTop = section.offsetTop - 100; // offset de 100px
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                        currentSectionId = section.id;
+                    }
+                }
+            });
+
+            document.querySelectorAll('#sectionNavigation a').forEach(link => {
+                link.classList.remove('active-link');
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('active-link');
+                }
+            });
+        }
+
+
+        // --- LECTURA Y PROGRESO ---
+        function markSectionAsRead(button) {
+            const sectionId = button.dataset.sectionId;
+            if (!readSections.has(sectionId)) {
+                readSections.add(sectionId);
+                button.classList.add('completed');
+                button.textContent = 'Leído ✔';
+                button.disabled = true;
+                updateNavigationMenu(); // Actualizar estilo de enlace en menú
+                updateCompletionProgress();
+                saveState();
+            }
+        }
+        
+        function updateCompletionProgress() {
+            if (totalReadableSections > 0) {
+                const readPercentage = (readSections.size / totalReadableSections) * 100;
+                if(completionProgressDisplay) completionProgressDisplay.textContent = `${Math.round(readPercentage)}%`;
+            }
+            if (readSections.size === totalReadableSections && allActivitiesAttempted()) {
+                finalResultsSection.style.display = 'block';
+                finalResultsSection.classList.add('visible');
+                updateTotalTime(); // Asegura que el tiempo se muestre al completar
+                updateScoreDisplay(); // Para asegurar que el puntaje final se muestre
+            }
+        }
+
+        function allActivitiesAttempted() {
+            const activities = Object.keys(moocData.activities);
+            if (activities.length === 0) return true; // No hay actividades, así que se considera completado
+
+            return activities.every(activityKey => {
+                const activityEl = document.getElementById(activityKey + 'Activity') || document.getElementById('activity' + activityKey.charAt(0).toUpperCase() + activityKey.slice(1)); // Para activityTrueFalse
+                // Considerar 'awarded' para ejercicios de prompt, 'attempted' para otros
+                 if (activityKey === 'exercise' || activityKey === 'problemSolving') {
+                     return activityEl && (activityEl.dataset.attempted === 'true' || activityEl.dataset.awarded === 'true');
+                 }
+                 return activityEl && activityEl.dataset.attempted === 'true';
+            });
+        }
+
+
+        // --- GESTIÓN DE ESTADO (localStorage) ---
+        function saveState() {
+            if (!moduleStarted) return; // No guardar si el módulo no ha comenzado formalmente
+            const state = {
+                moduleStarted: moduleStarted,
+                startTime: startTime,
+                currentScore: currentScore,
+                readSections: Array.from(readSections),
+                activitiesAttempted: {},
+                activitiesLastScore: {}
+            };
+            // Guardar estado de "attempted" y "lastScore" para cada actividad
+            Object.keys(moocData.activities).forEach(actKey => {
+                const activityId = actKey + 'Activity'; // ej. quizActivity
+                const activityEl = document.getElementById(activityId) || document.getElementById('activity' + actKey.charAt(0).toUpperCase() + actKey.slice(1));
+                if (activityEl) {
+                    state.activitiesAttempted[actKey] = activityEl.dataset.attempted === 'true';
+                    state.activitiesLastScore[actKey] = parseInt(activityEl.dataset.lastScore || "0");
+                    if (actKey === 'exercise' || actKey === 'problemSolving') { // Guardar también si fue 'awarded'
+                        state.activitiesAttempted[actKey + '_awarded'] = activityEl.dataset.awarded === 'true';
+                    }
+                }
+            });
+            localStorage.setItem(moocData.moduleInfo.title.replace(/\s+/g, '_') + '_progress', JSON.stringify(state));
+        }
+
+        function loadState() {
+            const savedState = localStorage.getItem(moocData.moduleInfo.title.replace(/\s+/g, '_') + '_progress');
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                moduleStarted = state.moduleStarted || false;
+                startTime = state.startTime || null;
+                currentScore = state.currentScore || 0;
+                readSections = new Set(state.readSections || []);
+
+                // Cargar estado de actividades
+                if (state.activitiesAttempted) {
+                    Object.keys(state.activitiesAttempted).forEach(actKey => {
+                         if (actKey.endsWith('_awarded')) return; // Saltar las claves _awarded aquí
+
+                        const activityId = actKey + 'Activity';
+                        const activityEl = document.getElementById(activityId) || document.getElementById('activity' + actKey.charAt(0).toUpperCase() + actKey.slice(1));
+                        if (activityEl) {
+                            activityEl.dataset.attempted = state.activitiesAttempted[actKey] ? 'true' : 'false';
+                            activityEl.dataset.lastScore = (state.activitiesLastScore && state.activitiesLastScore[actKey] !== undefined) ? state.activitiesLastScore[actKey] : "0";
+                            
+                            if (state.activitiesAttempted[actKey]) {
+                                // Si estaba intentada, se deben deshabilitar botones de envío y habilitar reinicio
+                                const submitBtnId = `submit${actKey.charAt(0).toUpperCase() + actKey.slice(1)}Btn`;
+                                const resetBtnId = `reset${actKey.charAt(0).toUpperCase() + actKey.slice(1)}Btn`;
+                                if(document.getElementById(submitBtnId)) document.getElementById(submitBtnId).disabled = true;
+                                if(document.getElementById(resetBtnId)) document.getElementById(resetBtnId).disabled = false;
+
+                                // Para prompts, manejar el botón de autoevaluar y si fue 'awarded'
+                                if (actKey === 'exercise' || actKey === 'problemSolving') {
+                                    const awardBtnId = `award${actKey.charAt(0).toUpperCase() + actKey.slice(1)}PointsBtn`;
+                                    if (state.activitiesAttempted[actKey + '_awarded']) {
+                                        activityEl.dataset.awarded = 'true';
+                                        if(document.getElementById(awardBtnId)) document.getElementById(awardBtnId).disabled = true;
+                                    } else {
+                                        activityEl.dataset.awarded = 'false';
+                                         // Si fue intentado pero no premiado, el botón de premiar debería estar habilitado si cumple criterios
+                                         // Esta lógica es compleja de restaurar sin re-validar el prompt, por ahora lo dejamos así o se habilita.
+                                         // Por simplicidad, si se recarga, el botón de premiar podría estar deshabilitado hasta nuevo envío.
+                                         // O, si ya envió y cumplió, habilitarlo:
+                                         const textarea = document.getElementById(`${actKey}Prompt`);
+                                         if(textarea && textarea.value.length >= moocData.activities[actKey].minLength) { // Chequeo simple
+                                            if(document.getElementById(awardBtnId) && !state.activitiesAttempted[actKey + '_awarded']) {
+                                                document.getElementById(awardBtnId).disabled = false;
+                                            }
+                                         } else {
+                                            if(document.getElementById(awardBtnId)) document.getElementById(awardBtnId).disabled = true;
+                                         }
+                                    }
+                                     if(document.getElementById(`${actKey}Prompt`)) document.getElementById(`${actKey}Prompt`).disabled = true; // El textarea siempre deshabilitado si ya se envió
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+        
+        function resetModuleState() {
+            localStorage.removeItem(moocData.moduleInfo.title.replace(/\s+/g, '_') + '_progress');
+            currentScore = 0;
+            moduleStarted = false;
+            startTime = null;
+            readSections.clear();
+
+            // Resetear estado visual y de datos de todas las actividades
+            Object.keys(moocData.activities).forEach(activityKey => {
+                const activityId = activityKey + 'Activity';
+                const activityElement = document.getElementById(activityId) || document.getElementById('activity' + activityKey.charAt(0).toUpperCase() + activityKey.slice(1));
+                if (activityElement) {
+                    activityElement.dataset.attempted = 'false';
+                    activityElement.dataset.lastScore = '0';
+                    if (activityKey === 'exercise' || activityKey === 'problemSolving') {
+                        activityElement.dataset.awarded = 'false';
+                    }
+                    // Llamar a la función enableActivity correspondiente para resetear su UI
+                    const submitBtnId = `submit${activityKey.charAt(0).toUpperCase() + activityKey.slice(1)}Btn`;
+                    const resetBtnId = `reset${activityKey.charAt(0).toUpperCase() + activityKey.slice(1)}Btn`;
+                    let awardBtnId = null;
+                    if (activityKey === 'exercise' || activityKey === 'problemSolving') {
+                         awardBtnId = `award${activityKey.charAt(0).toUpperCase() + activityKey.slice(1)}PointsBtn`;
+                    }
+                    enableActivity(activityKey, submitBtnId, resetBtnId, awardBtnId);
+                }
+            });
+            
+            // Resetear botones de "Marcar como leído"
+            document.querySelectorAll('.mark-as-read-btn.completed').forEach(btn => {
+                btn.classList.remove('completed');
+                btn.textContent = 'Marcar como leído';
+                btn.disabled = false;
+            });
+
+            // Ocultar sección de resultados finales
+            finalResultsSection.style.display = 'none';
+            
+            // Volver a la portada
+            moduleContainer.style.display = 'none';
+            moduleContainer.classList.remove('fade-in');
+            coverPage.style.display = 'block';
+            coverPage.classList.add('fade-in');
+            if(document.getElementById('startModuleBtnCover')) document.getElementById('startModuleBtnCover').disabled = false;
+            
+            updateScoreDisplay();
+            updateProgressBar();
+            updateNavigationMenu();
+            updateCompletionProgress();
+            scrollToTop();
+        }
+
+    </script>
+</body>
+</html>
