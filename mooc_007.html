@@ -1,435 +1,876 @@
-<!DOCTYPE html>
-<!-- 
-  MOOC: Dominando los Prompts - Versión Final con Diagnóstico JS
-  ---------------------------------------------------------------------
-  Esta versión incluye console.logs en el DOMContentLoaded para ayudar a
-  diagnosticar por qué la página podría mostrarse en blanco.
-
-  Facilitador: Lic. Luis Alfredo Andia Valverde
-  Institución: Universidad Salesiana de Bolivia
-  Versión del Código: 3.1 
-  Última Modificación: [Fecha Actual]
--->
-<html lang="es-BO" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Dominando los Prompts: IA para Docentes en Santa Cruz | USB</title>
-    <!-- ... (Resto de las metaetiquetas, links a fuentes y CSS, JSON-LD idénticos a la versión anterior 'mooc_ultra_final_con_doctype_y_js_completo.html') ... -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-
-    <style>
-        /* --- ESTILOS CSS CONSOLIDADOS (Idénticos a 'mooc_ultra_final_con_doctype_y_js_completo.html') --- */
-        /* ... (Todos los estilos :root, body, coverPage, module-header, sidebar-nav, video-container, etc., como en la versión anterior) ... */
-         :root { /* ... (Definición de variables CSS idéntica a la anterior) ... */ 
-            --color-primary-purple: #4A0072;
-            --color-primary-purple-light: #6A0DAD;
-            --color-accent-yellow: #FFB300; 
-            --color-accent-yellow-light: #FFCA28;
-            --color-text-dark: #212529;
-            --color-text-light: #FFFFFF;
-            --color-text-medium: #495057;
-            --color-background-light: #f8f9fa;
-            --color-background-module: #FFFFFF;
-            --color-success: #198754;
-            --color-warning-bg: #fff3cd; 
-            --color-warning-text: #664d03; 
-            --color-warning-border: #ffeeba; 
-            --color-danger-bg: #f8d7da;
-            --color-danger-text: #58151c;
-            --color-danger-border: #f5c2c7;
-            --color-info-bg: #cff4fc;
-            --color-info-text: #055160;
-            --color-info-border: #b6effb;
-            --color-indigo-accent: #6366F1; 
-            --color-indigo-dark: #4f46e5;
-
-            --font-primary: 'Inter', sans-serif;
-            --font-headings: 'Playfair Display', serif;
+<!-- REEMPLAZAR con tu favicon -->  <!-- REEMPLAZAR con tu favicon -->  <!-- REEMPLAZAR con tu favicon -->  <!-- REEMPLAZAR con tu manifest -->  
+<style>/* --- ESTILOS CSS CONSOLIDADOS --- */
+        :root {
+            --color-primary-purple: #4A0072; --color-primary-purple-light: #6A0DAD;
+            --color-accent-yellow: #FFB300; --color-accent-yellow-light: #FFCA28;
+            --color-text-dark: #212529; --color-text-light: #FFFFFF; --color-text-medium: #495057;
+            --color-background-light: #f8f9fa; --color-background-module: #FFFFFF; --color-body-bg: #eef0f2;
+            --color-success: #198754; --color-success-bg: #d1e7dd; --color-success-text: #0f5132; --color-success-border: #a3cfbb;
+            --color-warning-bg: #fff3cd; --color-warning-text: #664d03; --color-warning-border: #ffeeba;
+            --color-danger-bg: #f8d7da; --color-danger-text: #58151c; --color-danger-border: #f5c2c7;
+            --color-info-bg: #cff4fc; --color-info-text: #055160; --color-info-border: #b6effb;
+            --color-indigo-accent: #6366F1; --color-indigo-dark: #4f46e5;
+            --font-primary: 'Inter', sans-serif; --font-headings: 'Playfair Display', serif;
             --focus-ring-color: #0056b3;
         }
-        *:focus-visible {
-            outline: 3px solid var(--focus-ring-color) !important;
-            outline-offset: 2px;
-            box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.2);
-        }
-        body { font-family: var(--font-primary); line-height: 1.75; background-color: #eef0f2; color: var(--color-text-dark); margin:0; padding:0; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
-
-        /* PORTADA */
+        *:focus-visible { outline: 3px solid var(--focus-ring-color) !important; outline-offset: 2px; box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.2); }
+        body { font-family: var(--font-primary); line-height: 1.75; background-color: var(--color-body-bg); color: var(--color-text-dark); margin:0; padding:0; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
         #coverPage { background: linear-gradient(135deg, #1D2B64 0%, #3A1C71 50%, #24243E 100%); color: var(--color-text-light); overflow: hidden; background-size: 250% 250%; animation: coverGradientBG 30s ease infinite alternate; }
         @keyframes coverGradientBG { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
-        #initiateModuleBtn { background-color: var(--color-accent-yellow); color: var(--color-text-dark); font-weight: 700; box-shadow: 0 5px 18px rgba(0,0,0, 0.2);}
-        #initiateModuleBtn:hover { background-color: var(--color-accent-yellow-light); box-shadow: 0 7px 22px rgba(0,0,0, 0.25);}
-        #coverPage .bg-white\/5 { background-color: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); }
+        .cover-background-shapes .shape { position: absolute; border-radius: 50%; opacity: 0.06; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 65%); animation: floatShapes 25s infinite ease-in-out alternate; pointer-events: none;}
+        .cover-background-shapes .shape1 { width: 400px; height: 400px; top: -10%; left: -5%; animation-duration: 22s; } .cover-background-shapes .shape2 { width: 300px; height: 300px; top: 60%; left: 10%; animation-duration: 28s; animation-delay: 2.5s; } .cover-background-shapes .shape3 { width: 500px; height: 500px; top: 5%; right: -8%; animation-duration: 30s; animation-delay: 1.5s;} .cover-background-shapes .shape4 { width: 220px; height: 220px; bottom: -5%; right: 20%; animation-duration: 20s; animation-delay: 3.5s;}
+        @keyframes floatShapes { 0% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(0.95); } 50% { transform: translateY(-30px) translateX(20px) rotate(190deg) scale(1.05); } 100% { transform: translateY(0px) translateX(0px) rotate(360deg) scale(0.95); } }
+        #coverPage h1 { font-family: var(--font-headings); text-shadow: 2px 3px 6px rgba(0,0,0,0.4); } #coverPage .bg-white\/5 { background-color: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); }
         #studentInfoForm input[type="text"] { background-color: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.4); caret-color: var(--color-accent-yellow-light); }
-        #studentInfoForm input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.7); }
-
-
-        /* ESTRUCTURA DEL MODULO */
+        #studentInfoForm input[type="text"]::placeholder { color: rgba(255, 255, 255, 0.7); } #initiateModuleBtn { background-color: var(--color-accent-yellow); color: var(--color-text-dark); font-weight: 700; box-shadow: 0 5px 18px rgba(0,0,0, 0.2); }
+        #initiateModuleBtn:hover { background-color: var(--color-accent-yellow-light); box-shadow: 0 7px 22px rgba(0,0,0, 0.25); }
         .app-container { display: flex; flex-direction: column; min-height: 100vh; background-color: var(--color-background-module); max-width: 1200px; margin: 0 auto; box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08); }
-        .module-container { display: none; flex-grow: 1;} /* moduleContainer inicialmente oculto */
-
-
-        /* CABECERA DEL MODULO CON VIDEO */
-        .module-header { /* ... estilos como en la version anterior ... */ }
-        
-        /* BARRA DE PROGRESO */
-        .progress-bar-container { /* ... */ }
-        .progress-bar { /* ... */ }
-
-        /* NAVEGACIÓN LATERAL (SIDEBAR) */
-        .sidebar-nav { /* ... (con !important para el background-color si es necesario anular Tailwind) ... */ }
-        /* ... (todos los estilos del sidebar) ... */
-        
-        /* VIDEO EMBED (CORREGIDO Y FINAL) */
-        .video-container { background-color: #222; /* ... */ }
-        .video-thumbnail-overlay img { z-index: 1; }
-        .video-thumbnail-overlay::before { z-index: 2; background-color: rgba(25, 15, 45, 0.65); }
-        .video-play-button { z-index: 3; background-color: rgba(255, 255, 255, 0.25); backdrop-filter: blur(5px); }
-        .video-thumbnail-overlay:hover .video-play-button { transform: scale(1.1); background-color: rgba(255, 255, 255, 0.35); }
-        .video-thumbnail-overlay:hover::before { background-color: rgba(25, 15, 45, 0.8); }
-        .video-thumbnail-overlay:hover img { transform: scale(1.03); }
-
-
-        /* CONTENIDO PRINCIPAL, SECCIONES, ACTIVIDADES */
-        /* ... (Todos los estilos de secciones, botones, inputs, feedback como en la versión anterior ) ... */
-        .module-section, .interactive-activity { border-left: 8px solid var(--color-indigo-accent); }
-        .activity-instruction strong.highlight { background-color: var(--color-accent-yellow-light); color: var(--color-text-dark); }
-        .attempts-feedback { background-color: var(--color-info-bg); border: 1px solid var(--color-info-border); color: var(--color-info-text); }
-        
-        .quiz-option.selected { background-color: var(--color-info-bg) !important; border-color: var(--color-info-border) !important; color: var(--color-info-text) !important; font-weight: 600; }
-        .quiz-option.correct { background-color: #d1e7dd !important; border-color: var(--color-success) !important; color: #0f5132 !important;}
+        .module-container { display: none; flex-grow: 1;}
+        .module-header { background: linear-gradient(135deg, var(--color-primary-purple), var(--color-primary-purple-light)); color: var(--color-text-light); padding: 30px 35px; border-radius: 0 0 15px 15px; text-align: center; position: relative; overflow: hidden; }
+        .module-header::before { content: ''; position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 55%); animation: rotateHeaderEffect 35s linear infinite; z-index: 0;}
+        @keyframes rotateHeaderEffect { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .module-header h1, .module-header p { position: relative; z-index: 1; } .module-header h1 { font-family: var(--font-headings); color: var(--color-text-light); font-size: 2.5rem; }
+        .module-header h1 .student-name-placeholder { color: var(--color-accent-yellow-light); } .module-header p { color: var(--color-text-light); font-weight: 400; opacity: 0.9; line-height: 1.65; }
+        .progress-bar-container { width: 100%; background-color: #e9ecef; height: 12px; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #dee2e6;}
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--color-accent-yellow-light), var(--color-accent-yellow)); transition: width 0.3s ease-out; border-radius: 0 6px 6px 0;}
+        .sidebar-nav { width: 300px; background-color: var(--color-background-light) !important; box-shadow: 4px 0 12px rgba(0,0,0,0.06); border-right: 1px solid #ced4da; padding: 25px; position: sticky; top: 12px; height: calc(100vh - 12px); overflow-y: auto;}
+        .sidebar-nav h3 { font-family: var(--font-headings); color: var(--color-primary-purple); font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #dee2e6;}
+        .sidebar-nav ul { list-style: none; padding: 0; margin: 0; } .sidebar-nav ul li a { display: block; color: var(--color-text-medium); font-size: 1rem; border-radius: 8px; padding: 13px 20px; text-decoration: none; margin-bottom: 4px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;}
+        .sidebar-nav ul li a:hover { background-color: #e0e7ff; color: var(--color-primary-purple); transform: translateX(2px); }
+        .sidebar-nav ul li a.active { background-color: var(--color-primary-purple); color: var(--color-text-light); border-left: 5px solid var(--color-accent-yellow); font-weight: 600;}
+        .sidebar-nav .facilitator-info { margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6; font-size: 0.875rem; color: var(--color-text-medium); }
+        .sidebar-nav .facilitator-info p span { color: var(--color-primary-purple); font-weight: 600; }
+        .main-content { flex-grow: 1; padding: 30px 40px; background-color: var(--color-background-module); }
+        .module-section, .interactive-activity { background-color: var(--color-background-module); padding: 35px; margin-bottom: 40px; border-radius: 16px; box-shadow: 0 6px 25px rgba(0,0,0,0.07); border-left: 8px solid var(--color-indigo-accent); opacity: 0; transform: translateY(25px); transition: opacity 0.65s ease-out, transform 0.65s ease-out;}
+        .module-section.is-visible, .interactive-activity.is-visible { opacity: 1; transform: translateY(0); }
+        .module-section h2, .interactive-activity h2 { font-family: var(--font-headings); color: var(--color-primary-purple); font-size: 2.4rem; margin-bottom: 25px; border-bottom: 3px solid #eef2ff; padding-bottom: 15px; font-weight: 700;}
+        .module-section h3 { font-family: var(--font-headings); color: var(--color-indigo-dark); font-size: 1.9rem; margin-top: 30px; margin-bottom: 18px; font-weight: 700;}
+        .module-section p, .interactive-activity p.activity-instruction, .interactive-activity .quiz-question p, .interactive-activity .true-false-question p, .interactive-activity .matching-concept { font-size: 1.1rem; color: var(--color-text-dark); margin-bottom: 18px; line-height: 1.8;}
+        .module-image { max-width: 100%; height: auto; border-radius: 12px; margin: 25px 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .code-block { background-color: #282c34; color: #abb2bf; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; font-family: 'Fira Code', 'Consolas', 'Monaco', monospace; font-size: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.25); border-left: 5px solid var(--color-accent-yellow);}
+        .code-block pre { margin: 0; padding: 0; white-space: pre-wrap; word-wrap: break-word; }
+        .reflection-box { background-color: #e6f0ff; border-left: 5px solid var(--color-indigo-dark); padding: 28px; border-radius: 10px; margin: 30px 0; box-shadow: 0 3px 12px rgba(79,70,229,0.1);}
+        .reflection-box p { color: var(--color-text-dark); font-style: italic; margin: 0; font-size: 1.05rem; } .reflection-box p strong { color: var(--color-primary-purple); font-weight: 600;} .reflection-box .emoji-thought { font-size: 1.5rem; margin-right: 10px; }
+        .mark-as-read-btn, .download-certificate-btn, .submit-btn, .reset-button { padding: 12px 25px; border-radius: 30px; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; font-weight: 600; margin-top: 20px; border: none; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.9rem;}
+        .mark-as-read-btn { background-color: var(--color-accent-yellow); color: var(--color-text-dark); box-shadow: 0 3px 8px rgba(255,179,0,0.3);}
+        .mark-as-read-btn:hover { background-color: var(--color-accent-yellow-light); transform: translateY(-2px); box-shadow: 0 5px 12px rgba(255,179,0,0.4);}
+        .mark-as-read-btn.completed { background-color: var(--color-success); color: var(--color-text-light); cursor: default; box-shadow: 0 3px 8px rgba(25,135,84,0.3);}
+        .mark-as-read-btn.completed:hover { background-color: var(--color-success); transform: none; }
+        .download-certificate-btn { background-color: var(--color-success); color: var(--color-text-light); display: none; box-shadow: 0 3px 8px rgba(25,135,84,0.3);}
+        .download-certificate-btn:hover { background-color: #157347 !important; transform: translateY(-2px); box-shadow: 0 5px 12px rgba(25,135,84,0.4);}
+        .submit-btn { background-color: var(--color-primary-purple); color: var(--color-text-light); box-shadow: 0 3px 8px rgba(74,0,114,0.3);}
+        .submit-btn:hover { background-color: var(--color-primary-purple-light); transform: translateY(-2px); box-shadow: 0 5px 12px rgba(74,0,114,0.4);}
+        .reset-button { background-color: var(--color-text-medium); color: var(--color-text-light); padding: 10px 20px; margin-left: 15px; font-weight: 500; text-transform: none; box-shadow: 0 2px 6px rgba(108,117,125,0.2);}
+        .reset-button:hover { background-color: #5a6268; transform: translateY(-1px); box-shadow: 0 3px 8px rgba(108,117,125,0.25);}
+        .submit-btn:disabled, .reset-button:disabled { background-color: #ced4da !important; color: #6c757d !important; cursor: not-allowed !important; transform: none !important; box-shadow: none !important; opacity: 0.7 !important;}
+        .interactive-activity { border-left-color: var(--color-accent-yellow); background-color: #fdfdff; } .interactive-activity h2 { color: var(--color-indigo-dark); }
+        .activity-instruction { font-size: 1.15rem; margin-bottom: 25px; color: var(--color-text-medium); font-weight: 400;}
+        .activity-instruction strong.highlight { background-color: var(--color-accent-yellow-light); color: var(--color-text-dark); padding: 3px 8px; border-radius: 6px;}
+        .attempts-feedback { font-size: 0.9rem; margin-top: 12px; font-weight: 500; padding: 10px 15px; border-radius: 6px; display: inline-block; background-color: var(--color-info-bg); border: 1px solid var(--color-info-border); color: var(--color-info-text);}
+        .quiz-option-input { /* Ocultar radio button real */ }
+        .quiz-option { display: block; background-color: #f8f9fa; border: 2px solid #e9ecef; padding: 15px 18px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; font-size: 1.0rem;}
+        .quiz-option:hover { background-color: #eef2ff; border-color: #c7d2fe; transform: scale(1.015); box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
+        .quiz-option.selected { background-color: var(--color-info-bg) !important; border-color: var(--color-info-border) !important; color: var(--color-info-text) !important; font-weight: 600;}
+        .quiz-option.correct { background-color: var(--color-success-bg) !important; border-color: var(--color-success) !important; color: var(--color-success-text) !important; font-weight: 600;}
         .quiz-option.incorrect { background-color: var(--color-danger-bg) !important; border-color: var(--color-danger-border) !important; color: var(--color-danger-text) !important;}
-
-        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .quiz-feedback, .true-false-feedback { margin-top: 12px; padding: 12px 15px; border-radius: 6px; font-weight: 500; font-size: 0.95rem; }
+        .quiz-feedback.correct, .true-false-feedback.correct { background-color: var(--color-success-bg); color: var(--color-success-text); border-left: 5px solid var(--color-success);}
+        .quiz-feedback.incorrect, .true-false-feedback.incorrect { background-color: var(--color-danger-bg); color: var(--color-danger-text); border-left: 5px solid var(--color-danger-border);}
+        .prompt-textarea { width: 100%; min-height: 140px; border: 2px solid #ced4da; border-radius: 12px; padding: 18px; font-size: 1.1rem; margin: 15px 0 20px 0; box-sizing: border-box; transition: border-color 0.2s ease, box-shadow 0.2s ease; background-color: #fdfdff; line-height: 1.7;}
+        .prompt-textarea:focus { outline: none; border-color: var(--color-indigo-dark); box-shadow: 0 0 0 0.25rem rgba(79,70,229,.25);}
+        .response-feedback { margin-top: 18px; padding: 18px; border-radius: 10px; font-size: 1.0rem; line-height: 1.7; }
+        .response-feedback.text-green-700 { background-color: var(--color-success-bg); border:1px solid var(--color-success-border); color: var(--color-success-text); }
+        .response-feedback.text-yellow-700 { background-color: var(--color-warning-bg); border:1px solid var(--color-warning-border); color: var(--color-warning-text); }
+        .response-feedback.text-red-700 { background-color: var(--color-danger-bg); border:1px solid var(--color-danger-border); color: var(--color-danger-text); }
+        .matching-pair { display: flex; align-items: center; margin-bottom: 18px; background-color: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0;}
+        .matching-concept { flex-basis: 40%; font-weight: 600; color: var(--color-primary-purple); padding-right: 15px; }
+        .matching-options { flex-basis: 60%; display: flex; gap: 12px; flex-wrap: wrap; }
+        .matching-option-label { display: flex; align-items: center; cursor: pointer; background-color: #eef2ff; padding: 10px 15px; border-radius: 25px; transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; font-size: 0.95rem; color: var(--color-indigo-dark); }
+        .matching-option-label:hover { background-color: #e0e7ff; transform: scale(1.03); box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
+        .matching-option-label input[type="radio"] { margin-right: 10px; accent-color: var(--color-primary-purple); }
+        .matching-option-label.selected { background-color: var(--color-info-bg) !important; border: 1px solid var(--color-info-border) !important; color: var(--color-info-text) !important; font-weight: 500;}
+        .matching-option-label.correct { background-color: var(--color-success-bg) !important; border: 1px solid var(--color-success-border) !important; color: var(--color-success-text) !important;}
+        .matching-option-label.incorrect { background-color: var(--color-danger-bg) !important; border: 1px solid var(--color-danger-border) !important; color: var(--color-danger-text) !important;}
+        .true-false-question { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 18px; margin-bottom: 18px; border-radius: 10px;}
+        .true-false-question p { font-weight: 600; margin-bottom: 12px; color: var(--color-primary-purple); font-size: 1.1rem;}
+        .true-false-options input[type="radio"] { margin-right: 8px; accent-color: var(--color-primary-purple); transform: scale(1.1);}
+        .true-false-options label { margin-right: 20px; cursor: pointer; font-size: 1.0rem; color: var(--color-text-dark);}
+        .icon-list-item { display: flex; align-items: flex-start; margin-bottom: 25px; padding: 20px; background-color: #f8fafc; border-radius: 10px; border-left: 5px solid var(--color-indigo-accent); box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+        .icon-list-icon { font-size: 2.8rem; color: var(--color-primary-purple); margin-right: 20px; flex-shrink: 0; line-height: 1; }
+        .icon-idea::before { content: '💡'; } .icon-quiz::before { content: '❓'; } .icon-strategy::before { content: '🎯'; } .icon-feedback::before { content: '💬'; } .icon-efficiency::before { content: '⚡'; } .icon-book::before { content: '📚'; } .icon-tools::before { content: '🛠️'; } .icon-warning::before { content: '⚠️'; } .icon-lightbulb::before { content: '💡'; } .icon-brainstorm::before { content: '🧠'; } .icon-gears::before { content: '⚙️'; } .icon-target::before { content: '🎯'; } .icon-challenge::before { content: '🏆'; } .icon-pencil::before { content: '✏️'; }
+        .icon-list-content h4 { font-family: var(--font-headings); font-size: 1.35rem; color: var(--color-primary-purple); margin-bottom: 8px; font-weight: 700;}
+        .icon-list-content p { font-size: 1.0rem; color: var(--color-text-medium); margin-bottom: 8px; line-height: 1.6;} .icon-list-content p strong { color: var(--color-indigo-accent); font-weight: 600;}
+        .summary-section, .conclusion-section { background: linear-gradient(135deg, #f0f3ff, #e6e9ff); padding: 35px 40px; border-radius: 15px; box-shadow: 0 5px 25px rgba(99,102,241,0.1); margin-top: 45px; text-align: center; border-top: 6px solid var(--color-indigo-accent);}
+        .summary-section h2, .conclusion-section h2 { font-family: var(--font-headings); color: var(--color-primary-purple); font-size: 2.6rem; margin-bottom: 25px; font-weight: 700;}
+        .summary-section ul { list-style: none; padding: 0; margin-bottom: 25px; text-align: left; max-width: 650px; margin-left: auto; margin-right: auto;}
+        .summary-section ul li { font-size: 1.15rem; margin-bottom: 12px; color: var(--color-text-dark); position: relative; padding-left: 35px;}
+        .summary-section ul li::before { content: '✔'; position: absolute; left: 0; top: 2px; color: var(--color-success); font-size: 1.5rem; font-weight: bold;}
+        .summary-section .closing-remark, .conclusion-section .message { font-size: 1.3rem; font-style: italic; color: var(--color-text-medium); margin-bottom: 30px;}
+        .conclusion-section .call-to-action { font-size: 1.5rem; font-weight: 700; color: var(--color-indigo-accent); margin-top: 35px;}
+        .bibliography-section { background-color: #fffcf5; padding: 30px; border-radius: 12px; margin-top: 35px; box-shadow: 0 3px 18px rgba(255,193,7,0.1); border-left: 6px solid var(--color-accent-yellow);}
+        .bibliography-section h2 { font-family: var(--font-headings); color: #795548; font-size: 2.2rem; margin-bottom: 25px; border-bottom: 2px solid #ffe0b2; padding-bottom: 15px; font-weight: 700;}
+        .bibliography-section ul { list-style: none; padding: 0; } .bibliography-section ul li { margin-bottom: 12px; font-size: 1.0rem;}
+        .bibliography-section ul li a { color: #0d6efd; text-decoration: none; transition: color 0.2s ease, border-bottom-color 0.2s ease; border-bottom: 1px dashed rgba(13,110,253,0.5); font-weight: 500;}
+        .bibliography-section ul li a:hover { text-decoration: none; color: #0a58ca; border-bottom-color: #0a58ca;}
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; background-color: var(--color-primary-purple); color: var(--color-text-light); width: 55px; height: 55px; border-radius: 50%; font-size: 2rem; text-decoration: none; box-shadow: 0 6px 18px rgba(75,0,130,0.35); z-index: 1000; display: none; transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; align-items: center; justify-content: center;}
+        .back-to-top:hover { background-color: var(--color-primary-purple-light); transform: translateY(-4px) scale(1.08); box-shadow: 0 7px 18px rgba(75,0,130,0.4);}
+        .modal { display: none; position: fixed; z-index: 2000; /* Alto z-index para modales */ left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(10, 20, 40, 0.8); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.35s ease-in-out;}
+        .modal.show { display: flex; opacity: 1;}
+        .modal-content { background-color: #fff; margin: auto; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); max-width: 550px; width: 90%; text-align: center; transform: translateY(-40px) scale(0.9); opacity: 0; transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-in-out;}
+        .modal.show .modal-content { transform: translateY(0) scale(1); opacity: 1;}
+        .modal-content h3 { font-family: var(--font-headings); color: var(--color-primary-purple); font-size: 2.2rem; margin-bottom: 18px; font-weight: 700;}
+        .modal-content p { font-size: 1.2rem; color: var(--color-text-dark); margin-bottom: 30px; line-height: 1.7;}
+        .modal-content button { background-color: var(--color-indigo-accent); color: var(--color-text-light); padding: 14px 35px; border: none; border-radius: 30px; cursor: pointer; font-size: 1.1rem; transition: background-color 0.2s ease, transform 0.2s ease; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;}
+        .modal-content button:hover { background-color: var(--color-indigo-dark); transform: scale(1.05);}
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;}
         .text-balance { text-wrap: balance; }
-    </style>
-</head>
-<body>
-
-    <!-- Cover Page HTML (Idéntico a versiones anteriores) -->
-    <div id="coverPage" class="relative text-white overflow-hidden">
-        <div class="cover-background-shapes">
-            <div class="shape shape1"></div><div class="shape shape2"></div>
-            <div class="shape shape3"></div><div class="shape shape4"></div>
-        </div>
-        <div class="cover-content relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
-            <div class="text-center mb-10">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-tight mb-4 tracking-tight text-balance" style="font-family: 'Playfair Display', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                    Dominando los Prompts
-                </h1>
-                <p class="text-xl sm:text-2xl md:text-3xl font-light mb-8 opacity-90 text-shadow-sm text-balance">
-                    IA para una Educación Secundaria Creativa en <span class="font-semibold text-yellow-300">Santa Cruz de la Sierra</span>
-                </p>
-                <p class="text-md sm:text-lg max-w-xl mx-auto opacity-85 mb-12 leading-relaxed text-balance">
-                    ¡Hola, colega profe! Prepárate para potenciar tu ingenio y el de tus estudiantes. Este curso te dará las claves para convertirte en un "maestro pronteador" con IA.
-                </p>
-            </div>
-            <div class="bg-white/5 backdrop-blur-lg p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-md transform hover:scale-102 transition-transform duration-300">
-                <h2 id="formHeading" class="text-2xl font-semibold mb-6 text-center text-yellow-300 text-balance">¡Bienvenido/a! Ingresa tus datos para comenzar esta aventura:</h2>
-                <form id="studentInfoForm" class="space-y-5" aria-labelledby="formHeading">
-                    <div>
-                        <label for="studentFirstName" class="block text-sm font-medium mb-1.5 opacity-80">Nombres:</label>
-                        <input type="text" id="studentFirstName" name="studentFirstName" required autocomplete="given-name"
-                               class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition placeholder-gray-300 text-white text-lg"
-                               placeholder="Ej: Ana Sofía">
-                    </div>
-                    <div>
-                        <label for="studentLastName" class="block text-sm font-medium mb-1.5 opacity-80">Apellidos:</label>
-                        <input type="text" id="studentLastName" name="studentLastName" required autocomplete="family-name"
-                               class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition placeholder-gray-300 text-white text-lg"
-                               placeholder="Ej: Pérez López">
-                    </div>
-                    <div>
-                        <label for="studentClassCourse" class="block text-sm font-medium mb-1.5 opacity-80">Unidad Educativa / Curso que dictas:</label>
-                        <input type="text" id="studentClassCourse" name="studentClassCourse" required autocomplete="organization-title"
-                               class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition placeholder-gray-300 text-white text-lg"
-                               placeholder="Ej: UE Don Bosco / 5to Secundaria - Lenguaje">
-                    </div>
-                    <button type="button" id="initiateModuleBtn"
-                            class="w-full font-bold py-3.5 px-6 rounded-lg shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition duration-300 ease-in-out mt-8 text-lg">
-                        ¡Ingresar al Módulo!
-                    </button>
-                </form>
-            </div>
-             <p class="mt-12 text-xs opacity-60">© 2025 Plataforma Educativa Innovadora - Universidad Salesiana de Bolivia</p>
-        </div>
+        @media (max-width: 768px) {
+            /* ... (Reglas @media responsivas como en versiones anteriores) ... */
+            #coverPage h1 { font-size: 2.8rem; } .main-content { padding: 20px; }
+            .module-section h2, .interactive-activity h2 { font-size: 1.9rem; }
+        }
+        /* Clases para los colores de feedback en el modal */
+        .modal.success .modal-content h3 { color: var(--color-success); }
+        .modal.warning .modal-content h3 { color: var(--color-warning-text); } /* Usar un color oscuro para el título si el fondo es claro */
+        .modal.error .modal-content h3 { color: var(--color-danger-text); }
+        .modal.info .modal-content h3 { color: var(--color-info-text); }</style>
+<!-- Cover Page HTML -->
+<div id="coverPage" class="relative text-white overflow-hidden">
+  <div class="cover-background-shapes">
+    <div class="shape shape1">&nbsp;</div>
+    <div class="shape shape2">&nbsp;</div>
+    <div class="shape shape3">&nbsp;</div>
+    <div class="shape shape4">&nbsp;</div>
+  </div>
+  <div class="cover-content relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
+    <div class="text-center mb-10">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-tight mb-4 tracking-tight text-balance" style="font-family: 'Playfair Display', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Dominando los Prompts</h1>
+      <p class="text-xl sm:text-2xl md:text-3xl font-light mb-8 opacity-90 text-shadow-sm text-balance">IA para una Educación Secundaria Creativa en 
+        <span class="font-semibold text-yellow-300">Santa Cruz de la Sierra</span>
+      </p>
+      <p class="text-md sm:text-lg max-w-xl mx-auto opacity-85 mb-12 leading-relaxed text-balance">¡Hola, colega profe! Prepárate para potenciar tu ingenio y el de tus estudiantes. Este curso te dará las claves para convertirte en un "maestro pronteador" con IA.</p>
     </div>
-
-    <!-- Main Module Container HTML (Idéntico, aquí va TODO el contenido del curso) -->
-    <div id="moduleContainer" class="module-container" style="display: none;"> <!-- Inicia oculto, JS lo maneja -->
-        <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-labelledby="globalScoreLabel">
-            <div class="progress-bar" id="progressBar"></div>
+    <div class="bg-white/5 backdrop-blur-lg p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-md transform hover:scale-102 transition-transform duration-300">
+      <h2 id="formHeadingCover" class="text-2xl font-semibold mb-6 text-center text-yellow-300 text-balance">¡Bienvenido/a! Ingresa tus datos para comenzar esta aventura:</h2>
+      <form id="studentInfoForm" class="space-y-5" aria-labelledby="formHeadingCover">
+        <div>
+          <label class="block text-sm font-medium mb-1.5 opacity-80" for="studentFirstName">Nombres:</label> 
+          <input id="studentFirstName" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition placeholder-gray-300 text-white text-lg" autocomplete="given-name" name="studentFirstName" required="" type="text" placeholder="Ej: Ana Sofía">
         </div>
-        <span id="globalScoreLabel" class="visually-hidden">Progreso general del curso</span>
-
-        <div class="flex flex-col lg:flex-row app-container">
-            <aside class="sidebar-nav hidden lg:block" aria-label="Navegación principal del módulo">
-                <h3>Navegación del Módulo</h3>
-                <ul id="sidebarNavList">
-                    <!-- (Lista de enlaces del sidebar completa) -->
-                    <li><a href="#welcomeSection" class="active">👋 Bienvenida Cruceña</a></li>
-                    <li><a href="#objectivesSection">🎯 Objetivos Clave</a></li>
-                    <li><a href="#section-intro-prompts">💡 ¿Qué es un Prompt?</a></li>
-                    <!-- ... todos los demás items del sidebar ... -->
-                    <li><a href="#bibliographySection">📚 Recursos para Seguir Explorando</a></li>
-                </ul>
-                <div class="facilitator-info">
-                     <p>Facilitador: <span class="font-semibold">Lic. Luis Alfredo Andia Valverde</span></p>
-                    <p>Módulo: <span class="font-semibold">Planificación Educativa con IA</span></p>
-                    <p>Institución: <span class="font-semibold">Universidad Salesiana de Bolivia</span></p>
-                    <p class="mt-4">Tu Progreso: <strong id="globalScore" class="font-bold text-blue-700">0%</strong></p>
-                </div>
-            </aside>
-
-            <main class="main-content flex-grow p-5 lg:p-8" role="main">
-                <header class="module-header rounded-lg mb-8 p-6 text-center shadow-lg">
-                    <h1 class="text-balance">¡Hola, <span class="student-name-placeholder text-yellow-300">Profe</span>! Bienvenido/a a "Dominando los Prompts"</h1>
-                    <p class="text-balance">Aquí empieza tu viaje para convertir la IA en tu mejor aliada en el aula. ¡Vamos a prontear como campeones!</p>
-                    <div class="video-container mt-6">
-                        <div class="video-thumbnail-overlay" data-video-id="REEMPLAZAR_CON_VIDEO_ID_YOUTUBE" data-thumbnail-url="https://img.youtube.com/vi/REEMPLAZAR_CON_VIDEO_ID_YOUTUBE/hqdefault.jpg"> 
-                            <img src="https://img.youtube.com/vi/REEMPLAZAR_CON_VIDEO_ID_YOUTUBE/hqdefault.jpg" alt="Video Thumbnail: Introducción al Diseño de Prompts con IA.">
-                            <div class="video-play-button" aria-label="Reproducir video introductorio"><span aria-hidden="true">▶</span></div>
-                        </div>
-                        <iframe id="youtubeVideo" title="Video Introductorio al Diseño de Prompts con IA" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: none;"></iframe>
-                    </div>
-                </header>
-
-                <!-- AQUI VA EL RESTO DEL CONTENIDO DEL CURSO (TODAS LAS SECCIONES Y ACTIVIDADES) -->
-                <!-- Copia aquí TODO el contenido HTML desde <section id="welcomeSection"... hasta </section> de bibliographySection
-                     de la versión `mooc_ultra_final_con_doctype_y_js_completo.html` o tu versión más completa de contenido.
-                     Esto es fundamental. Sin este contenido, la página seguirá en blanco dentro del #moduleContainer.
-                -->
-                <section id="welcomeSection" class="module-section reveal-on-scroll" data-section-id="welcomeSection" aria-labelledby="welcomeHeading">
-                    <h2 id="welcomeHeading" class="text-balance">👋 ¡Bienvenida a la Revolución del Prompt, <span class="student-name-placeholder text-indigo-600">Estimado/a Colega</span>!</h2>
-                    <p>¡Qué alegría tenerte aquí, <span class="student-name-placeholder"></span>! Desde la vibrante Santa Cruz de la Sierra, te damos la bienvenida a este espacio de aprendizaje donde vamos a desmitificar la Inteligencia Artificial y convertirla en una herramienta poderosa para tu labor docente.</p>
-                    <!-- ... resto del contenido de welcomeSection ... -->
-                    <button class="mark-as-read-btn" data-section-id="welcomeSection" onclick="markSectionAsRead(this)">Marcar como leído</button>
-                </section>
-                <!-- (REPETIR PARA TODAS LAS SECCIONES Y ACTIVIDADES) -->
-
-
-            </main>
+        <div>
+          <label class="block text-sm font-medium mb-1.5 opacity-80" for="studentLastName">Apellidos:</label> 
+          <input id="studentLastName" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition placeholder-gray-300 text-white text-lg" autocomplete="family-name" name="studentLastName" required="" type="text" placeholder="Ej: Pérez López">
         </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5 opacity-80" for="studentClassCourse">Unidad Educativa / Curso que dictas:</label> 
+          <input id="studentClassCourse" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 outline-none transition placeholder-gray-300 text-white text-lg" autocomplete="organization-title" name="studentClassCourse" required="" type="text" placeholder="Ej: UE Don Bosco / 5to Secundaria - Lenguaje">
+        </div>
+        <button id="initiateModuleBtn" class="w-full font-bold py-3.5 px-6 rounded-lg shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition duration-300 ease-in-out mt-8 text-lg" type="button">¡Ingresar al Módulo!</button>
+      </form>
     </div>
-
-    <!-- Botón Volver Arriba y Modal (Idénticos) -->
-    <a href="#" class="back-to-top" id="backToTopBtn" style="display:flex;" aria-label="Volver arriba"><span aria-hidden="true">⬆️</span><span class="visually-hidden">Volver al inicio de la página</span></a>
-    <div id="customModal" class="modal" role="alertdialog" aria-labelledby="modalTitle" aria-describedby="modalMessage" aria-modal="true" style="display: none;"><div class="modal-content"><h3 id="modalTitle" class="text-balance"></h3><p id="modalMessage"></p><button id="modalCloseBtn">¡Entendido!</button></div></div>
-
-    <script>
-    // --- SCRIPT JS COMPLETO CON DIAGNÓSTICO Y ESTRUCTURA FINAL ---
-
-    // --- CONFIGURACIÓN GLOBAL Y CONSTANTES ---
-    const STORAGE_KEY_STUDENT_INFO = 'moocStudentInfo_prompts_SCZ_final_diag_v1'; // Key actualizada
-    const STORAGE_KEY_PROGRESS = 'moocProgress_prompts_SCZ_final_diag_v1';   // Key actualizada
-    const MAX_ATTEMPTS = 2;
-
-    let studentInfo = { firstName: "", lastName: "", classCourse: "" };
-    const completedSections = new Set();
-
-    // --- Datos para Actividades Interactivas (Esqueleto, deben completarse) ---
-    const quizQuestionsData = [
-        { qId: "q1", correctValue: "b", feedbackCorrect: "¡Exacto, [Estudiante]! La claridad y especificidad son la clave.", feedbackIncorrect: "No del todo. La claridad y el contexto son más cruciales." },
-        { qId: "q2", correctValue: "b", feedbackCorrect: "¡Así se hace, [Estudiante]! Esos son los ingredientes.", feedbackIncorrect: "Un buen prompt creativo necesita más. Piensa en rol y contexto." },
-        { qId: "q3", correctValue: "c", feedbackCorrect: "¡Correctísimo, [Estudiante]! Iterar es probar y ajustar.", feedbackIncorrect: "Iterar es un proceso de mejora continua, no solo repetir o copiar." }
-    ];
-    const exerciseKeywords = ["charla", "perseverancia", "desafíos", "estudiantes", "secundaria", "santa cruz", "tono", "anecdota", "motivacional", "resiliencia"];
-    const exerciseMinLength = 70;
-    
-    const problemSolvingKeywords = ["abp", "turismo", "sostenible", "lomas de arena", "preguntas guia", "fases", "productos finales"];
-    const problemSolvingMinLength = 80;
-
-    const promptConstructionParts = ["promptRole", "promptTask", "promptContext", "promptFormatTone"];
-    const promptConstructionMinLengths = [10, 10, 20, 15];
-
-    const yourTurnKeywords = ["feria", "ciencias", "innovación", "tradición", "camba", "stands", "interactivos"];
-    const yourTurnMinLength = 60;
-
-    const matchingPairsData = [ 
-        { questionId: "match1", correctAnswer: "b", concept: "Rol de la IA" }, 
-        { questionId: "match2", correctAnswer: "b", concept: "Formato de Salida Específico" }, 
-        { questionId: "match3", correctAnswer: "c", concept: "Restricción o Límite Importante" } 
-    ];
-    const trueFalseQuestionsData = [
-        { qId: "tf1", correctValue: "false", feedbackCorrect: "¡Falso y bien visto, [Estudiante]! Claridad > longitud.", feedbackIncorrect: "En realidad, es falso. Precisión es mejor que longitud excesiva." },
-        { qId: "tf2", correctValue: "true", feedbackCorrect: "¡Verdadero! El tono es un ingrediente poderoso, [Estudiante].", feedbackIncorrect: "¡Ojo! El tono sí influye mucho en el estilo de la IA." },
-        { qId: "tf3", correctValue: "false", feedbackCorrect: "¡Falso! Las IAs modernas son multimodales, [Estudiante].", feedbackIncorrect: "¡Incorrecto! Las IAs modernas pueden generar imágenes, código, etc." }
-    ];
-
-    // --- FUNCIONES DE UTILIDAD ---
-    function updateStudentNamePlaceholders() { /* ... (Idéntica a la versión anterior) ... */ }
-    function showCustomModal(title, message, type = 'info') { /* ... (Idéntica) ... */ }
-    function closeModal() { /* ... (Idéntica) ... */ }
-
-    // --- INICIALIZACIÓN Y FLUJO PRINCIPAL ---
-    function loadStudentInfo() { /* ... (Idéntica, usando STORAGE_KEY_STUDENT_INFO) ... */ }
-    function initiateModule() { /* ... (Idéntica, usando STORAGE_KEY_STUDENT_INFO y showCustomModal) ... */ }
-    function startModuleVisuals() { /* ... (Idéntica) ... */ }
-    
-    // --- MANEJO DE PROGRESO ---
-    function updateOverallProgress() { /* ... (Idéntica, incluyendo ARIA) ... */ }
-    function markSectionAsRead(button) { /* ... (Idéntica) ... */ }
-    
-    function saveProgress() {
-        const progressData = {
-            completedSections: Array.from(completedSections),
-            activities: {}
-        };
-        document.querySelectorAll('.interactive-activity').forEach(actEl => {
-            const activityId = actEl.id;
-            const activityData = {
-                lastScore: actEl.dataset.lastScore || "0",
-                attempts: actEl.dataset.attempts || "0",
-                attempted: actEl.dataset.attempted === "true",
-                selections: {}, // Para quizzes, matching, true/false
-                promptText: ""   // Para textareas
-            };
-            // Lógica específica para guardar estado de cada tipo de actividad
-            if (activityId === 'quizActivity') { /* ... (guardar opciones seleccionadas en activityData.selections) ... */ }
-            else if (activityId === 'exerciseActivity' || activityId === 'problemSolvingActivity' || activityId === 'yourTurnToCreateActivity') {
-                const textarea = actEl.querySelector('textarea');
-                if (textarea) activityData.promptText = textarea.value;
-            }
-            // ... (Añadir lógica para `promptConstructionActivity`, `matchingActivity`, `trueFalseActivity`) ...
-            progressData.activities[activityId] = activityData;
-        });
-        localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify(progressData));
-    }
-
-    function loadProgress() {
-        const savedProgress = localStorage.getItem(STORAGE_KEY_PROGRESS);
-        if (!savedProgress) {
-            updateOverallProgress(); // Inicializa si no hay progreso guardado
-            return;
-        }
-        const progressData = JSON.parse(savedProgress);
-        if (progressData.completedSections) {
-            progressData.completedSections.forEach(id => completedSections.add(id));
-            document.querySelectorAll('.mark-as-read-btn').forEach(btn => {
-                if (completedSections.has(btn.dataset.sectionId)) {
-                    btn.classList.add('completed');
-                    btn.innerHTML = 'Completado <span role="img" aria-label="check">✅</span>';
-                    btn.disabled = true;
-                }
-            });
-        }
-        if (progressData.activities) {
-            for (const activityId in progressData.activities) {
-                const actEl = document.getElementById(activityId);
-                const data = progressData.activities[activityId];
-                if (actEl && data) {
-                    actEl.dataset.lastScore = data.lastScore;
-                    actEl.dataset.attempts = data.attempts;
-                    actEl.dataset.attempted = data.attempted;
-                    // Lógica para restaurar estado de inputs/selections si es necesario
-                }
-            }
-        }
-        updateOverallProgress();
-    }
-    
-    // --- LÓGICA GENÉRICA DE MANEJO DE ACTIVIDADES ---
-    function handleActivityAttemptEnhanced(activityElement, submitButton, resetButton, attemptsFeedbackElement, maxAttempts, evaluationLogic) { /* ... (Implementación COMPLETA como en la versión anterior) ... */ }
-    function handleActivityReset(activityElement, submitButton, resetButton, inputElementsSelectors, feedbackElementsSelectors, optionClassesToRemove = []) { /* ... (Implementación COMPLETA) ... */ }
-
-    // --- IMPLEMENTACIÓN DETALLADA DE CADA ACTIVIDAD (Esqueleto - ¡COMPLETAR `evaluationLogic`!) ---
-    // Ejemplo para QuizActivity
-    if (document.getElementById('quizActivity')) {
-        // ... (Event listener para seleccionar opciones y submit/reset, como en `mooc_ultra_final_con_doctype_y_js_completo.html`) ...
-        // Recuerda, la parte más importante aquí es definir una `evaluationLogic` COMPLETA.
-    }
-    // ... (Esqueletos similares para TODAS las otras actividades: exerciseActivity, problemSolvingActivity, etc.) ...
-
-    // --- FUNCIONES DE NAVEGACIÓN Y UI ---
-    function downloadCertificate() { /* ... (Implementación idéntica a la anterior) ... */ }
-    const backToTopBtn = document.getElementById('backToTopBtn');
-    function updateSidebarActiveLinkAndScrollButton() { /* ... (Implementación idéntica) ... */ }
-
-    // --- EVENT LISTENER PRINCIPAL (DOMContentLoaded - CON DIAGNÓSTICO) ---
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log("DOM Content Loaded - Iniciando lógica de visibilidad...");
-        loadStudentInfo(); // Carga o inicializa studentInfo
-        loadProgress();    // Carga progreso o establece valores iniciales y llama a updateOverallProgress
-
-        const coverPage = document.getElementById('coverPage');
-        const moduleContainer = document.getElementById('moduleContainer');
-
-        console.log("[DIAGNÓSTICO] Elemento coverPage:", coverPage);
-        console.log("[DIAGNÓSTICO] Elemento moduleContainer:", moduleContainer);
-        console.log("[DIAGNÓSTICO] studentInfo.firstName:", studentInfo.firstName);
-        console.log("[DIAGNÓSTICO] Progreso guardado (localStorage):", localStorage.getItem(STORAGE_KEY_PROGRESS));
-
-        if (studentInfo.firstName && localStorage.getItem(STORAGE_KEY_PROGRESS)) {
-            console.log("[DIAGNÓSTICO] CONDICIÓN VERDADERA: Intentando mostrar contenido del módulo.");
-            if (coverPage) { coverPage.style.display = 'none'; }
-            else { console.error("Error: #coverPage no encontrado para ocultar!"); }
-            
-            if (moduleContainer) { moduleContainer.style.display = 'flex'; }
-            else { console.error("Error: #moduleContainer no encontrado para mostrar!"); }
-        } else {
-            console.log("[DIAGNÓSTICO] CONDICIÓN FALSA: Intentando mostrar portada.");
-            if (coverPage) { coverPage.style.display = 'flex'; }
-            else { console.error("Error: #coverPage no encontrado para mostrar!"); }
-            
-            if (moduleContainer) { moduleContainer.style.display = 'none'; }
-            else { console.error("Error: #moduleContainer no encontrado para ocultar (ya debería estarlo por CSS)!"); }
-        }
-        // Forzar una actualización de la barra de progreso después de decidir qué mostrar
-        updateOverallProgress();
-        updateSidebarActiveLinkAndScrollButton();
-
-        // --- Resto de listeners e inicializaciones ---
-        const elementsToReveal = document.querySelectorAll('.reveal-on-scroll');
-        if (elementsToReveal.length > 0) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.05 });
-            elementsToReveal.forEach(el => observer.observe(el));
-        } else {
-            console.warn("[DIAGNÓSTICO] No se encontraron elementos '.reveal-on-scroll'.")
-        }
-
-
-        const videoThumbnailOverlay = document.querySelector('.video-thumbnail-overlay');
-        const youtubeVideoIframe = document.getElementById('youtubeVideo');
-        if (videoThumbnailOverlay && youtubeVideoIframe) {
-            videoThumbnailOverlay.addEventListener('click', function() { /* ... (lógica del video) ... */ });
-        } else {
-            console.warn("[DIAGNÓSTICO] Elementos del video no encontrados (overlay o iframe).");
-        }
-
-        const initiateModuleBtn = document.getElementById('initiateModuleBtn');
-        if(initiateModuleBtn) initiateModuleBtn.addEventListener('click', initiateModule);
-        else console.warn("[DIAGNÓSTICO] Botón #initiateModuleBtn no encontrado.");
-
-        const downloadCertBtn = document.getElementById('downloadCertificateBtn');
-        if(downloadCertBtn) downloadCertBtn.addEventListener('click', downloadCertificate);
-
-        const modalCloseBtn = document.getElementById('modalCloseBtn');
-        if(modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
-
-        if (backToTopBtn) {
-            backToTopBtn.addEventListener('click', (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
-        }
-
-        document.querySelectorAll('.sidebar-nav a').forEach(anchor => {
-           /* ... (lógica de scroll suave del sidebar) ... */
-        });
-            
-        console.log("MOOC Ultra Final Script: DOM completamente cargado y analizado. Listeners adjuntados.");
-    });
-
-    window.addEventListener('scroll', updateSidebarActiveLinkAndScrollButton);
-    
-    console.log("MOOC Ultra Final Script: Cargado (fin del script).");
-    </script>
-</body>
-</html>
+    <p class="mt-12 text-xs opacity-60">© 2025 Plataforma Educativa Innovadora - Universidad Salesiana de Bolivia</p>
+  </div>
+</div>
+<!-- Main Module Container HTML -->
+<div id="moduleContainer" class="module-container" style="display: none;"><!-- Inicia oculto, JS lo maneja -->
+  <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-labelledby="globalScoreLabel">
+    <div id="progressBar" class="progress-bar">&nbsp;</div>
+  </div>
+  <span id="globalScoreLabel" class="visually-hidden">Progreso general del curso</span>
+  <div class="flex flex-col lg:flex-row app-container">
+    <aside class="sidebar-nav hidden lg:block" aria-label="Navegación principal del módulo">
+      <h3>Navegación del Módulo</h3>
+      <ul id="sidebarNavList">
+        <li>
+          <a href="#welcomeSection" class="active">👋 Bienvenida Cruceña</a>
+        </li>
+        <li>
+          <a href="#objectivesSection">🎯 Objetivos Clave</a>
+        </li>
+        <li>
+          <a href="#section-intro-prompts">💡 ¿Qué es un Prompt?</a>
+        </li>
+        <li>
+          <a href="#section-creativity-prompts">🎨 Prompts para Creatividad</a>
+        </li>
+        <li>
+          <a href="#section-active-methods">🚀 Prompts para Métodos Activos</a>
+        </li>
+        <li>
+          <a href="#section-refining-prompts">🛠️ Refinando tus Prompts</a>
+        </li>
+        <li>
+          <a href="#promptConstructionActivity">🔧 Desafío: Construye tu Prompt</a>
+        </li>
+        <li>
+          <a href="#quizActivity">🧠 Quiz Rápido de Prompts</a>
+        </li>
+        <li>
+          <a href="#exerciseActivity">✍️ Actividad: Tu Prompt Creativo</a>
+        </li>
+        <li>
+          <a href="#problemSolvingActivity">🌍 Actividad: IA para Problemas Locales</a>
+        </li>
+        <li>
+          <a href="#yourTurnToCreateActivity">🎬 ¡Tu Turno! Escenario Cruceño</a>
+        </li>
+        <li>
+          <a href="#matchingActivity">🤝 Actividad: Emparejando Ideas</a>
+        </li>
+        <li>
+          <a href="#trueFalseActivity">✅❌ Actividad: Verdadero o Falso IA</a>
+        </li>
+        <li>
+          <a href="#summarySection">📋 Resumen del Módulo</a>
+        </li>
+        <li>
+          <a href="#conclusionSection">🎉 Conclusión y ¡A Volar!</a>
+        </li>
+        <li>
+          <a href="#bibliographySection">📚 Recursos para Seguir Explorando</a>
+        </li>
+      </ul>
+      <div class="facilitator-info">
+        <p>Facilitador: 
+          <span class="font-semibold">Lic. Luis Alfredo Andia Valverde</span>
+        </p>
+        <p>Módulo: 
+          <span class="font-semibold">Planificación Educativa con IA</span>
+        </p>
+        <p>Institución: 
+          <span class="font-semibold">Universidad Salesiana de Bolivia</span>
+        </p>
+        <p class="mt-4">Tu Progreso: 
+          <strong id="globalScore" class="font-bold text-blue-700">0%</strong>
+        </p>
+      </div>
+    </aside>
+    <main class="main-content flex-grow p-5 lg:p-8" role="main">
+      <header class="module-header rounded-lg mb-8 p-6 text-center shadow-lg">
+        <h1 class="text-balance">¡Hola, 
+          <span class="student-name-placeholder text-yellow-300">Profe</span>! Bienvenido/a a "Dominando los Prompts"
+        </h1>
+        <p class="text-balance">Aquí empieza tu viaje para convertir la IA en tu mejor aliada en el aula. ¡Vamos a prontear como campeones!</p>
+        <div class="video-container mt-6"><!-- **REEMPLAZA 'ZIBt4h39vb0' CON TU VIDEO ID DE YOUTUBE REAL** -->
+          <div class="video-thumbnail-overlay" data-video-id="ZIBt4h39vb0" data-thumbnail-url="https://img.youtube.com/vi/ZIBt4h39vb0/hqdefault.jpg">
+            <img src="https://img.youtube.com/vi/ZIBt4h39vb0/hqdefault.jpg" alt="Video Thumbnail: Introducción al Diseño de Prompts con IA para educadores en Santa Cruz.">
+            <div class="video-play-button" aria-label="Reproducir video introductorio">
+              <span aria-hidden="true">▶</span>
+            </div>
+          </div>
+          <iframe id="youtubeVideo" style="display: none;" title="Video Introductorio al Diseño de Prompts con IA" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+        </div>
+      </header><!-- ## INICIO DEL CONTENIDO COMPLETO DEL CURSO (HTML INTEGRADO) ## --> <!-- Welcome Section -->
+      <section id="welcomeSection" class="module-section reveal-on-scroll" data-section-id="welcomeSection" aria-labelledby="welcomeHeading">
+        <h2 id="welcomeHeading" class="text-balance">👋 ¡Bienvenida a la Revolución del Prompt, 
+          <span class="student-name-placeholder text-indigo-600">Estimado/a Colega</span>!
+        </h2>
+        <p>¡Qué alegría tenerte aquí, ! Desde la vibrante Santa Cruz de la Sierra, te damos la bienvenida a este espacio de aprendizaje donde vamos a desmitificar la Inteligencia Artificial y convertirla en una herramienta poderosa para tu labor docente.</p>
+        <p>¿Te imaginas tener un asistente súper inteligente que te ayude a generar ideas creativas, diseñar actividades innovadoras y personalizar el aprendizaje para tus capísimos estudiantes de secundaria? ¡Pues eso es posible dominando el arte del "prompting"!</p>
+        <p>En este módulo, no solo aprenderás qué es un prompt, sino cómo "cocinar" los mejores para sacarle el jugo a la IA. Prepárate para explorar, experimentar y, sobre todo, para inyectarle una dosis extra de creatividad e innovación a tus clases. ¡A darle átomos, !</p>
+        <figure role="group" aria-label="Docente innovando en el aula">
+          <img class="module-image" src="https://images.pexels.com/photos/5088017/pexels-photo-5088017.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600&amp;lazy=load" alt="Docente sonriendo mientras usa una laptop en un aula moderna y colorida, representando la innovación educativa en Santa Cruz.">
+          <figcaption class="visually-hidden">Imagen de un docente utilizando tecnología, simbolizando la innovación.</figcaption>
+        </figure>
+        <button class="mark-as-read-btn" data-section-id="welcomeSection">Marcar como leído</button>
+      </section>
+<!-- Learning Objectives Section -->
+      <section id="objectivesSection" class="module-section reveal-on-scroll" data-section-id="objectivesSection" aria-labelledby="objectivesHeading">
+        <h2 id="objectivesHeading" class="text-balance">🎯 Objetivos Clave de este Módulo</h2>
+        <p class="activity-instruction">Al finalizar este power-módulo, , estarás más que listo/a para:</p>
+        <ul class="list-none space-y-3 text-lg text-gray-700 pl-0">
+          <li class="icon-list-item !p-0 !bg-transparent !shadow-none !border-none">
+            <div class="icon-list-icon icon-lightbulb">&nbsp;</div>
+            <div class="icon-list-content !pt-2">
+              <strong>Entender a fondo:</strong> Qué es un prompt y por qué es la llave maestra para comunicarte con la IA.
+            </div>
+          </li>
+          <li class="icon-list-item !p-0 !bg-transparent !shadow-none !border-none">
+            <div class="icon-list-icon icon-brainstorm">&nbsp;</div>
+            <div class="icon-list-content !pt-2">
+              <strong>Diseñar con chispa:</strong> Prompts que enciendan la llama de la creatividad en tus estudiantes de secundaria.
+            </div>
+          </li>
+          <li class="icon-list-item !p-0 !bg-transparent !shadow-none !border-none">
+            <div class="icon-list-icon icon-gears">&nbsp;</div>
+            <div class="icon-list-content !pt-2">
+              <strong>Aplicar en el aula:</strong> Usar prompts para crear actividades dinámicas con métodos activos de aprendizaje (¡chau clases aburridas!).
+            </div>
+          </li>
+          <li class="icon-list-item !p-0 !bg-transparent !shadow-none !border-none">
+            <div class="icon-list-icon icon-target">&nbsp;</div>
+            <div class="icon-list-content !pt-2">
+              <strong>Pulir y refinar:</strong> Mejorar tus prompts para que la IA te dé justo lo que necesitas, ¡y más!
+            </div>
+          </li>
+          <li class="icon-list-item !p-0 !bg-transparent !shadow-none !border-none">
+            <div class="icon-list-icon icon-challenge">&nbsp;</div>
+            <div class="icon-list-content !pt-2">
+              <strong>Evaluar como experto/a:</strong> La calidad de los prompts y las respuestas de la IA, desarrollando tu criterio.
+            </div>
+          </li>
+        </ul>
+        <p class="mt-6">¡Un desafío emocionante, , pero sé que lo superarás con creces!</p>
+        <button class="mark-as-read-btn" data-section-id="objectivesSection">Marcar como leído</button>
+      </section>
+<!-- What is a Prompt? Section -->
+      <section id="section-intro-prompts" class="module-section reveal-on-scroll" data-section-id="section-intro-prompts" aria-labelledby="introPromptsHeading">
+        <h2 id="introPromptsHeading" class="text-balance">💡 ¿Qué Rayos es un Prompt? El Secreto Mejor Guardado (hasta ahora)</h2>
+        <p>, imagina que la IA es como un chef genio (un "Camba GPT", si quieres) capaz de preparar cualquier plato, ¡pero necesita tu receta! Esa receta, esa instrucción clara y detallada que le das, es el 
+          <strong class="text-indigo-600">prompt</strong>.
+        </p>
+        <p>En el mundo de la Inteligencia Artificial, un prompt es cualquier texto que introduces (una pregunta, una orden, una idea) para que el modelo de IA genere una respuesta. Es tu forma de conversar y dirigir a la IA. Cuanto mejor sea tu "receta" (prompt), más delicioso y útil será el "plato" (respuesta de la IA).</p>
+        <figure>
+          <img class="module-image" src="https://images.pexels.com/photos/7130560/pexels-photo-7130560.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600&amp;lazy=load" alt="Una mano escribiendo en un teclado iluminado, simbolizando la creación de un prompt para la IA.">
+          <figcaption class="visually-hidden">Creando un prompt.</figcaption>
+        </figure>
+        <h3>La "Ingeniería de Prompts": Un Arte y una Ciencia</h3>
+        <p>Crear prompts efectivos es más que solo escribir; se está convirtiendo en una habilidad clave llamada 
+          <strong class="text-indigo-600">"ingeniería de prompts"</strong>. No te asustes con el nombre, , ¡es más intuitivo de lo que parece! Se trata de aprender a "hablar el idioma" de la IA para obtener los mejores resultados.
+        </p>
+        <div class="grid md:grid-cols-2 gap-6 my-6">
+          <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+            <h4 class="font-bold text-red-700">Ejemplo de Prompt Pobre:</h4>
+            <p class="text-sm text-red-600">"Háblame de la Guerra del Chaco."</p>
+            <p class="text-xs text-red-500 mt-2">
+              <em>Respuesta esperada: General, poco útil.</em>
+            </p>
+          </div>
+          <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-md">
+            <h4 class="font-bold text-green-700">Ejemplo de Prompt Mejorado:</h4>
+            <p class="text-sm text-green-600">"Actúa como un historiador boliviano especializado en el siglo XX. Explica tres causas principales de la Guerra del Chaco desde la perspectiva boliviana, en un lenguaje adecuado para estudiantes de 4to de secundaria. Incluye una anécdota poco conocida."</p>
+            <p class="text-xs text-green-500 mt-2">
+              <em>Respuesta esperada: Específica y útil.</em>
+            </p>
+          </div>
+        </div>
+        <div class="reflection-box">
+          <p>
+            <span class="emoji-thought">🤔</span> 
+            <strong class="text-purple-800">Para pensar, :</strong> ¿Has usado alguna vez ChatGPT o similar? ¿Notaste cómo la forma en que pediste las cosas cambió lo que te dio? ¡Esa es la magia del prompt!
+          </p>
+        </div>
+        <button class="mark-as-read-btn" data-section-id="section-intro-prompts">Entendido, ¡a prontear!</button>
+      </section>
+<!-- Prompts for Creativity Section -->
+      <section id="section-creativity-prompts" class="module-section reveal-on-scroll" data-section-id="section-creativity-prompts" aria-labelledby="creativityPromptsHeading">
+        <h2 id="creativityPromptsHeading" class="text-balance">🎨 Prompts para Desatar la Creatividad (¡La tuya y la de tus Cracks!)</h2>
+        <p>¡ , aquí es donde la cosa se pone emocionante! La IA puede ser tu mejor aliada para encender la chispa creativa en el aula.</p>
+        <ul class="list-disc list-inside my-4 space-y-2">
+          <li>Generar ideas para proyectos escolares que conecten con los intereses de tus estudiantes cruceños.</li>
+          <li>Desarrollar personajes únicos para cuentos o obras de teatro.</li>
+          <li>Escribir borradores de guiones, poemas con estructuras específicas o canciones.</li>
+          <li>Crear problemas matemáticos o científicos contextualizados en la realidad de Santa Cruz.</li>
+        </ul>
+        <figure>
+          <img class="module-image" src="https://images.pexels.com/photos/326502/pexels-photo-326502.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600&amp;lazy=load" alt="Un cerebro hecho de bombillas de luz de colores, simbolizando la creatividad y las ideas brillantes.">
+          <figcaption class="visually-hidden">Ideas creativas.</figcaption>
+        </figure>
+        <h3>Ingredientes de un Prompt Creativo Exitoso</h3>
+        <div class="code-block">
+          <pre class="language-markup" style="background: rgb(245, 242, 240); padding: 1em; margin: 0.5em 0px; overflow: auto; color: black; text-shadow: white 0px 1px; font-family: Consolas, Monaco, &quot;Andale Mono&quot;, &quot;Ubuntu Mono&quot;, monospace; text-align: left; white-space: pre; word-spacing: normal; word-break: normal;">
+            <code>ROL: "Actúa como un..." (novelista, poeta, etc.)
+            TAREA: "Genera...", "Escribe...", "Diseña..."
+            CONTEXTO/DETALLES: Tema, personajes, lugar (ej. el mercado Los Pozos).
+            FORMATO DE SALIDA: Lista, párrafo, poema.
+            TONO/ESTILO: Humorístico, serio, aventurero, coloquial.</code>
+          </pre>
+        </div>
+        <p class="mt-4">No es lo mismo pedir "una historia" que: "Actúa como un cuentacuentos cruceño. Crea una historia de misterio para adolescentes (14-16 años) ambientada en las ruinas de Samaipata..."</p>
+        <div class="icon-list mt-8">
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-idea">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Lluvia de Ideas para Proyectos Interdisciplinarios</h4>
+              <p>
+                <strong>¿Estás en blanco para tu Plan de Desarrollo Curricular (PDC)?</strong> 
+                <br>
+                <strong>Prompt Ejemplo:</strong> "Eres un pedagogo innovador. Genera 3 ideas de proyectos interdisciplinarios para 3ro de secundaria que conecten Ciencias Sociales (historia de Santa Cruz) con Artes Plásticas (muralismo)..."
+              </p>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-quiz">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Creación de Dilemas Éticos para Debate</h4>
+              <p>Fomenta el pensamiento crítico. 
+                <br>
+                <strong>Prompt Ejemplo:</strong> "Desarrolla un dilema ético sobre el uso de la IA en la creación artística para un debate en una clase de Filosofía de 6to de secundaria..."
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="reflection-box">
+          <p>
+            <span class="emoji-thought">🤔</span> 
+            <strong class="text-purple-800">Momento de inspiración, :</strong> Piensa en tu materia. ¿Qué actividad creativa "bomba" podrías diseñar con ayuda de la IA?
+          </p>
+        </div>
+        <button class="mark-as-read-btn" data-section-id="section-creativity-prompts">¡Creatividad activada!</button>
+      </section>
+<!-- Prompts for Active Learning Methods Section -->
+      <section id="section-active-methods" class="module-section reveal-on-scroll" data-section-id="section-active-methods" aria-labelledby="activeMethodsHeading">
+        <h2 id="activeMethodsHeading" class="text-balance">🚀 Prompts para Clases Dinámicas y Métodos Activos</h2>
+        <p>, si eres de los que les gusta que sus estudiantes sean protagonistas, ¡esta sección es para ti! Los métodos activos (ABP, Aprendizaje Cooperativo, etc.) se potencian enormemente con la IA.</p>
+        <ul class="list-disc list-inside my-4 space-y-2">
+          <li>Co-diseñar las fases de un ABP.</li>
+          <li>Generar rúbricas de evaluación.</li>
+          <li>Crear casos de estudio realistas.</li>
+          <li>Simular entrevistas con "expertos virtuales".</li>
+        </ul>
+        <figure>
+          <img class="module-image" src="https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600&amp;lazy=load" alt="Un equipo diverso de estudiantes colaborando animadamente, representando el aprendizaje activo.">
+          <figcaption class="visually-hidden">Aprendizaje activo.</figcaption>
+        </figure>
+        <h3>Ejemplo: Prompt para Diseñar una Actividad de ABP</h3>
+        <div class="code-block">
+          <pre class="language-markup" style="background: rgb(245, 242, 240); padding: 1em; margin: 0.5em 0px; overflow: auto; color: black; text-shadow: white 0px 1px; font-family: Consolas, Monaco, &quot;Andale Mono&quot;, &quot;Ubuntu Mono&quot;, monospace; text-align: left; white-space: pre; word-spacing: normal; word-break: normal;">
+            <code>"Actúa como un experto en diseño instruccional y sostenibilidad ambiental...
+Tema: 'Soluciones sostenibles para la gestión de residuos en nuestro barrio/comunidad'.
+Proporcióname: 1. Una pregunta guía potente. 2. Tres fases claras. 3. Sugerencias de roles. 4. Cinco criterios para rúbrica."</code>
+          </pre>
+        </div>
+        <div class="icon-list mt-8">
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-strategy">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Diseño de Rúbricas Detalladas</h4>
+              <p>
+                <strong>Prompt Ejemplo:</strong> "Crea una rúbrica analítica para evaluar un podcast producido por estudiantes de 4to de secundaria sobre personajes históricos de Bolivia..."
+              </p>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-feedback">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Generación de Escenarios para Simulaciones</h4>
+              <p>
+                <strong>Prompt Ejemplo:</strong> "Redacta un escenario de simulación para una clase de Emprendimiento. Un grupo debe presentar su idea de negocio (app para turismo en Samaipata) a 'inversores escépticos'..."
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="reflection-box">
+          <p>
+            <span class="emoji-thought">🤔</span> 
+            <strong class="text-purple-800">¡A optimizar, !:</strong> ¿Qué actividad compleja podrías hacer realidad con un buen prompt?
+          </p>
+        </div>
+        <button class="mark-as-read-btn" data-section-id="section-active-methods">¡Métodos activos potenciados!</button>
+      </section>
+<!-- Refining Your Prompts Section -->
+      <section id="section-refining-prompts" class="module-section reveal-on-scroll" data-section-id="section-refining-prompts" aria-labelledby="refiningPromptsHeading">
+        <h2 id="refiningPromptsHeading" class="text-balance">🛠️ Refinando tus Prompts como un Pro: El Arte de la Precisión Quirúrgica</h2>
+        <p>¡ , no te desanimes si tu primer prompt no da en el clavo! El "pronteo" requiere práctica y 
+          <strong class="text-indigo-600">iteración</strong>. Si la IA no te da lo esperado, analiza tu prompt.
+        </p>
+        <figure>
+          <img class="module-image" src="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600&amp;lazy=load" alt="Persona ajustando engranajes, simbolizando el refinamiento de prompts.">
+          <figcaption class="visually-hidden">Refinando prompts.</figcaption>
+        </figure>
+        <h3>Técnicas de Francotirador para Prompts Impecables:</h3>
+        <div class="icon-list mt-6">
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-target">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Claridad y Especificidad Absoluta</h4>
+              <p>Evita ambigüedad. En lugar de "ideas para clase de historia", prueba: "Genera 5 ideas de actividades interactivas para historia de Bolivia sobre Guerra del Pacífico, para 5to sec, enfocadas en análisis de fuentes primarias."</p>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-book">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Proporciona Contexto Relevante</h4>
+              <p>Menciona curso, materia, tema, tiempo, contexto de alumnos (ej. "considera que mis alumnos en Santa Cruz tienen acceso limitado a internet en casa").</p>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-pencil">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Define el Formato de Salida</h4>
+              <p>¿Lista? ¿Tabla? ¿Ensayo? ¡Díselo! "Preséntalo en formato de tabla con columnas para: Actividad, Objetivo, Materiales, Tiempo."</p>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-warning">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Establece Restricciones y Límites</h4>
+              <p>"No más de 300 palabras", "Evita lenguaje técnico", "Enfócate en soluciones prácticas."</p>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-lightbulb">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Usa Ejemplos (Few-Shot Prompting)</h4>
+              <p>Dale a la IA ejemplos del tipo de respuesta que buscas. Ej: "Quiero preguntas tipo test. Ejemplo 1: [...]. Ahora genera 5 más sobre el ciclo del agua."</p>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-gears">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>"Cadena de Pensamiento" (Chain-of-Thought)</h4>
+              <p>Para tareas complejas, pide a la IA que "piense en voz alta". Ej: "Resuelve este problema matemático, explicando cada paso."</p>
+            </div>
+          </div>
+        </div>
+        <h3 class="mt-8">Del "Meh" al "¡Wow!": Un Ejemplo de Refinamiento</h3>
+        <div class="code-block">
+          <pre class="language-markup" style="background: rgb(245, 242, 240); padding: 1em; margin: 0.5em 0px; overflow: auto; color: black; text-shadow: white 0px 1px; font-family: Consolas, Monaco, &quot;Andale Mono&quot;, &quot;Ubuntu Mono&quot;, monospace; text-align: left; white-space: pre; word-spacing: normal; word-break: normal;">
+            <code>Prompt Inicial: "Dame ideas para enseñar los ecosistemas de Bolivia."
+            Prompt Refinado:
+"Actúa como un biólogo conservacionista y educador ambiental...
+Diseña una secuencia didáctica de 3 sesiones para 2do de secundaria en Santa Cruz sobre ecosistemas de Bolivia...
+Para cada sesión, incluye: 1. Objetivo. 2. Actividad introductoria. 3. Actividad principal. 4. Evaluación formativa..."</code>
+          </pre>
+        </div>
+        <div class="reflection-box">
+          <p>
+            <span class="emoji-thought">🤔</span> 
+            <strong class="text-purple-800">Desafío para ti, :</strong> ¿Cómo podrías haber reformulado un prompt anterior usando estas técnicas?
+          </p>
+        </div>
+        <button class="mark-as-read-btn" data-section-id="section-refining-prompts">¡A pulir esos prompts!</button>
+      </section>
+<!-- Prompt Construction Challenge (HTML Completo) -->
+      <div id="promptConstructionActivity" class="interactive-activity reveal-on-scroll" data-last-score="0" data-attempts="0" aria-labelledby="promptConstructionActivityHeading">
+        <h2 id="promptConstructionActivityHeading" class="text-balance">🔧 Desafío: ¡Construye tu Super Prompt!</h2>
+        <p class="activity-instruction">Ahora te toca a ti, . Imagina que quieres que la IA te ayude a crear una 
+          <strong class="highlight">introducción para una clase sobre la importancia del agua en la región de los Valles Cruceños</strong>, dirigida a estudiantes de 1ro de secundaria. 
+          <br>Usando los campos de abajo, construye un prompt lo más completo posible.
+        </p>
+        <div class="space-y-4 mb-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" for="promptRole">1. Rol de la IA:</label> 
+            <input id="promptRole" class="prompt-textarea !min-h-[50px]" type="text" placeholder="Ej: 'Actúa como un hidrólogo experto...'">
+            <div id="feedback-promptRole" class="activity-part-feedback text-xs mt-1">&nbsp;</div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" for="promptTask">2. Tarea Específica:</label> 
+            <input id="promptTask" class="prompt-textarea !min-h-[50px]" type="text" placeholder="Ej: 'Redacta un párrafo de bienvenida...'">
+            <div id="feedback-promptTask" class="activity-part-feedback text-xs mt-1">&nbsp;</div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" for="promptContext">3. Contexto y Detalles:</label> 
+            <textarea id="promptContext" class="prompt-textarea !min-h-[80px]" placeholder="Ej: '...para alumnos de 1ro sec, enfocándose en los Valles Cruceños y la escasez...'"></textarea>
+            <div id="feedback-promptContext" class="activity-part-feedback text-xs mt-1">&nbsp;</div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" for="promptFormatTone">4. Formato y Tono:</label> 
+            <input id="promptFormatTone" class="prompt-textarea !min-h-[50px]" type="text" placeholder="Ej: 'Un solo párrafo, 150 palabras máx. Tono: alarmante pero esperanzador.'">
+            <div id="feedback-promptFormatTone" class="activity-part-feedback text-xs mt-1">&nbsp;</div>
+          </div>
+        </div>
+        <div id="promptConstructionActivityOverallFeedback" class="response-feedback mt-4 hidden" role="alert">&nbsp;</div>
+        <button id="submitPromptConstructionBtn" class="submit-btn">Evaluar Construcción</button> 
+        <button id="resetPromptConstructionBtn" class="reset-button" disabled="disabled">Intentar de Nuevo</button>
+        <div id="promptConstructionAttemptsFeedback" class="attempts-feedback" role="status" aria-live="polite">&nbsp;</div>
+      </div>
+<!-- Quiz Activity (HTML Completo) -->
+      <div id="quizActivity" class="interactive-activity reveal-on-scroll" data-last-score="0" data-attempts="0" aria-labelledby="quizActivityHeading">
+        <h2 id="quizActivityHeading" class="text-balance">🧠 Quiz Rápido: ¿Qué Tal Vamos con los Prompts, 
+          <span class="student-name-placeholder text-indigo-600">Profe</span>?
+        </h2>
+        <p class="activity-instruction">Pon a prueba tus conocimientos, . (Tienes 2 intentos)</p>
+        <fieldset class="quiz-question mb-6" role="group" aria-labelledby="quizQ1Label">
+          <legend id="quizQ1Label" class="font-semibold mb-3 text-lg text-balance">1. Para que una IA te dé una respuesta súper específica y útil, ¿qué es lo MÁS importante en tu prompt?</legend>
+          <div class="options space-y-2">
+            <div>
+              <input id="q1a" class="quiz-option-input visually-hidden" name="q1" type="radio" value="a" aria-describedby="feedback-q1"> 
+              <label class="quiz-option" for="q1a" data-question="q1" data-value="a">a) Que el prompt sea muy corto.</label>
+            </div>
+            <div>
+              <input id="q1b" class="quiz-option-input visually-hidden" name="q1" type="radio" value="b" aria-describedby="feedback-q1"> 
+              <label class="quiz-option" for="q1b" data-question="q1" data-value="b">b) La claridad, especificidad y contexto.</label>
+            </div>
+            <div>
+              <input id="q1c" class="quiz-option-input visually-hidden" name="q1" type="radio" value="c" aria-describedby="feedback-q1"> 
+              <label class="quiz-option" for="q1c" data-question="q1" data-value="c">c) Escribir todo en MAYÚSCULAS.</label>
+            </div>
+          </div>
+          <div id="feedback-q1" class="quiz-feedback" role="alert" aria-live="polite">&nbsp;</div>
+        </fieldset>
+        <fieldset class="quiz-question mb-6" role="group" aria-labelledby="quizQ2Label">
+          <legend id="quizQ2Label" class="font-semibold mb-3 text-lg text-balance">2. Si quieres que la IA genere ideas creativas, ¿qué incluirías en tu prompt?</legend>
+          <div class="options space-y-2">
+            <div>
+              <input id="q2a" class="quiz-option-input visually-hidden" name="q2" type="radio" value="a" aria-describedby="feedback-q2"> 
+              <label class="quiz-option" for="q2a" data-question="q2" data-value="a">a) Solo el tema general.</label>
+            </div>
+            <div>
+              <input id="q2b" class="quiz-option-input visually-hidden" name="q2" type="radio" value="b" aria-describedby="feedback-q2"> 
+              <label class="quiz-option" for="q2b" data-question="q2" data-value="b">b) Rol, contexto y formato deseado.</label>
+            </div>
+            <div>
+              <input id="q2c" class="quiz-option-input visually-hidden" name="q2" type="radio" value="c" aria-describedby="feedback-q2"> 
+              <label class="quiz-option" for="q2c" data-question="q2" data-value="c">c) Únicamente preguntas cerradas (sí/no).</label>
+            </div>
+          </div>
+          <div id="feedback-q2" class="quiz-feedback" role="alert" aria-live="polite">&nbsp;</div>
+        </fieldset>
+        <fieldset class="quiz-question mb-6" role="group" aria-labelledby="quizQ3Label">
+          <legend id="quizQ3Label" class="font-semibold mb-3 text-lg text-balance">3. ¿Qué significa "iterar" al refinar prompts, ?</legend>
+          <div class="options space-y-2">
+            <div>
+              <input id="q3a" class="quiz-option-input visually-hidden" name="q3" type="radio" value="a" aria-describedby="feedback-q3"> 
+              <label class="quiz-option" for="q3a" data-question="q3" data-value="a">a) Repetir el mismo prompt hasta que funcione.</label>
+            </div>
+            <div>
+              <input id="q3b" class="quiz-option-input visually-hidden" name="q3" type="radio" value="b" aria-describedby="feedback-q3"> 
+              <label class="quiz-option" for="q3b" data-question="q3" data-value="b">b) Copiar prompts exitosos de otros.</label>
+            </div>
+            <div>
+              <input id="q3c" class="quiz-option-input visually-hidden" name="q3" type="radio" value="c" aria-describedby="feedback-q3"> 
+              <label class="quiz-option" for="q3c" data-question="q3" data-value="c">c) Probar variaciones, ajustando detalles.</label>
+            </div>
+          </div>
+          <div id="feedback-q3" class="quiz-feedback" role="alert" aria-live="polite">&nbsp;</div>
+        </fieldset>
+        <div id="quizActivityOverallFeedback" class="response-feedback mt-4 hidden" role="alert">&nbsp;</div>
+        <button id="submitQuizBtn" class="submit-btn">Enviar Respuestas del Quiz</button> 
+        <button id="resetQuizBtn" class="reset-button" disabled="disabled">Reiniciar Quiz</button>
+        <div id="quizAttemptsFeedback" class="attempts-feedback" role="status" aria-live="polite">&nbsp;</div>
+      </div>
+<!-- Creative Prompt Exercise (HTML Completo) -->
+      <div id="exerciseActivity" class="interactive-activity reveal-on-scroll" data-last-score="0" data-attempts="0" aria-labelledby="exerciseActivityHeading">
+        <h2 id="exerciseActivityHeading" class="text-balance">✍️ Actividad: ¡A Crear tu Propio Prompt Ingenioso!</h2>
+        <p class="activity-instruction">¡Tu turno, ! Necesitas ideas para una 
+          <strong class="highlight">charla motivacional sobre perseverancia</strong> para estudiantes de último año en Santa Cruz. Escribe un prompt detallado y efectivo. (2 intentos)
+        </p>
+        <label class="visually-hidden" for="exercisePromptInput">Escribe tu prompt aquí:</label> 
+        <textarea id="exercisePromptInput" class="prompt-textarea" placeholder="Ej: 'Actúa como un coach motivacional experto en jóvenes. Genera 3 ideas centrales para una charla de 15 minutos para estudiantes cruceños de 6to de secundaria (17-18 años) sobre la importancia de la resiliencia frente a los desafíos post-colegio... Tono: cercano, optimista y empoderador...' aria-describedby="></textarea>
+        <div id="exerciseFeedback" class="response-feedback mt-4 hidden" role="alert">&nbsp;</div>
+        <button id="submitExerciseBtn" class="submit-btn">Evaluar Mi Prompt Creativo</button> 
+        <button id="resetExerciseBtn" class="reset-button" disabled="disabled">Borrar y Empezar de Nuevo</button>
+        <div id="exerciseAttemptsFeedback" class="attempts-feedback" role="status" aria-live="polite">&nbsp;</div>
+      </div>
+<!-- Problem Solving with IA Exercise (HTML Completo) -->
+      <div id="problemSolvingActivity" class="interactive-activity reveal-on-scroll" data-last-score="0" data-attempts="0" aria-labelledby="problemSolvingActivityHeading">
+        <h2 id="problemSolvingActivityHeading" class="text-balance">🌍 Actividad: IA al Rescate de Problemas Locales</h2>
+        <p class="activity-instruction">, tus estudiantes de 4to de secundaria inician un ABP sobre: 
+          <strong class="highlight">"¿Cómo podemos promover el turismo sostenible y responsable en las Lomas de Arena?"</strong>. Escribe un prompt para que una IA sugiera una estructura inicial para su proyecto. (2 intentos)
+        </p>
+        <label class="visually-hidden" for="problemSolvingPromptInput">Escribe tu prompt para el ABP aquí:</label> 
+        <textarea id="problemSolvingPromptInput" class="prompt-textarea" placeholder="Ej: 'Eres un experto en ABP y turismo sostenible en Bolivia. Mis alumnos de 4to de secundaria en Santa Cruz investigarán cómo promover el turismo responsable en las Lomas de Arena. Proporciónales: 1. Tres preguntas guía... 2. Un esquema de 4 fases... 3. Cuatro ejemplos de productos finales...' aria-describedby="></textarea>
+        <div id="problemSolvingFeedback" class="response-feedback mt-4 hidden" role="alert">&nbsp;</div>
+        <button id="submitProblemSolvingBtn" class="submit-btn">Evaluar Mi Prompt de ABP</button> 
+        <button id="resetProblemSolvingBtn" class="reset-button" disabled="disabled">Rehacer Prompt de ABP</button>
+        <div id="problemSolvingAttemptsFeedback" class="attempts-feedback" role="status" aria-live="polite">&nbsp;</div>
+      </div>
+<!-- Your Turn to Create (Scenario) (HTML Completo) -->
+      <div id="yourTurnToCreateActivity" class="interactive-activity reveal-on-scroll" data-last-score="0" data-attempts="0" aria-labelledby="yourTurnToCreateActivityHeading">
+        <h2 id="yourTurnToCreateActivityHeading" class="text-balance">🎬 ¡Tu Turno de Crear! Escenario Cruceño</h2>
+        <p class="activity-instruction">¡Vamos a la práctica, ! Organiza una 
+          <strong class="highlight">feria de ciencias en tu U.E. en Santa Cruz</strong>. Tema: "Innovación y Tradición en Nuestra Tierra Camba". Pide a la IA 
+          <strong class="highlight">3 ideas de stands interactivos</strong>. (2 intentos)
+        </p>
+        <label class="visually-hidden" for="yourTurnPromptInput">Escribe tu prompt para la feria aquí:</label> 
+        <textarea id="yourTurnPromptInput" class="prompt-textarea" placeholder="Ej: 'Actúa como un museógrafo creativo... Para una feria de ciencias escolar (alumnos de 12-15 años) con tema 'Innovación y Tradición en Nuestra Tierra Camba', genera 3 ideas detalladas para stands interactivos. Cada idea debe incluir: 1. Nombre del Stand. 2. Elemento tradicional cruceño. 3. Aplicación tecnológica/científica. 4. Interacción...' aria-describedby="></textarea>
+        <div id="yourTurnFeedback" class="response-feedback mt-4 hidden" role="alert">&nbsp;</div>
+        <button id="submitYourTurnBtn" class="submit-btn">Evaluar Mi Prompt de Feria</button> 
+        <button id="resetYourTurnBtn" class="reset-button" disabled="disabled">Reintentar Prompt de Feria</button>
+        <div id="yourTurnAttemptsFeedback" class="attempts-feedback" role="status" aria-live="polite">&nbsp;</div>
+      </div>
+<!-- Matching Concepts Activity (HTML Completo) -->
+      <div id="matchingActivity" class="interactive-activity reveal-on-scroll" data-last-score="0" data-attempts="0" aria-labelledby="matchingActivityHeading">
+        <h2 id="matchingActivityHeading" class="text-balance">🤝 Actividad: Emparejando Ideas como un Campeón</h2>
+        <p class="activity-instruction">Demuestra tu destreza, , emparejando cada componente clave de un prompt con su descripción. (2 intentos)</p>
+        <div class="matching-questions mt-6">
+          <div class="matching-pair mb-5" role="group" data-question-id="match1" aria-labelledby="match1label">
+            <div id="match1label" class="matching-concept">1. Rol de la IA:</div>
+            <div class="matching-options">
+              <label class="matching-option-label">
+                <input name="match1" type="radio" value="a" aria-describedby="feedback-match1"> "Quiero una lista."
+              </label> 
+              <label class="matching-option-label">
+                <input name="match1" type="radio" value="b" aria-describedby="feedback-match1"> "Ponte en los zapatos de un guía turístico."
+              </label> 
+              <label class="matching-option-label">
+                <input name="match1" type="radio" value="c" aria-describedby="feedback-match1"> "Tono formal."
+              </label>
+            </div>
+            <div id="feedback-match1" class="quiz-feedback" role="alert">&nbsp;</div>
+          </div>
+          <div class="matching-pair mb-5" role="group" data-question-id="match2" aria-labelledby="match2label">
+            <div id="match2label" class="matching-concept">2. Formato de Salida Específico:</div>
+            <div class="matching-options">
+              <label class="matching-option-label">
+                <input name="match2" type="radio" value="a" aria-describedby="feedback-match2"> "Sobre cambio climático."
+              </label> 
+              <label class="matching-option-label">
+                <input name="match2" type="radio" value="b" aria-describedby="feedback-match2"> "Redacta un correo."
+              </label> 
+              <label class="matching-option-label">
+                <input name="match2" type="radio" value="c" aria-describedby="feedback-match2"> "Evita temas controversiales."
+              </label>
+            </div>
+            <div id="feedback-match2" class="quiz-feedback" role="alert">&nbsp;</div>
+          </div>
+          <div class="matching-pair mb-5" role="group" data-question-id="match3" aria-labelledby="match3label">
+            <div id="match3label" class="matching-concept">3. Restricción o Límite Importante:</div>
+            <div class="matching-options">
+              <label class="matching-option-label">
+                <input name="match3" type="radio" value="a" aria-describedby="feedback-match3"> "Explica fotosíntesis."
+              </label> 
+              <label class="matching-option-label">
+                <input name="match3" type="radio" value="b" aria-describedby="feedback-match3"> "Sé creativo."
+              </label> 
+              <label class="matching-option-label">
+                <input name="match3" type="radio" value="c" aria-describedby="feedback-match3"> "No más de 3 párrafos."
+              </label>
+            </div>
+            <div id="feedback-match3" class="quiz-feedback" role="alert">&nbsp;</div>
+          </div>
+        </div>
+        <div id="matchingActivityOverallFeedback" class="response-feedback mt-4 hidden" role="alert">&nbsp;</div>
+        <button id="submitMatchingBtn" class="submit-btn">Verificar Mis Emparejamientos</button> 
+        <button id="resetMatchingBtn" class="reset-button" disabled="disabled">Reiniciar Emparejamiento</button>
+        <div id="matchingAttemptsFeedback" class="attempts-feedback" role="status" aria-live="polite">&nbsp;</div>
+      </div>
+<!-- True/False Activity (HTML Completo) -->
+      <div id="trueFalseActivity" class="interactive-activity reveal-on-scroll" data-last-score="0" data-attempts="0" aria-labelledby="trueFalseActivityHeading">
+        <h2 id="trueFalseActivityHeading" class="text-balance">✅❌ Actividad: Verdadero o Falso - Mitos y Realidades de la IA</h2>
+        <p class="activity-instruction">A ver, , ¿qué tanto sabes? Indica si las afirmaciones son Verdaderas (V) o Falsas (F). (2 intentos)</p>
+        <div class="true-false-question" role="group" data-question-id="tf1" aria-labelledby="tf1label">
+          <p id="tf1label">1. Un prompt más largo siempre será mejor.</p>
+          <div class="true-false-options">
+            <label>
+              <input name="tf1" type="radio" value="true" aria-describedby="feedback-tf1"> Verdadero
+            </label> 
+            <label>
+              <input name="tf1" type="radio" value="false" aria-describedby="feedback-tf1"> Falso
+            </label>
+          </div>
+          <div id="feedback-tf1" class="true-false-feedback" role="alert">&nbsp;</div>
+        </div>
+        <div class="true-false-question" role="group" data-question-id="tf2" aria-labelledby="tf2label">
+          <p id="tf2label">2. Especificar un "tono" puede cambiar el estilo de la respuesta.</p>
+          <div class="true-false-options">
+            <label>
+              <input name="tf2" type="radio" value="true" aria-describedby="feedback-tf2"> Verdadero
+            </label> 
+            <label>
+              <input name="tf2" type="radio" value="false" aria-describedby="feedback-tf2"> Falso
+            </label>
+          </div>
+          <div id="feedback-tf2" class="true-false-feedback" role="alert">&nbsp;</div>
+        </div>
+        <div class="true-false-question" role="group" data-question-id="tf3" aria-labelledby="tf3label">
+          <p id="tf3label">3. Las IAs generativas solo producen texto.</p>
+          <div class="true-false-options">
+            <label>
+              <input name="tf3" type="radio" value="true" aria-describedby="feedback-tf3"> Verdadero
+            </label> 
+            <label>
+              <input name="tf3" type="radio" value="false" aria-describedby="feedback-tf3"> Falso
+            </label>
+          </div>
+          <div id="feedback-tf3" class="true-false-feedback" role="alert">&nbsp;</div>
+        </div>
+        <div id="trueFalseActivityOverallFeedback" class="response-feedback mt-4 hidden" role="alert">&nbsp;</div>
+        <button id="submitTrueFalseBtn" class="submit-btn">Comprobar V/F</button> 
+        <button id="resetTrueFalseBtn" class="reset-button" disabled="disabled">Reiniciar V/F</button>
+        <div id="trueFalseAttemptsFeedback" class="attempts-feedback" role="status" aria-live="polite">&nbsp;</div>
+      </div>
+<!-- Module Summary Section (HTML Completo) -->
+      <section id="summarySection" class="summary-section reveal-on-scroll" data-section-id="summarySection" aria-labelledby="summaryHeading">
+        <h2 id="summaryHeading" class="text-balance">📋 Resumen del Módulo: ¡Lo Esencial para ser un As del Prompt!</h2>
+        <p class="activity-instruction">¡Felicidades, 
+          <span class="student-name-placeholder text-indigo-600">Profe Estrella</span>! Puntos clave:
+        </p>
+        <ul class="space-y-3">
+          <li>Un 
+            <strong class="text-purple-700">prompt</strong> es tu instrucción a la IA.
+          </li>
+          <li>Componentes: 
+            <strong class="text-purple-700">Rol, Tarea, Contexto, Formato y Tono</strong>.
+          </li>
+          <li>IA es versátil para 
+            <strong class="text-purple-700">creatividad estudiantil</strong>.
+          </li>
+          <li>Prompts facilitan 
+            <strong class="text-purple-700">métodos activos</strong>.
+          </li>
+          <li>
+            <strong class="text-purple-700">Refinar prompts</strong> es iterativo.
+          </li>
+          <li>Experimentación y especificidad son claves.</li>
+          <li>No temas pedir roles o 
+            <strong class="text-purple-700">"Chain-of-Thought"</strong>.
+          </li>
+        </ul>
+        <p class="closing-remark">¡Tienes una base sólida, , para transformar tu práctica docente!</p>
+        <button class="mark-as-read-btn" data-section-id="summarySection">¡Resumen asimilado!</button>
+      </section>
+<!-- Conclusion Section (HTML Completo) -->
+      <section id="conclusionSection" class="conclusion-section reveal-on-scroll" data-section-id="conclusionSection" aria-labelledby="conclusionHeading">
+        <h2 id="conclusionHeading" class="text-balance">🎉 Conclusión: ¡ 
+          <span class="student-name-placeholder text-indigo-600">Profe</span>, Ahora te Toca Volar Alto!
+        </h2>
+        <p class="message">¡Bravo, ! Has completado este módulo. Has desbloqueado una habilidad fundamental.</p>
+        <p class="message">Recuerda, el "pronteo" se perfecciona con la práctica. Sigue curioseando y experimentando.</p>
+        <p class="message">Imagina las posibilidades: clases más interactivas, estudiantes más motivados, y tú, , con más tiempo para inspirar.</p>
+        <p class="call-to-action">¡Tu creatividad y la de tus estudiantes son el límite! Sigue explorando. ¡El futuro es hoy!</p>
+        <button class="mark-as-read-btn" data-section-id="conclusionSection">¡Misión cumplida!</button> 
+        <br>
+        <button id="downloadCertificateBtn" class="download-certificate-btn" style="display: none; margin-top: 20px;">📜 Descargar Certificado</button>
+      </section>
+<!-- Bibliography/Resources Section (HTML Completo) -->
+      <section id="bibliographySection" class="bibliography-section reveal-on-scroll" data-section-id="bibliographySection" aria-labelledby="bibliographyHeading">
+        <h2 id="bibliographyHeading" class="text-balance">📚 Recursos Adicionales y Herramientas para Seguir Explorando</h2>
+        <p>¡El aprendizaje no termina aquí, ! Para seguir profundizando:</p>
+        <div class="icon-list mt-6">
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-tools">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Plataformas de IA Generativa:</h4>
+              <ul>
+                <li>
+                  <a href="https://chat.openai.com/" target="_blank" rel="noopener noreferrer">OpenAI ChatGPT</a>
+                </li>
+                <li>
+                  <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Google Gemini</a>
+                </li>
+                <li>
+                  <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer">Anthropic Claude</a>
+                </li>
+                <li>
+                  <a href="https://copilot.microsoft.com/" target="_blank" rel="noopener noreferrer">Microsoft Copilot</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="icon-list-item">
+            <div class="icon-list-icon icon-book">&nbsp;</div>
+            <div class="icon-list-content">
+              <h4>Guías y Comunidades sobre Prompting:</h4>
+              <ul>
+                <li>
+                  <a href="https://learnprompting.org/" target="_blank" rel="noopener noreferrer">LearnPrompting.org</a>
+                </li>
+                <li>
+                  <a href="https://www.promptingguide.ai/" target="_blank" rel="noopener noreferrer">Prompting Guide by DAIR.AI</a>
+                </li>
+                <li>Busca "Comunidades de Educadores con IA Bolivia" o "Docentes Innovadores Santa Cruz".</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="mt-6 text-center font-semibold">Recuerda, : usa estas herramientas con ética, responsabilidad y fomentando el pensamiento crítico.</p>
+        <button class="mark-as-read-btn" data-section-id="bibliographySection">¡Recursos guardados!</button>
+      </section>
+<!-- ## FIN DEL CONTENIDO COMPLETO DEL CURSO ## -->
+    </main>
+  </div>
+</div>
+<!-- Botón Volver Arriba y Modal --> 
+<a href="#" class="back-to-top" id="backToTopBtn" style="display: flex;" aria-label="Volver arriba">
+  <span aria-hidden="true">⬆️</span> 
+  <span class="visually-hidden">Volver al inicio de la página</span>
+</a>
+<div id="customModal" class="modal" style="display: none;" role="alertdialog" aria-labelledby="modalTitle" aria-describedby="modalMessage" aria-modal="true">
+  <div class="modal-content">
+    <h3 id="modalTitle" class="text-balance">&nbsp;</h3>
+    <p id="modalMessage">&nbsp;</p>
+    <button id="modalCloseBtn">¡Entendido!</button>
+  </div>
+</div>
