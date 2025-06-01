@@ -1,0 +1,1959 @@
+<immersive id="mooc-prompts-educacion-secundaria" title="Dominando los Prompts: IA para una Educación Secundaria Creativa">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominando los Prompts: IA para una Educación Secundaria Creativa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        /* Estilos para el contenedor principal de la aplicación */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #ffffff;
+            max-width: 1000px;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Estilos de la página de portada */
+        #coverPage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #coverPage h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        #coverPage p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            opacity: 0.9;
+        }
+
+        #startModuleBtn {
+            background-color: #FFD700;
+            color: #4B0082;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+        }
+
+        #startModuleBtn:hover {
+            background-color: #FFE54C;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Contenedor principal del módulo */
+        .module-container {
+            display: none; /* Oculto por defecto, se muestra con JS */
+            flex-grow: 1;
+        }
+
+        /* Encabezado del módulo */
+        .module-header {
+            background-color: #4B0082;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .module-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Barra de progreso */
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            height: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #FFD700;
+            transition: width 0.2s ease-out;
+            border-radius: 4px;
+        }
+
+        /* Navegación lateral */
+        .sidebar-nav {
+            width: 250px;
+            background-color: #f8f8f8;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav ul li a {
+            display: block;
+            padding: 10px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-nav ul li a.active,
+        .sidebar-nav ul li a:hover {
+            background-color: #e0e7ff;
+            color: #4B0082;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        .module-section, .interactive-activity {
+            background-color: #fff;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #667eea;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .module-section.is-visible, .interactive-activity.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .module-section h2, .interactive-activity h2 {
+            color: #4B0082;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .module-section h3 {
+            color: #667eea;
+            font-size: 1.6rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .module-section p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .module-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos específicos para los bloques de código */
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 0;
+            white-space: pre-wrap; /* Permite que el texto se ajuste */
+            word-wrap: break-word; /* Rompe palabras largas */
+        }
+
+
+        /* Estilos para el cuadro de reflexión */
+        .reflection-box {
+            background-color: #e6e6ff;
+            border-left: 5px solid #4B0082;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .reflection-box p {
+            color: #333;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .reflection-box p strong {
+            color: #4B0082;
+        }
+
+        /* Botón de Marcar como Leído */
+        .mark-as-read-btn {
+            background-color: #FFD700;
+            color: #4B0082;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            margin-top: 15px;
+            border: none;
+            display: inline-block;
+        }
+
+        .mark-as-read-btn:hover {
+            background-color: #FFE54C;
+            transform: translateY(-2px);
+        }
+
+        .mark-as-read-btn.completed {
+            background-color: #28a745;
+            color: white;
+            cursor: default;
+        }
+
+        .mark-as-read-btn.completed:hover {
+            background-color: #218838;
+            transform: none;
+        }
+
+        /* Estilos de las actividades */
+        .interactive-activity {
+            border-left: 5px solid #FFD700;
+            background-color: #fdfdfd;
+        }
+
+        .interactive-activity h2 {
+            color: #667eea;
+        }
+
+        .activity-instruction {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* Quiz */
+        .quiz-option {
+            background-color: #f0f8ff;
+            border: 1px solid #d0e0f0;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .quiz-option:hover {
+            background-color: #e0f0ff;
+            border-color: #a0c0e0;
+        }
+
+        .quiz-option.selected {
+            background-color: #cfe2f3;
+            border-color: #9ac2e8;
+            font-weight: 600;
+        }
+
+        .quiz-option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .quiz-option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            font-weight: 600;
+        }
+
+        .quiz-feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .quiz-feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .quiz-feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Exercise & Problem Solving */
+        .prompt-textarea {
+            width: 100%;
+            min-height: 120px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 1rem;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .prompt-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .submit-btn {
+            background-color: #4B0082;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+            border: none;
+        }
+
+        .submit-btn:hover {
+            background-color: #667eea;
+        }
+
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .response-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            border: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        .response-feedback strong {
+            color: #4B0082;
+        }
+
+        /* Matching Activity */
+        .matching-pair {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .matching-concept {
+            flex-basis: 40%;
+            font-weight: 600;
+            color: #4B0082;
+        }
+
+        .matching-options {
+            flex-basis: 60%;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .matching-option-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background-color: #e9e9e9;
+            padding: 8px 12px;
+            border-radius: 20px;
+            transition: background-color 0.2s ease;
+        }
+
+        .matching-option-label:hover {
+            background-color: #dcdcdc;
+        }
+
+        .matching-option-label input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        .matching-option-label.selected {
+            background-color: #cfe2f3;
+            border: 1px solid #9ac2e8;
+        }
+
+        .matching-option-label.correct {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .matching-option-label.incorrect {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #721c24;
+        }
+
+        /* True/False Activity */
+        .true-false-question {
+            background-color: #f0f8ff;
+            border: 1px solid #d0e0f0;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .true-false-question p {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #4B0082;
+        }
+
+        .true-false-options input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .true-false-options label {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .true-false-feedback {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* Botones de Reiniciar */
+        .reset-button {
+            background-color: #e7e7e7;
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            border: none;
+            font-weight: 500;
+        }
+
+        .reset-button:hover {
+            background-color: #d4d4d4;
+        }
+
+        .reset-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Icon List */
+        .icon-list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .icon-list-icon {
+            font-size: 2.5rem;
+            color: #4B0082;
+            margin-right: 15px;
+            flex-shrink: 0;
+            /* Placeholder for actual icons */
+        }
+
+        /* Specific icon classes for better visual representation */
+        .icon-idea::before { content: '💡'; }
+        .icon-quiz::before { content: '❓'; }
+        .icon-strategy::before { content: '🧠'; }
+        .icon-feedback::before { content: '💬'; }
+        .icon-efficiency::before { content: '⚡'; }
+
+
+        .icon-list-content h4 {
+            font-size: 1.2rem;
+            color: #4B0082;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .icon-list-content p {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .icon-list-content p strong {
+            color: #667eea;
+        }
+
+        /* Summary & Conclusion */
+        .summary-section, .conclusion-section {
+            background-color: #e6e6ff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .summary-section h2, .conclusion-section h2 {
+            color: #4B0082;
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .summary-section ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .summary-section ul li {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #333;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .summary-section ul li::before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-size: 1.2rem;
+        }
+
+        .summary-section .closing-remark, .conclusion-section .message {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .conclusion-section .call-to-action {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-top: 30px;
+        }
+
+        /* Bibliography */
+        .bibliography-section {
+            background-color: #f0f8ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #FFD700;
+        }
+
+        .bibliography-section h2 {
+            color: #4B0082;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .bibliography-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bibliography-section ul li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .bibliography-section ul li a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .bibliography-section ul li a:hover {
+            text-decoration: underline;
+            color: #4B0082;
+        }
+
+        /* Botón de volver arriba */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4B0082;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-to-top:hover {
+            background-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(-50px);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            color: #4B0082;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .modal-content button {
+            background-color: #667eea;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #4B0082;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #coverPage h1 {
+                font-size: 2.2rem;
+            }
+
+            #coverPage p {
+                font-size: 1rem;
+            }
+
+            #startModuleBtn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+
+            .module-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .module-header p {
+                font-size: 0.9rem;
+            }
+
+            .sidebar-nav {
+                display: none; /* Oculta la barra lateral en móviles */
+                width: 100%;
+                height: auto;
+                position: static;
+                box-shadow: none;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .module-section, .interactive-activity {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .module-section h2, .interactive-activity h2 {
+                font-size: 1.8rem;
+            }
+
+            .module-section h3 {
+                font-size: 1.4rem;
+            }
+
+            .summary-section h2, .conclusion-section h2 {
+                font-size: 2rem;
+            }
+
+            .summary-section ul li {
+                font-size: 1rem;
+            }
+
+            .summary-section .closing-remark, .conclusion-section .message {
+                font-size: 1.1rem;
+            }
+
+            .conclusion-section .call-to-action {
+                font-size: 1.2rem;
+            }
+
+            .matching-pair {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .matching-concept {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Estilos para el video de YouTube */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .video-thumbnail-overlay:hover {
+            background-color: rgba(0, 0, 0, 0.65);
+        }
+
+        .video-thumbnail-overlay img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .video-play-button {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 0, 0, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: white;
+            padding-left: 8px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            transition: transform 0.2s ease;
+        }
+
+        .video-play-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="coverPage" class="relative">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg">Dominando los Prompts: IA para una Educación Secundaria Creativa</h1>
+        <p class="text-lg sm:text-xl md:text-2xl opacity-90 mb-8 max-w-3xl">Desarrolla tus habilidades de "pronteo" para transformar tu práctica docente, fomentar la creatividad estudiantil y aplicar métodos activos en el aula.</p>
+        <div class="absolute inset-x-0 bottom-10 flex flex-col items-center">
+            <p class="text-yellow-300 text-xl font-semibold mb-4">¡Tu viaje hacia la innovación educativa comienza aquí!</p>
+            <button id="startModuleBtn" class="bg-yellow-400 text-purple-900 font-bold py-4 px-8 rounded-full shadow-lg hover:bg-yellow-300 transform hover:scale-105 transition duration-300 ease-in-out">
+                Comenzar Módulo
+            </button>
+        </div>
+    </div>
+
+    <div id="moduleContainer" class="module-container">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row app-container">
+            <div class="sidebar-nav hidden lg:block">
+                <h3 class="text-lg font-bold text-purple-900 mb-5">Navegación del Módulo</h3>
+                <ul id="sidebarNavList">
+                    <li><a href="#welcomeSection" class="active">Bienvenida</a></li>
+                    <li><a href="#objectivesSection">Objetivos de Aprendizaje</a></li>
+                    <li><a href="#section-intro-prompts">¿Qué es un Prompt?</a></li>
+                    <li><a href="#section-creativity-prompts">Prompts para la Creatividad</a></li>
+                    <li><a href="#section-active-methods">Prompts para Métodos Activos</a></li>
+                    <li><a href="#section-refining-prompts">Refinando tus Prompts</a></li>
+                    <li><a href="#quizActivity">Actividad: Quiz</a></li>
+                    <li><a href="#exerciseActivity">Actividad: Ejercicio</a></li>
+                    <li><a href="#problemSolvingActivity">Actividad: Resolución de Problemas</a></li>
+                    <li><a href="#matchingActivity">Actividad: Emparejamiento</a></li>
+                    <li><a href="#trueFalseActivity">Actividad: Verdadero/Falso</a></li>
+                    <li><a href="#summarySection">Resumen del Módulo</a></li>
+                    <li><a href="#conclusionSection">Conclusión</a></li>
+                    <li><a href="#bibliographySection">Bibliografía</a></li>
+                </ul>
+                <div class="mt-8 text-sm text-gray-600">
+                    <p>Profesor: <span class="font-semibold text-purple-800">Dr. Elara Cosmos</span></p>
+                    <p>Materia: <span class="font-semibold text-purple-800">Ciencias del Espacio</span></p>
+                    <p class="mt-4">Progreso General: <span id="globalScore" class="font-bold text-blue-700">0%</span></p>
+                </div>
+            </div>
+
+            <div class="main-content flex-grow p-5 lg:p-8">
+                <header class="module-header rounded-lg mb-8 p-6 text-center shadow-lg">
+                    <h1 class="text-3xl font-bold mb-2">Dominando los Prompts: IA para una Educación Secundaria Creativa</h1>
+                    <p class="text-lg font-light">Desarrolla tu habilidad de "pronteo" para potenciar la creatividad y los métodos activos en tus clases.</p>
+                    <div class="video-container mt-6">
+                        <div class="video-thumbnail-overlay" data-video-id="dQw4w9WgXcQ" data-thumbnail-url="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Video Thumbnail: Fundamentos de la Astronomía">
+                            <div class="video-play-button">▶</div>
+                        </div>
+                        <iframe id="youtubeVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: none;"></iframe>
+                    </div>
+                </header>
+
+                <section id="welcomeSection" class="module-section reveal-on-scroll">
+                    <h2 class="text-purple-800">¡Bienvenido al Curso de Prompts para la Educación!</h2>
+                    <p class="mb-4">En este módulo, exploraremos cómo la formulación de "prompts" efectivos para herramientas de Inteligencia Artificial puede transformar tu práctica docente en la educación secundaria.</p>
+                    <p class="mb-4">Nuestro objetivo es que descubras el potencial de la IA para impulsar la creatividad de tus estudiantes y para implementar metodologías activas de aprendizaje de una manera innovadora y divertida.</p>
+                    <p class="mb-4">Prepárate para desatar tu creatividad y la de tus alumnos. ¿Listos para prontear?</p>
+                    <img src="https://images.pexels.com/photos/8617835/pexels-photo-8617835.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Estudiantes usando tecnología en el aula" class="module-image">
+                    <button class="mark-as-read-btn" data-section-id="welcomeSection" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <section id="objectivesSection" class="module-section reveal-on-scroll">
+                    <h2 class="text-purple-800">Objetivos de Aprendizaje</h2>
+                    <p class="activity-instruction">Al finalizar este módulo, serás capaz de:</p>
+                    <ul class="list-disc list-inside space-y-2 text-lg text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 text-2xl leading-none">✔</span>
+                            <span>Comprender qué es un prompt y su importancia en la interacción con la IA.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 text-2xl leading-none">✔</span>
+                            <span>Diseñar prompts efectivos para fomentar la creatividad en los estudiantes de secundaria.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 text-2xl leading-none">✔</span>
+                            <span>Aplicar prompts para diseñar actividades con métodos activos de aprendizaje.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 text-2xl leading-none">✔</span>
+                            <span>Refinar prompts para obtener resultados más precisos y relevantes.</span>
+                        </li>
+                    </ul>
+                    <button class="mark-as-read-btn" data-section-id="objectivesSection" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <section id="section-intro-prompts" class="module-section reveal-on-scroll">
+                    <h2 class="text-purple-800">¿Qué es un Prompt?</h2>
+                    <p>En el contexto de la Inteligencia Artificial, un "prompt" es una instrucción o una pregunta que le das a un modelo de IA para que genere una respuesta. Es, en esencia, tu forma de comunicarte con la máquina.</p>
+                    <p>Imagina que la IA es un genio de la lámpara. El prompt es tu deseo. Si tu deseo es claro, específico y bien formulado, el genio (IA) te dará exactamente lo que quieres. Si tu deseo es vago, bueno... ¡puedes terminar con una patata voladora en lugar de un coche deportivo!</p>
+                    <img src="https://images.pexels.com/photos/3474320/pexels-photo-3474320.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Una persona escribiendo en un teclado con luces de neón" class="module-image">
+                    <div class="reflection-box">
+                        <p class="font-semibold text-purple-800 mb-2">🤔 Reflexión:</p>
+                        <p class="text-base">¿Cómo crees que la calidad de un prompt puede afectar la calidad de la respuesta de una IA?</p>
+                    </div>
+                    <button class="mark-as-read-btn" data-section-id="section-intro-prompts" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <section id="section-creativity-prompts" class="module-section reveal-on-scroll">
+                    <h2 class="text-purple-800">Prompts para la Creatividad de tus Estudiantes</h2>
+                    <p>La IA es una herramienta fantástica para desatar la creatividad. Puedes pedirle a una IA que genere ideas, que desarrolle personajes, que escriba historias, que cree poemas o incluso que invente problemas matemáticos con un toque divertido.</p>
+                    <p>Los prompts deben ser inspiradores y dejar espacio para la imaginación. No le digas a la IA que te dé "una historia". Mejor dile: "Crea una historia corta y humorística sobre un calcetín que se pierde en la lavadora y termina descubriendo una civilización secreta bajo el sofá. El protagonista es un poco gruñón pero tiene un corazón de oro." ¡Ahora sí!</p>
+                    <img src="https://images.pexels.com/photos/110820/pexels-photo-110820.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Un cerebro iluminado con ideas abstractas flotando alrededor" class="module-image">
+                    <h3 class="text-blue-700 mt-8 text-xl font-semibold border-b border-blue-300 pb-2 mb-4 sm:text-lg">Estructura de un Prompt Creativo</h3>
+                    <div class="code-block">
+                        <pre>
+Rol + Tarea + Detalles + Formato + Tono
+
+Ejemplo:
+"Actúa como un guionista de cine.
+Genera 5 ideas de cortometrajes para adolescentes
+que traten sobre el impacto de la tecnología,
+con un enfoque en el humor y el drama,
+en formato de lista numerada."
+                        </pre>
+                    </div>
+                    <div class="icon-list mt-8">
+                        <div class="icon-list-item">
+                            <div class="icon-idea"></div>
+                            <div class="icon-list-content">
+                                <h4>Lluvia de ideas</h4>
+                                <p><strong>¿Te faltan ideas para un tema específico?</strong> Pídele a la IA que te sugiera enfoques. <br><strong>Caso de uso:</strong> Un docente necesita ideas para un proyecto de ciencias que sea práctico y divertido para niños de 8 años. Con IA, puede obtener una lista de opciones en minutos, ahorrando tiempo de investigación.</p>
+                            </div>
+                        </div>
+                        <div class="icon-list-item">
+                            <div class="icon-quiz"></div>
+                            <div class="icon-list-content">
+                                <h4>Generación de preguntas</h4>
+                                <p>Puedes pedirle que cree preguntas que fomenten el pensamiento crítico o que sirvan para un quiz rápido. <br><strong>Caso de uso:</strong> Un profesor de filosofía busca preguntas abiertas para estimular una discusión profunda en clase. La IA puede proporcionar prompts que inviten a la reflexión.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reflection-box">
+                        <p class="font-semibold text-purple-800 mb-2">🤔 Reflexión:</p>
+                        <p class="text-base">Piensa en una clase que te gustaría hacer más creativa. ¿Qué tipo de prompt podrías usar para generar ideas para esa clase?</p>
+                    </div>
+                    <button class="mark-as-read-btn" data-section-id="section-creativity-prompts" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <section id="section-active-methods" class="module-section reveal-on-scroll">
+                    <h2 class="text-purple-800">Prompts para Métodos Activos de Aprendizaje</h2>
+                    <p>Los métodos activos de aprendizaje, como el aprendizaje basado en proyectos o el aprendizaje cooperativo, benefician enormemente de la IA. Puedes pedirle a la IA que te ayude a diseñar escenarios, roles, o incluso rúbricas de evaluación para estas actividades.</p>
+                    <p>Por ejemplo, si estás planeando un debate en clase, la IA puede ayudarte a generar argumentos a favor y en contra de un tema, o incluso a crear perfiles de personajes para un juego de roles.</p>
+                    <img src="https://images.pexels.com/photos/3771060/pexels-photo-3771060.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Grupo de estudiantes colaborando en un proyecto" class="module-image">
+                    <h3 class="text-blue-700 mt-8 text-xl font-semibold border-b border-blue-300 pb-2 mb-4 sm:text-lg">Ejemplo de Prompt para ABP</h3>
+                    <div class="code-block">
+                        <pre>
+"Actúa como un diseñador de proyectos educativos.
+Desarrolla una propuesta de Aprendizaje Basado en Proyectos (ABP)
+para estudiantes de 15 años sobre el cambio climático.
+Incluye:
+- Objetivo del proyecto
+- Actividades clave
+- Rol del estudiante
+- Producto final esperado
+- Sugerencias de evaluación
+Considera que el proyecto debe durar 3 semanas."
+                        </pre>
+                    </div>
+                    <div class="icon-list mt-8">
+                        <div class="icon-list-item">
+                            <div class="icon-strategy"></div>
+                            <div class="icon-list-content">
+                                <h4>Diseño de Estrategias</h4>
+                                <p><strong>Necesitas una nueva forma de enseñar un tema complejo?</strong> La IA puede sugerir estrategias innovadoras. <br><strong>Caso de uso:</strong> Un docente de matemáticas busca cómo hacer más atractiva la enseñanza de las funciones cuadráticas. La IA puede proponer simulaciones interactivas o proyectos de aplicación real.</p>
+                            </div>
+                        </div>
+                        <div class="icon-list-item">
+                            <div class="icon-feedback"></div>
+                            <div class="icon-list-content">
+                                <h4>Generación de Feedback</h4>
+                                <p>Puedes pedirle a la IA que genere feedback constructivo para trabajos de estudiantes. <br><strong>Caso de uso:</strong> Un profesor de lengua y literatura quiere dar retroalimentación detallada a sus alumnos sobre un ensayo, pero tiene poco tiempo. La IA puede ofrecer puntos clave de mejora basándose en criterios específicos.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reflection-box">
+                        <p class="font-semibold text-purple-800 mb-2">🤔 Reflexión:</p>
+                        <p class="text-base">¿Cómo podrías usar la IA para preparar un debate en tu clase sobre un tema controversial pero educativo?</p>
+                    </div>
+                    <button class="mark-as-read-btn" data-section-id="section-active-methods" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <section id="section-refining-prompts" class="module-section reveal-on-scroll">
+                    <h2 class="text-purple-800">Refinando tus Prompts: El Arte de la Precisión</h2>
+                    <p>No todos los prompts son creados iguales. Un buen prompt es como una receta perfecta: tiene los ingredientes correctos en las cantidades adecuadas. Para refinar tus prompts, considera los siguientes elementos:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong>Claridad y Especificidad:</strong> Evita la ambigüedad. Sé tan detallado como sea posible.</li>
+                        <li><strong>Contexto:</strong> Dale a la IA suficiente información de fondo para que entienda lo que necesitas.</li>
+                        <li><strong>Formato Deseado:</strong> ¿Necesitas una lista, un párrafo, un poema, un código? Indícalo.</li>
+                        <li><strong>Tono y Estilo:</strong> ¿Formal, informal, divertido, serio? La IA puede adaptar su respuesta.</li>
+                        <li><strong>Restricciones:</strong> Si hay límites de longitud, temas a evitar, o requisitos específicos, menciónalos.</li>
+                    </ul>
+                    <img src="https://images.pexels.com/photos/3183186/pexels-photo-3183186.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Persona usando una lupa para examinar un prompt en una pantalla" class="module-image">
+                    <h3 class="text-blue-700 mt-8 text-xl font-semibold border-b border-blue-300 pb-2 mb-4 sm:text-lg">Un mal prompt vs. un buen prompt</h3>
+                    <div class="code-block">
+                        <pre>
+Mal Prompt: "Haz una historia."
+(Demasiado general, la IA podría darte cualquier cosa)
+
+Buen Prompt:
+"Actúa como un autor de cuentos infantiles.
+Crea una historia corta (máximo 500 palabras)
+para niños de 8 a 10 años sobre la importancia del trabajo en equipo,
+protagonizada por animales del bosque que deben construir un puente.
+El tono debe ser divertido y las acciones deben ser claras y directas."
+                        </pre>
+                    </div>
+                    <div class="icon-list mt-8">
+                        <div class="icon-list-item">
+                            <div class="icon-efficiency"></div>
+                            <div class="icon-list-content">
+                                <h4>Optimización de Tiempo</h4>
+                                <p><strong>¿Buscas ser más eficiente en tus tareas administrativas?</strong> La IA puede automatizar la redacción de correos, planificaciones o informes. <br><strong>Caso de uso:</strong> Un director de escuela necesita redactar un informe trimestral. La IA puede generar un borrador inicial con los puntos clave, ahorrando horas de trabajo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reflection-box">
+                        <p class="font-semibold text-purple-800 mb-2">🤔 Reflexión:</p>
+                        <p class="text-base">¿Qué elementos de tus prompts actuales podrías mejorar para obtener respuestas más útiles de la IA?</p>
+                    </div>
+                    <button class="mark-as-read-btn" data-section-id="section-refining-prompts" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <div id="quizActivity" class="interactive-activity reveal-on-scroll" data-last-score="0">
+                    <h2 class="text-purple-800">Actividad: Quiz</h2>
+                    <p class="activity-instruction">Responde las siguientes preguntas sobre los conceptos clave de los prompts.</p>
+                    <div class="quiz-question mb-4">
+                        <p class="font-semibold mb-2">1. ¿Cuál es el cuerpo celeste más grande de nuestro sistema solar?</p>
+                        <div class="options">
+                            <div class="quiz-option" data-question="q1" data-value="a">a) La Tierra</div>
+                            <div class="quiz-option" data-question="q1" data-value="b">b) Júpiter</div>
+                            <div class="quiz-option" data-question="q1" data-value="c">c) El Sol</div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback-q1"></div>
+                    </div>
+                    <div class="quiz-question mb-4">
+                        <p class="font-semibold mb-2">2. ¿Qué diferencia a la astronomía de la astrología?</p>
+                        <div class="options">
+                            <div class="quiz-option" data-question="q2" data-value="a">a) La astronomía usa telescopios y la astrología no.</div>
+                            <div class="quiz-option" data-question="q2" data-value="b">b) La astronomía es una ciencia y la astrología no.</div>
+                            <div class="quiz-option" data-question="q2" data-value="c">c) La astronomía estudia el futuro y la astrología el pasado.</div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback-q2"></div>
+                    </div>
+                    <button class="submit-btn" id="submitQuizBtn">Enviar Respuestas</button>
+                    <button class="reset-button" id="resetQuizBtn">Reiniciar</button>
+                </div>
+
+                <div id="exerciseActivity" class="interactive-activity reveal-on-scroll" data-last-score="0">
+                    <h2 class="text-purple-800">Actividad: Ejercicio de Prompt (Creatividad)</h2>
+                    <p class="activity-instruction">Imagina que necesitas ideas para un proyecto sobre la <strong class='text-blue-900 font-bold'>exploración espacial</strong> para tus alumnos de secundaria. Escribe un prompt sencillo pero efectivo que le harías a un asistente de IA:</p>
+                    <textarea id="exercisePromptInput" class="prompt-textarea" placeholder="Ej: 'Asistente, dame 3 ideas de proyectos sobre exploración espacial para alumnos de 14 años...'"></textarea>
+                    <button class="submit-btn" id="submitExerciseBtn">Evaluar Prompt</button>
+                    <button class="reset-button" id="resetExerciseBtn">Reiniciar</button>
+                    <div id="exerciseFeedback" class="response-feedback mt-4 hidden"></div>
+                </div>
+
+                <div id="problemSolvingActivity" class="interactive-activity reveal-on-scroll" data-last-score="0">
+                    <h2 class="text-purple-800">Actividad: Resolución de Problemas (Métodos Activos)</h2>
+                    <p class="activity-instruction">Imagina que tus alumnos de 10 años tienen dificultades para entender el concepto de <strong class='text-blue-900'>gravedad</strong> y se aburren con las explicaciones teóricas. Escribe un prompt que le harías a un asistente de IA para crear una estrategia innovadora y divertida para enseñar gravedad a este grupo.</p>
+                    <textarea id="problemSolvingPromptInput" class="prompt-textarea" placeholder="Ej: 'Actúa como un experto en pedagogía. Necesito 3 ideas de experimentos interactivos para enseñar gravedad a niños de 10 años...'"></textarea>
+                    <button class="submit-btn" id="submitProblemSolvingBtn">Evaluar Prompt</button>
+                    <button class="reset-button" id="resetProblemSolvingBtn">Reiniciar</button>
+                    <div id="problemSolvingFeedback" class="response-feedback mt-4 hidden"></div>
+                </div>
+
+                <div id="matchingActivity" class="interactive-activity reveal-on-scroll" data-last-score="0">
+                    <h2 class="text-purple-800">Actividad: Emparejamiento</h2>
+                    <p class="activity-instruction">Empareja cada concepto clave de los prompts con su característica principal.</p>
+                    <div class="matching-questions">
+                        <div class="matching-pair mb-4" data-question-id="match1">
+                            <div class="matching-concept">Claridad y Especificidad</div>
+                            <div class="matching-options">
+                                <label class="matching-option-label"><input type="radio" name="match1" value="a"> Abarcar muchos temas</label>
+                                <label class="matching-option-label"><input type="radio" name="match1" value="b"> Evitar la ambigüedad y ser detallado</label>
+                                <label class="matching-option-label"><input type="radio" name="match1" value="c"> Usar un lenguaje poético</label>
+                            </div>
+                            <div class="quiz-feedback" id="feedback-match1"></div>
+                        </div>
+                        <div class="matching-pair mb-4" data-question-id="match2">
+                            <div class="matching-concept">Tono y Estilo</div>
+                            <div class="matching-options">
+                                <label class="matching-option-label"><input type="radio" name="match2" value="a"> Formal, informal o divertido</label>
+                                <label class="matching-option-label"><input type="radio" name="match2" value="b"> Siempre serio y académico</label>
+                                <label class="matching-option-label"><input type="radio" name="match2" value="c"> Solo humorístico</label>
+                            </div>
+                            <div class="quiz-feedback" id="feedback-match2"></div>
+                        </div>
+                        <div class="matching-pair mb-4" data-question-id="match3">
+                            <div class="matching-concept">Restricciones</div>
+                            <div class="matching-options">
+                                <label class="matching-option-label"><input type="radio" name="match3" value="a"> Ignorar los límites de longitud</label>
+                                <label class="matching-option-label"><input type="radio" name="match3" value="b"> Mencionar límites de longitud o temas a evitar</label>
+                                <label class="matching-option-label"><input type="radio" name="match3" value="c"> Dejar que la IA decida la estructura</label>
+                            </div>
+                            <div class="quiz-feedback" id="feedback-match3"></div>
+                        </div>
+                    </div>
+                    <button class="submit-btn" id="submitMatchingBtn">Verificar Emparejamientos</button>
+                    <button class="reset-button" id="resetMatchingBtn">Reiniciar</button>
+                </div>
+
+                <div id="trueFalseActivity" class="interactive-activity reveal-on-scroll" data-last-score="0">
+                    <h2 class="text-purple-800">Actividad: Verdadero/Falso</h2>
+                    <p class="activity-instruction">Indica si las siguientes afirmaciones sobre los prompts son Verdaderas o Falsas.</p>
+                    <div class="true-false-question" data-question-id="tf1">
+                        <p>1. Un prompt debe ser siempre lo más breve posible para ser efectivo.</p>
+                        <div class="true-false-options">
+                            <label><input type="radio" name="tf1" value="true"> Verdadero</label>
+                            <label><input type="radio" name="tf1" value="false"> Falso</label>
+                        </div>
+                        <div class="true-false-feedback" id="feedback-tf1"></div>
+                    </div>
+                    <div class="true-false-question" data-question-id="tf2">
+                        <p>2. Incluir el "rol" en un prompt ayuda a la IA a comprender mejor el contexto de la respuesta deseada.</p>
+                        <div class="true-false-options">
+                            <label><input type="radio" name="tf2" value="true"> Verdadero</label>
+                            <label><input type="radio" name="tf2" value="false"> Falso</label>
+                        </div>
+                        <div class="true-false-feedback" id="feedback-tf2"></div>
+                    </div>
+                    <button class="submit-btn" id="submitTrueFalseBtn">Verificar Respuestas</button>
+                    <button class="reset-button" id="resetTrueFalseBtn">Reiniciar</button>
+                </div>
+
+                <section id="summarySection" class="summary-section reveal-on-scroll">
+                    <h2 class="text-purple-800">Resumen del Módulo: Dominando los Prompts</h2>
+                    <p class="activity-instruction">Puntos clave que hemos cubierto:</p>
+                    <ul class="space-y-3">
+                        <li>La astronomía es la ciencia que estudia el universo y sus componentes.</li>
+                        <li>Nuestro sistema solar incluye planetas rocosos y gaseosos, asteroides y cometas.</li>
+                        <li>La observación y el método científico son fundamentales en la astronomía.</li>
+                    </ul>
+                    <p class="closing-remark">La exploración del cosmos es un viaje sin fin que nos invita a la curiosidad y al descubrimiento.</p>
+                    <button class="mark-as-read-btn" data-section-id="summarySection" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <section id="conclusionSection" class="conclusion-section reveal-on-scroll">
+                    <h2 class="text-purple-800">Conclusión y Próximos Pasos en la Astronomía</h2>
+                    <p class="message">¡Felicidades por completar este módulo introductorio a la astronomía! Has adquirido una base sólida para explorar las maravillas del universo. Te animamos a seguir investigando y a observar el cielo nocturno.</p>
+                    <p class="call-to-action">¡Tu curiosidad es la clave para desvelar los misterios del cosmos!</p>
+                    <button class="mark-as-read-btn" data-section-id="conclusionSection" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+                <section id="bibliographySection" class="bibliography-section reveal-on-scroll">
+                    <h2 class="text-purple-800">Bibliografía Adicional</h2>
+                    <ul>
+                        <li><a href="https://solarsystem.nasa.gov/es/solar-system/our-solar-system/overview/" target="_blank" rel="noopener noreferrer">NASA: Exploración del Sistema Solar</a></li>
+                        <li><a href="https://www.esa.int/Space_in_Member_States/Spain/Descubre_el_Universo" target="_blank" rel="noopener noreferrer">European Space Agency (ESA): Descubre el Universo</a></li>
+                        <li><a href="https://www.nationalgeographic.es/espacio/astronomia" target="_blank" rel="noopener noreferrer">National Geographic: Astronomía</a></li>
+                    </ul>
+                    <button class="mark-as-read-btn" data-section-id="bibliographySection" onclick="markSectionAsRead(this)">Marcar como leído</button>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="back-to-top" id="backToTopBtn">⬆️</a>
+
+    <div id="customModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <button id="modalCloseBtn">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        // Global state to track completed sections
+        const completedSections = new Set();
+        const totalSections = document.querySelectorAll('.module-section, .interactive-activity').length;
+
+        // Function to update the progress bar and global score
+        function updateProgressBar() {
+            const completedCount = completedSections.size;
+            const progress = (completedCount / totalSections) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('globalScore').textContent = `${Math.round(progress)}%`;
+        }
+
+        // Function to mark a section as read
+        function markSectionAsRead(button) {
+            const sectionId = button.dataset.sectionId;
+            const section = document.getElementById(sectionId);
+
+            if (!completedSections.has(sectionId)) {
+                completedSections.add(sectionId);
+                button.classList.add('completed');
+                button.textContent = 'Completado ✅';
+                button.disabled = true;
+                showCustomModal('Sección Completada', `¡Has marcado la sección "${section.querySelector('h2, h3').textContent}" como leída! Sigue así.`);
+            }
+            updateProgressBar();
+            saveProgress();
+        }
+
+        // Function to save progress to localStorage
+        function saveProgress() {
+            const progressData = {
+                completedSections: Array.from(completedSections),
+                globalScore: document.getElementById('globalScore').textContent,
+                // Save quiz states
+                quiz: {
+                    q1: {
+                        selected: document.querySelector('.quiz-question:nth-child(1) .quiz-option.selected')?.dataset.value || null,
+                        feedback: document.getElementById('feedback-q1').innerHTML
+                    },
+                    q2: {
+                        selected: document.querySelector('.quiz-question:nth-child(2) .quiz-option.selected')?.dataset.value || null,
+                        feedback: document.getElementById('feedback-q2').innerHTML
+                    }
+                },
+                exercise: {
+                    prompt: document.getElementById('exercisePromptInput').value,
+                    feedback: document.getElementById('exerciseFeedback').innerHTML,
+                    hidden: document.getElementById('exerciseFeedback').classList.contains('hidden')
+                },
+                problemSolving: {
+                    prompt: document.getElementById('problemSolvingPromptInput').value,
+                    feedback: document.getElementById('problemSolvingFeedback').innerHTML,
+                    hidden: document.getElementById('problemSolvingFeedback').classList.contains('hidden')
+                },
+                matching: Array.from(document.querySelectorAll('.matching-pair')).map(pair => ({
+                    id: pair.dataset.questionId,
+                    selected: pair.querySelector('input[type="radio"]:checked')?.value || null,
+                    feedback: pair.querySelector('.quiz-feedback')?.innerHTML || ''
+                })),
+                trueFalse: Array.from(document.querySelectorAll('.true-false-question')).map(question => ({
+                    id: question.dataset.questionId,
+                    selected: question.querySelector('input[type="radio"]:checked')?.value || null,
+                    feedback: question.querySelector('.true-false-feedback')?.innerHTML || ''
+                }))
+            };
+            localStorage.setItem('moocProgress_prompts_educacion', JSON.stringify(progressData));
+        }
+
+        // Function to load progress from localStorage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('moocProgress_prompts_educacion');
+            if (savedProgress) {
+                const progressData = JSON.parse(savedProgress);
+                progressData.completedSections.forEach(sectionId => {
+                    completedSections.add(sectionId);
+                    const button = document.querySelector(`[data-section-id="${sectionId}"]`);
+                    if (button) {
+                        button.classList.add('completed');
+                        button.textContent = 'Completado ✅';
+                        button.disabled = true;
+                    }
+                });
+
+                // Restore quiz state
+                if (progressData.quiz) {
+                    const q1Options = document.querySelectorAll('.quiz-question:nth-child(1) .quiz-option');
+                    q1Options.forEach(opt => {
+                        if (opt.dataset.value === progressData.quiz.q1.selected) {
+                            opt.classList.add('selected');
+                        }
+                    });
+                    document.getElementById('feedback-q1').innerHTML = progressData.quiz.q1.feedback;
+
+                    const q2Options = document.querySelectorAll('.quiz-question:nth-child(2) .quiz-option');
+                    q2Options.forEach(opt => {
+                        if (opt.dataset.value === progressData.quiz.q2.selected) {
+                            opt.classList.add('selected');
+                        }
+                    });
+                    document.getElementById('feedback-q2').innerHTML = progressData.quiz.q2.feedback;
+                }
+
+                // Restore exercise state
+                if (progressData.exercise) {
+                    document.getElementById('exercisePromptInput').value = progressData.exercise.prompt;
+                    document.getElementById('exerciseFeedback').innerHTML = progressData.exercise.feedback;
+                    if (!progressData.exercise.hidden) {
+                        document.getElementById('exerciseFeedback').classList.remove('hidden');
+                    }
+                }
+
+                // Restore problem-solving state
+                if (progressData.problemSolving) {
+                    document.getElementById('problemSolvingPromptInput').value = progressData.problemSolving.prompt;
+                    document.getElementById('problemSolvingFeedback').innerHTML = progressData.problemSolving.feedback;
+                    if (!progressData.problemSolving.hidden) {
+                        document.getElementById('problemSolvingFeedback').classList.remove('hidden');
+                    }
+                }
+
+                // Restore matching activity state
+                if (progressData.matching) {
+                    progressData.matching.forEach(savedPair => {
+                        const pairElement = document.querySelector(`.matching-pair[data-question-id="${savedPair.id}"]`);
+                        if (pairElement && savedPair.selected) {
+                            const selectedRadio = pairElement.querySelector(`input[type="radio"][value="${savedPair.selected}"]`);
+                            if (selectedRadio) {
+                                selectedRadio.checked = true;
+                                const label = selectedRadio.closest('label');
+                                if (label) {
+                                    label.classList.add('selected');
+                                    // Apply correct/incorrect classes if feedback implies it
+                                    if (savedPair.feedback.includes('Correcto')) {
+                                        label.classList.add('correct');
+                                    } else if (savedPair.feedback.includes('Incorrecto')) {
+                                        label.classList.add('incorrect');
+                                    }
+                                }
+                            }
+                            const feedbackDiv = pairElement.querySelector('.quiz-feedback');
+                            if (feedbackDiv) {
+                                feedbackDiv.innerHTML = savedPair.feedback;
+                            }
+                        }
+                    });
+                }
+
+                // Restore true/false activity state
+                if (progressData.trueFalse) {
+                    progressData.trueFalse.forEach(savedQuestion => {
+                        const questionElement = document.querySelector(`.true-false-question[data-question-id="${savedQuestion.id}"]`);
+                        if (questionElement && savedQuestion.selected) {
+                            const selectedRadio = questionElement.querySelector(`input[type="radio"][value="${savedQuestion.selected}"]`);
+                            if (selectedRadio) {
+                                selectedRadio.checked = true;
+                            }
+                            const feedbackDiv = questionElement.querySelector('.true-false-feedback');
+                            if (feedbackDiv) {
+                                feedbackDiv.innerHTML = savedQuestion.feedback;
+                                // Apply correct/incorrect classes if feedback implies it
+                                if (savedQuestion.feedback.includes('¡Correcto!')) {
+                                    feedbackDiv.classList.add('correct');
+                                } else if (savedQuestion.feedback.includes('Incorrecto')) {
+                                    feedbackDiv.classList.add('incorrect');
+                                }
+                            }
+                        }
+                    });
+                }
+
+
+                updateProgressBar();
+            }
+        }
+
+        // Function to show custom modal
+        function showCustomModal(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('customModal').classList.add('show');
+        }
+
+        // Event listener for modal close button
+        document.getElementById('modalCloseBtn').addEventListener('click', () => {
+            document.getElementById('customModal').classList.remove('show');
+        });
+
+        // Function to start the module (hide cover, show content)
+        function startModule() {
+            document.getElementById('coverPage').style.display = 'none';
+            document.getElementById('moduleContainer').style.display = 'flex';
+            // Scroll to the top of the module content
+            document.getElementById('moduleContainer').scrollIntoView({ behavior: 'smooth' });
+            updateProgressBar(); // Initialize progress bar
+        }
+
+        document.getElementById('startModuleBtn').addEventListener('click', startModule);
+
+
+        // Quiz Logic
+        const quizQuestions = [
+            {
+                text: "¿Cuál es el cuerpo celeste más grande de nuestro sistema solar?",
+                options: ["a) La Tierra", "b) Júpiter", "c) El Sol"],
+                correctValue: "c",
+                feedbackCorrect: "¡Correcto! El Sol es la estrella central y el objeto más masivo de nuestro sistema solar.",
+                feedbackIncorrect: "Incorrecto. Revisa la sección '¿Qué es un Prompt?' para más detalles."
+            },
+            {
+                text: "¿Qué diferencia a la astronomía de la astrología?",
+                options: ["a) La astronomía usa telescopios y la astrología no.", "b) La astronomía es una ciencia y la astrología no.", "c) La astronomía estudia el futuro y la astrología el pasado."],
+                correctValue: "b",
+                feedbackCorrect: "¡Correcto! La astronomía es una ciencia basada en la observación y el método científico, mientras que la astrología es una pseudociencia.",
+                feedbackIncorrect: "Incorrecto. Revisa la sección '¿Qué es un Prompt?'."
+            }
+        ];
+
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionName = this.dataset.question;
+                document.querySelectorAll(`.quiz-option[data-question="${questionName}"]`).forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                this.classList.add('selected');
+                saveProgress();
+            });
+        });
+
+        document.getElementById('submitQuizBtn').addEventListener('click', function() {
+            let allCorrect = true;
+            let score = 0;
+            quizQuestions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`.quiz-question:nth-child(${index + 1}) .quiz-option.selected`);
+                const feedbackDiv = document.getElementById(`feedback-q${index + 1}`);
+                feedbackDiv.classList.remove('correct', 'incorrect');
+
+                if (selectedOption) {
+                    if (selectedOption.dataset.value === q.correctValue) {
+                        feedbackDiv.textContent = q.feedbackCorrect;
+                        feedbackDiv.classList.add('correct');
+                        selectedOption.classList.add('correct');
+                        score += 1;
+                    } else {
+                        feedbackDiv.textContent = q.feedbackIncorrect;
+                        feedbackDiv.classList.add('incorrect');
+                        selectedOption.classList.add('incorrect');
+                        allCorrect = false;
+                        // Optionally highlight correct answer
+                        document.querySelector(`.quiz-question:nth-child(${index + 1}) .quiz-option[data-value="${q.correctValue}"]`).classList.add('correct');
+                    }
+                } else {
+                    feedbackDiv.textContent = 'Por favor, selecciona una opción.';
+                    feedbackDiv.classList.add('incorrect');
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                showCustomModal('¡Quiz Completado!', '¡Felicidades! Has respondido correctamente a todas las preguntas del quiz.');
+                document.getElementById('quizActivity').dataset.lastScore = '100'; // Assume 100% for all correct
+            } else {
+                showCustomModal('Quiz Intentado', 'Revisa tus respuestas. Algunas son incorrectas.');
+                document.getElementById('quizActivity').dataset.lastScore = `${(score / quizQuestions.length * 100).toFixed(0)}`;
+            }
+            document.getElementById('resetQuizBtn').disabled = false;
+            updateProgressBar();
+            saveProgress();
+        });
+
+        document.getElementById('resetQuizBtn').addEventListener('click', function() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            document.querySelectorAll('.quiz-feedback').forEach(feedbackDiv => {
+                feedbackDiv.textContent = '';
+                feedbackDiv.classList.remove('correct', 'incorrect');
+            });
+            this.disabled = true;
+            document.getElementById('quizActivity').dataset.lastScore = '0';
+            updateProgressBar();
+            saveProgress();
+        });
+
+        // Exercise Activity Logic
+        const exerciseKeywords = ["ideas", "exploración espacial", "proyecto"];
+        const exerciseMinLength = 50;
+
+        document.getElementById('submitExerciseBtn').addEventListener('click', function() {
+            const promptText = document.getElementById('exercisePromptInput').value;
+            const feedbackDiv = document.getElementById('exerciseFeedback');
+            feedbackDiv.classList.remove('hidden');
+
+            let meetsCriteria = true;
+            let feedbackMessage = "";
+
+            if (promptText.length < exerciseMinLength) {
+                feedbackMessage += `Tu prompt es demasiado corto. Necesitas al menos ${exerciseMinLength} caracteres. `;
+                meetsCriteria = false;
+            }
+
+            const foundKeywords = exerciseKeywords.filter(keyword => promptText.toLowerCase().includes(keyword.toLowerCase()));
+            if (foundKeywords.length < exerciseKeywords.length) {
+                feedbackMessage += `Asegúrate de incluir las palabras clave: ${exerciseKeywords.join(', ')}. `;
+                meetsCriteria = false;
+            }
+
+            if (meetsCriteria) {
+                feedbackMessage = "¡Excelente prompt! Es claro, específico y contiene las palabras clave necesarias. Esto generaría una respuesta útil de la IA.";
+                feedbackDiv.className = 'response-feedback mt-4 text-green-700 bg-green-100 border-green-400 border';
+                document.getElementById('exerciseActivity').dataset.lastScore = '100';
+                showCustomModal('Actividad Completada', '¡Has creado un prompt muy efectivo! ¡Bien hecho!');
+            } else {
+                feedbackDiv.className = 'response-feedback mt-4 text-red-700 bg-red-100 border-red-400 border';
+                document.getElementById('exerciseActivity').dataset.lastScore = '50'; // Partial score
+                showCustomModal('Actividad Intentada', 'Tu prompt necesita un poco más de trabajo. Revisa el feedback.');
+            }
+            feedbackDiv.textContent = feedbackMessage;
+            document.getElementById('resetExerciseBtn').disabled = false;
+            updateProgressBar();
+            saveProgress();
+        });
+
+        document.getElementById('resetExerciseBtn').addEventListener('click', function() {
+            document.getElementById('exercisePromptInput').value = '';
+            document.getElementById('exerciseFeedback').textContent = '';
+            document.getElementById('exerciseFeedback').classList.add('hidden');
+            this.disabled = true;
+            document.getElementById('exerciseActivity').dataset.lastScore = '0';
+            updateProgressBar();
+            saveProgress();
+        });
+
+        // Problem Solving Activity Logic
+        const problemSolvingKeywords = ["asistente", "gravedad", "estrategia", "divertida", "experimentos"];
+        const problemSolvingMinLength = 70;
+
+        document.getElementById('submitProblemSolvingBtn').addEventListener('click', function() {
+            const promptText = document.getElementById('problemSolvingPromptInput').value;
+            const feedbackDiv = document.getElementById('problemSolvingFeedback');
+            feedbackDiv.classList.remove('hidden');
+
+            let meetsCriteria = true;
+            let feedbackMessage = "";
+
+            if (promptText.length < problemSolvingMinLength) {
+                feedbackMessage += `Tu prompt es demasiado corto. Necesitas al menos ${problemSolvingMinLength} caracteres. `;
+                meetsCriteria = false;
+            }
+
+            const foundKeywords = problemSolvingKeywords.filter(keyword => promptText.toLowerCase().includes(keyword.toLowerCase()));
+            if (foundKeywords.length < problemSolvingKeywords.length) {
+                feedbackMessage += `Asegúrate de incluir las palabras clave: ${problemSolvingKeywords.join(', ')}. `;
+                meetsCriteria = false;
+            }
+
+            if (meetsCriteria) {
+                feedbackMessage = "¡Fabuloso prompt! Has definido claramente el rol, el problema y el tipo de solución deseada. La IA te dará ideas geniales.";
+                feedbackDiv.className = 'response-feedback mt-4 text-green-700 bg-green-100 border-green-400 border';
+                document.getElementById('problemSolvingActivity').dataset.lastScore = '100';
+                showCustomModal('Actividad Completada', '¡Dominas el arte del prompt! Esta es una gran base para tu práctica docente.');
+            } else {
+                feedbackDiv.className = 'response-feedback mt-4 text-red-700 bg-red-100 border-red-400 border';
+                document.getElementById('problemSolvingActivity').dataset.lastScore = '50'; // Partial score
+                showCustomModal('Actividad Intentada', 'Tu prompt podría ser más específico. Revisa el feedback.');
+            }
+            feedbackDiv.textContent = feedbackMessage;
+            document.getElementById('resetProblemSolvingBtn').disabled = false;
+            updateProgressBar();
+            saveProgress();
+        });
+
+        document.getElementById('resetProblemSolvingBtn').addEventListener('click', function() {
+            document.getElementById('problemSolvingPromptInput').value = '';
+            document.getElementById('problemSolvingFeedback').textContent = '';
+            document.getElementById('problemSolvingFeedback').classList.add('hidden');
+            this.disabled = true;
+            document.getElementById('problemSolvingActivity').dataset.lastScore = '0';
+            updateProgressBar();
+            saveProgress();
+        });
+
+        // Matching Activity Logic
+        const matchingPairs = [
+            { concept: "Claridad y Especificidad", correctValue: "b", options: [{value: "a", text: "Abarcar muchos temas"}, {value: "b", text: "Evitar la ambigüedad y ser detallado"}, {value: "c", text: "Usar un lenguaje poético"}] },
+            { concept: "Tono y Estilo", correctValue: "a", options: [{value: "a", text: "Formal, informal o divertido"}, {value: "b", text: "Siempre serio y académico"}, {value: "c", text: "Solo humorístico"}] },
+            { concept: "Restricciones", correctValue: "b", options: [{value: "a", text: "Ignorar los límites de longitud"}, {value: "b", text: "Mencionar límites de longitud o temas a evitar"}, {value: "c", text: "Dejar que la IA decida la estructura"}] }
+        ];
+
+        document.querySelectorAll('.matching-options input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const pairId = this.closest('.matching-pair').dataset.questionId;
+                document.querySelectorAll(`.matching-pair[data-question-id="${pairId}"] .matching-option-label`).forEach(label => {
+                    label.classList.remove('selected', 'correct', 'incorrect');
+                });
+                this.closest('.matching-option-label').classList.add('selected');
+                saveProgress();
+            });
+        });
+
+        document.getElementById('submitMatchingBtn').addEventListener('click', function() {
+            let correctMatches = 0;
+            let allAnswered = true;
+
+            matchingPairs.forEach((pair, index) => {
+                const pairElement = document.querySelector(`.matching-pair:nth-child(${index + 1})`);
+                const selectedOption = pairElement.querySelector('input[type="radio"]:checked');
+                const feedbackDiv = pairElement.querySelector('.quiz-feedback');
+                const optionLabels = pairElement.querySelectorAll('.matching-option-label');
+
+                optionLabels.forEach(label => label.classList.remove('selected', 'correct', 'incorrect'));
+                feedbackDiv.textContent = '';
+
+                if (selectedOption) {
+                    if (selectedOption.value === pair.correctValue) {
+                        feedbackDiv.textContent = 'Correcto ✅';
+                        feedbackDiv.classList.add('correct');
+                        selectedOption.closest('.matching-option-label').classList.add('correct');
+                        correctMatches++;
+                    } else {
+                        feedbackDiv.textContent = 'Incorrecto ❌';
+                        feedbackDiv.classList.add('incorrect');
+                        selectedOption.closest('.matching-option-label').classList.add('incorrect');
+                        // Highlight the correct answer
+                        pairElement.querySelector(`input[type="radio"][value="${pair.correctValue}"]`).closest('.matching-option-label').classList.add('correct');
+                    }
+                } else {
+                    feedbackDiv.textContent = 'Por favor, selecciona una opción.';
+                    feedbackDiv.classList.add('incorrect');
+                    allAnswered = false;
+                }
+            });
+
+            if (allAnswered && correctMatches === matchingPairs.length) {
+                showCustomModal('Actividad de Emparejamiento Completada', '¡Excelente! Has emparejado todos los conceptos correctamente.');
+                document.getElementById('matchingActivity').dataset.lastScore = '100';
+            } else if (allAnswered) {
+                showCustomModal('Actividad de Emparejamiento', `Has acertado ${correctMatches} de ${matchingPairs.length} pares. ¡Sigue practicando!`);
+                document.getElementById('matchingActivity').dataset.lastScore = `${(correctMatches / matchingPairs.length * 100).toFixed(0)}`;
+            } else {
+                showCustomModal('Actividad de Emparejamiento', 'Por favor, completa todas las preguntas antes de verificar.');
+                document.getElementById('matchingActivity').dataset.lastScore = '0';
+            }
+            document.getElementById('resetMatchingBtn').disabled = false;
+            updateProgressBar();
+            saveProgress();
+        });
+
+        document.getElementById('resetMatchingBtn').addEventListener('click', function() {
+            document.querySelectorAll('.matching-options input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            document.querySelectorAll('.matching-option-label').forEach(label => {
+                label.classList.remove('selected', 'correct', 'incorrect');
+            });
+            document.querySelectorAll('.quiz-feedback').forEach(feedback => {
+                feedback.textContent = '';
+                feedback.classList.remove('correct', 'incorrect');
+            });
+            this.disabled = true;
+            document.getElementById('matchingActivity').dataset.lastScore = '0';
+            updateProgressBar();
+            saveProgress();
+        });
+
+
+        // True/False Activity Logic
+        const trueFalseQuestions = [
+            {
+                text: "La Vía Láctea es una galaxia espiral.",
+                correctValue: "true",
+                feedbackCorrect: "¡Correcto! La Vía Láctea es nuestra galaxia y tiene una forma espiral barrada.",
+                feedbackIncorrect: "Incorrecto. La Vía Láctea es una galaxia espiral. Revisa la sección relevante."
+            },
+            {
+                text: "Plutón es considerado actualmente un planeta principal de nuestro sistema solar.",
+                correctValue: "false",
+                feedbackCorrect: "¡Correcto! Plutón fue reclasificado como planeta enano en 2006.",
+                feedbackIncorrect: "Incorrecto. Plutón es un planeta enano. Revisa la sección 'El Sistema Solar'."
+            }
+        ];
+
+        document.querySelectorAll('.true-false-options input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', saveProgress);
+        });
+
+        document.getElementById('submitTrueFalseBtn').addEventListener('click', function() {
+            let correctCount = 0;
+            let allAnswered = true;
+
+            trueFalseQuestions.forEach((q, index) => {
+                const questionElement = document.querySelector(`.true-false-question:nth-of-type(${index + 1})`);
+                const selectedOption = questionElement.querySelector('input[type="radio"]:checked');
+                const feedbackDiv = questionElement.querySelector('.true-false-feedback');
+                feedbackDiv.classList.remove('correct', 'incorrect');
+
+                if (selectedOption) {
+                    if (selectedOption.value === q.correctValue) {
+                        feedbackDiv.textContent = q.feedbackCorrect;
+                        feedbackDiv.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        feedbackDiv.textContent = q.feedbackIncorrect;
+                        feedbackDiv.classList.add('incorrect');
+                    }
+                } else {
+                    feedbackDiv.textContent = 'Por favor, selecciona una opción.';
+                    feedbackDiv.classList.add('incorrect');
+                    allAnswered = false;
+                }
+            });
+
+            if (allAnswered && correctCount === trueFalseQuestions.length) {
+                showCustomModal('Actividad Verdadero/Falso Completada', '¡Perfecto! Todas tus respuestas son correctas.');
+                document.getElementById('trueFalseActivity').dataset.lastScore = '100';
+            } else if (allAnswered) {
+                showCustomModal('Actividad Verdadero/Falso', `Has acertado ${correctCount} de ${trueFalseQuestions.length} afirmaciones.`);
+                document.getElementById('trueFalseActivity').dataset.lastScore = `${(correctCount / trueFalseQuestions.length * 100).toFixed(0)}`;
+            } else {
+                showCustomModal('Actividad Verdadero/Falso', 'Por favor, responde todas las preguntas antes de verificar.');
+                document.getElementById('trueFalseActivity').dataset.lastScore = '0';
+            }
+            document.getElementById('resetTrueFalseBtn').disabled = false;
+            updateProgressBar();
+            saveProgress();
+        });
+
+        document.getElementById('resetTrueFalseBtn').addEventListener('click', function() {
+            document.querySelectorAll('.true-false-options input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            document.querySelectorAll('.true-false-feedback').forEach(feedback => {
+                feedback.textContent = '';
+                feedback.classList.remove('correct', 'incorrect');
+            });
+            this.disabled = true;
+            document.getElementById('trueFalseActivity').dataset.lastScore = '0';
+            updateProgressBar();
+            saveProgress();
+        });
+
+
+        // Back to Top Button Logic
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // Show button after scrolling 300px
+                backToTopBtn.style.display = 'block';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+            updateSidebarActiveLink();
+            updateProgressBarOnScroll();
+        });
+
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('.sidebar-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Sidebar active link highlighting based on scroll position
+        function updateSidebarActiveLink() {
+            const sections = document.querySelectorAll('.module-section, .interactive-activity');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+            let currentActive = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - sectionHeight / 3) {
+                    currentActive = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(currentActive)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Intersection Observer for scroll animations and progress
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress(); // Load progress on startup
+
+            const elementsToReveal = document.querySelectorAll('.reveal-on-scroll');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // Optional: remove is-visible when out of view if you want repeatable animation
+                        // entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+            elementsToReveal.forEach(el => observer.observe(el));
+
+            // Initial check for sidebar active link and progress bar
+            updateSidebarActiveLink();
+            updateProgressBar();
+
+            // Handle YouTube video thumbnail and play
+            const videoThumbnailOverlay = document.querySelector('.video-thumbnail-overlay');
+            const youtubeVideoIframe = document.getElementById('youtubeVideo');
+
+            if (videoThumbnailOverlay && youtubeVideoIframe) {
+                videoThumbnailOverlay.addEventListener('click', function() {
+                    const videoId = this.dataset.videoId;
+                    if (videoId) {
+                        youtubeVideoIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                        youtubeVideoIframe.style.display = 'block';
+                        this.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Update progress bar on scroll based on visible sections
+        function updateProgressBarOnScroll() {
+            const sections = document.querySelectorAll('.module-section, .interactive-activity');
+            let sectionsInView = 0;
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                // Check if at least 50% of the section is visible
+                if (rect.top < window.innerHeight && rect.bottom > 0 &&
+                    rect.top + rect.height * 0.5 > 0 && rect.bottom - rect.height * 0.5 < window.innerHeight) {
+                    sectionsInView++;
+                }
+            });
+
+            // Consider a section "completed" if it has been scrolled past its top
+            // This is a simpler heuristic for progress bar than strict completion of activities.
+            const scrolledSections = new Set();
+            sections.forEach(section => {
+                if (section.getBoundingClientRect().top < window.innerHeight / 2) { // When top half of section is past middle of viewport
+                    scrolledSections.add(section.id);
+                }
+            });
+
+            const currentProgress = (scrolledSections.size / totalSections) * 100;
+            document.getElementById('progressBar').style.width = `${currentProgress}%`;
+
+             // Update global score display only if it's the current 'real' score based on completed activities
+            // This avoids mixing activity completion with scroll progress for the score display
+            // The existing `updateProgressBar()` function (not `updateProgressBarOnScroll`) is responsible for the actual global score
+            // For a "global score" based on scrolling, you might want a separate display.
+        }
+
+        // Call updateProgressBarOnScroll on scroll events
+        window.addEventListener('scroll', updateProgressBarOnScroll);
+
+    </script>
+</body>
+</html>
+</immersive>
