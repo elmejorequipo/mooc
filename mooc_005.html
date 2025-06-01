@@ -1,0 +1,1384 @@
+<immersive id="astronomy-module-fundamentals" title="Fundamentos de la Astronomía">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos de la Astronomía: Un Viaje Cósmico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            background-color: #f0f4f8;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .text-gradient {
+            background-image: linear-gradient(to right, #6366f1, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .shadow-custom {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 0 5px rgba(99, 102, 241, 0.3);
+        }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .sticky-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 10px;
+            max-height: 80vh;
+            overflow-y: auto;
+            display: none; /* Hidden by default */
+        }
+        .sticky-menu.is-visible {
+            display: block;
+        }
+        .sticky-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sticky-menu ul li a {
+            display: block;
+            padding: 8px 12px;
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .sticky-menu ul li a:hover {
+            background-color: #e2e8f0;
+            border-radius: 5px;
+            color: #2d3748;
+        }
+        .sticky-menu ul li a.active {
+            background-color: #6366f1;
+            color: white;
+            border-radius: 5px;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6366f1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            z-index: 1000;
+        }
+        .back-to-top.is-visible {
+            display: block;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e7ff;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #4f46e5;
+            border-radius: 10px;
+            transition: width 0.3s ease-in-out;
+        }
+        .quiz-option.selected {
+            background-color: #bfdbfe;
+            border-color: #3b82f6;
+        }
+        .quiz-option.correct {
+            background-color: #d1fae5;
+            border-color: #34d399;
+            color: #065f46;
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        .feedback-message {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        .feedback-correct {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #34d399;
+        }
+        .feedback-incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .icon-list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .icon-list-item .icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background-color: #e0e7ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: #4f46e5;
+        }
+        .icon-list-item h4 {
+            font-weight: 700;
+            color: #2c5282;
+            margin-bottom: 5px;
+        }
+        .icon-list-item p {
+            font-size: 0.95rem;
+            color: #4a5568;
+        }
+        .icon-idea::before { content: '💡'; }
+        .icon-quiz::before { content: '❓'; }
+        .icon-research::before { content: '🔬'; }
+        .icon-project::before { content: '🚀'; }
+        /* Estilos para el modal personalizado */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-content h3 {
+            font-size: 1.8rem;
+            color: #1a202c;
+            margin-bottom: 15px;
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 25px;
+        }
+        .modal-content button {
+            background-color: #6366f1;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .modal-content button:hover {
+            background-color: #4f46e5;
+        }
+
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4c51bf, #6b46c1);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .cover-page h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .cover-page p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin-bottom: 30px;
+        }
+        .cover-page button {
+            background-color: #f6ad55;
+            color: #744210;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .cover-page button:hover {
+            background-color: #ed8936;
+        }
+        .cover-page img {
+            max-width: 250px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Responsive adjustments for cover page */
+        @media (max-width: 768px) {
+            .cover-page h1 {
+                font-size: 2.2rem;
+            }
+            .cover-page p {
+                font-size: 1rem;
+            }
+            .cover-page img {
+                max-width: 180px;
+            }
+        }
+        .code-block {
+            background-color: #2d3748; /* Dark background for code */
+            color: #cbd5e0; /* Light text color */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto; /* Allow horizontal scrolling for long lines */
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Monospaced font */
+            font-size: 0.9rem;
+            line-height: 1.4;
+            white-space: pre-wrap; /* Preserve whitespace and wrap lines */
+            word-break: break-all; /* Break words to prevent overflow */
+        }
+        .gamified-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .gamified-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .gamified-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c5282;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ebf4ff;
+            padding-bottom: 10px;
+        }
+
+        .gamified-card .points {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-top: 15px;
+            text-align: right;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position the tooltip above the text */
+            left: 50%;
+            margin-left: -100px; /* Center the tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%; /* At the bottom of the tooltip */
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="customModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <button id="modalCloseButton">Entendido</button>
+        </div>
+    </div>
+
+    <div id="coverPage" class="cover-page">
+        <img src="https://img.icons8.com/ios-filled/100/FFFFFF/galaxy.png" alt="Icono de galaxia flotante">
+        <h1>Fundamentos de la Astronomía</h1>
+        <p>Explora los conceptos básicos del universo, desde planetas hasta galaxias, y cómo los observamos. ¡Prepárate para un viaje cósmico sin salir de casa!</p>
+        <p class="font-semibold text-lg mt-4">Con el <span class="text-yellow-300">Dr. Elara Cosmos</span> de <span class="text-blue-200">Ciencias del Espacio</span></p>
+        <button id="startButton">¡Empezar el Viaje!</button>
+    </div>
+
+    <div id="moduleContent" class="module-container hidden bg-gray-50 min-h-screen py-10 px-4">
+        <header class="text-center mb-10 reveal-on-scroll">
+            <h1 class="text-5xl font-extrabold text-gradient mb-3">Fundamentos de la Astronomía</h1>
+            <p class="text-xl text-gray-700">Un viaje estelar para comprender nuestro universo.</p>
+            <div class="mt-4 p-4 bg-blue-100 rounded-lg shadow-md max-w-2xl mx-auto">
+                <p class="text-blue-800 font-semibold">Profesor: Dr. Elara Cosmos | Materia: Ciencias del Espacio</p>
+            </div>
+        </header>
+
+        <section id="intro-video" class="my-10 reveal-on-scroll bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-indigo-400 pb-3">¡Bienvenidos al Cosmos!</h2>
+            <p class="text-lg text-gray-700 mb-6">Prepárate para una introducción fascinante a los misterios del universo. Aquí te dejamos un video que te dará una probadita de lo que exploraremos juntos. ¡Activa tu modo astronauta!</p>
+            <div class="aspect-w-16 aspect-h-9 w-full overflow-hidden rounded-lg shadow-xl">
+                <iframe
+                    class="w-full h-full min-h-[315px]"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&showinfo=0&rel=0"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    loading="lazy"
+                    onerror="this.src='https://placehold.co/560x315/cccccc/333333?text=Video+no+disponible';">
+                </iframe>
+            </div>
+            <div class="mt-6 text-center">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Miniatura del video de YouTube" class="w-full h-48 object-cover rounded-md shadow-lg mx-auto md:w-3/4 lg:w-2/3" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/333333?text=Imagen+no+disponible';">
+            </div>
+        </section>
+
+        <section id="objectives" class="my-10 reveal-on-scroll bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-purple-400 pb-3">Nuestros Objetivos Cósmicos</h2>
+            <p class="text-lg text-gray-700 mb-6">Al final de este módulo, serás capaz de:</p>
+            <ul class="list-disc pl-8 text-lg text-gray-700 space-y-3">
+                <li class="flex items-start">
+                    <span class="mr-2 text-purple-600">🚀</span>
+                    Comprender la composición del sistema solar, ¡más allá de solo los ocho planetas!
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-purple-600">🌟</span>
+                    Identificar los tipos principales de cuerpos celestes: desde asteroides juguetones hasta galaxias gigantescas.
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-purple-600">🌌</span>
+                    Explicar el concepto de la expansión del universo, ¡no te preocupes, no es tan complicado como suena (o parece una burbuja explotando)!
+                </li>
+            </ul>
+        </section>
+
+        <div class="progress-bar-container reveal-on-scroll">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <section id="section1-1" class="module-section my-10 p-8 bg-white rounded-lg shadow-xl reveal-on-scroll gamified-card">
+            <h3 class="text-3xl font-bold text-blue-700 mb-6 border-b-2 border-blue-300 pb-3">¿Qué es la Astronomía?</h3>
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+                <div class="md:w-1/2">
+                    <p class="text-lg text-gray-700 mb-4">La astronomía es la ciencia que estudia los cuerpos celestes del universo, incluyendo planetas, estrellas, galaxias y fenómenos como los agujeros negros. Es una de las ciencias más antiguas y fascinantes, ¡tanto que hasta las civilizaciones antiguas miraban las estrellas para decidir cuándo sembrar las papas!</p>
+                    <p class="text-lg text-gray-700 mb-4">A diferencia de la astrología, que busca predecir el futuro basándose en la posición de los astros (como si tu horóscopo supiera que hoy te caerá un helado), la astronomía se basa en la observación, la física y las matemáticas para entender el cosmos. ¡Es ciencia, no adivinación!</p>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://images.pexels.com/photos/3474320/pexels-photo-3474320.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Un telescopio apuntando al cielo nocturno estrellado." class="rounded-lg shadow-lg w-full" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/333333?text=Imagen+no+disponible';">
+                </div>
+            </div>
+            <div class="mt-8 p-5 bg-blue-50 rounded-lg border-l-4 border-blue-600 shadow-sm">
+                <p class="font-semibold text-blue-800 mb-2">🤔 Reflexión Crítica:</p>
+                <p class="text-base text-gray-800">¿Cómo crees que la astronomía ha influido en la cultura y el desarrollo humano a lo largo de la historia? Piensa en ejemplos concretos más allá de la navegación.</p>
+            </div>
+            <button class="mark-as-read-btn mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out" data-section-id="section1-1" onclick="markSectionAsRead(this)">Marcar como leído</button>
+        </section>
+
+        <section id="section1-2" class="module-section my-10 p-8 bg-white rounded-lg shadow-xl reveal-on-scroll gamified-card">
+            <h3 class="text-3xl font-bold text-green-700 mb-6 border-b-2 border-green-300 pb-3">El Sistema Solar: Nuestro Vecindario Cósmico</h3>
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+                <div class="md:w-1/2">
+                    <p class="text-lg text-gray-700 mb-4">Nuestro sistema solar está compuesto por el Sol, ocho planetas (¡Plutón sigue en nuestros corazones, pero es un planeta enano!), planetas enanos, lunas, asteroides y cometas. Cada componente juega un papel crucial en la dinámica del sistema, desde el Sol que nos da el bronceado hasta los cometas que a veces nos visitan como mensajeros espaciales.</p>
+                    <p class="text-lg text-gray-700 mb-4">Los planetas se dividen en rocosos (Mercurio, Venus, Tierra, Marte) y gigantes gaseosos (Júpiter, Saturno, Urano, Neptuno), cada uno con características únicas. Imagina que los rocosos son como tu pizza favorita, con una base sólida, y los gaseosos son como un gran algodón de azúcar, ¡gigantes y esponjosos!</p>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://images.pexels.com/photos/110820/pexels-photo-110820.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Representación artística del sistema solar con planetas orbitando el Sol." class="rounded-lg shadow-lg w-full" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/333333?text=Imagen+no+disponible';">
+                </div>
+            </div>
+            <h4 class="text-xl font-semibold text-gray-800 mt-8 mb-4">Estructura Simplificada del Sistema Solar:</h4>
+            <div class="code-block mb-8">
+<pre>El Sol
+  ↓
+Planetas Rocosos (Mercurio, Venus, Tierra, Marte)
+  ↓
+Cinturón de Asteroides (¡Donde los rockeros cósmicos hacen su jam!)
+  ↓
+Planetas Gaseosos (Júpiter, Saturno, Urano, Neptuno)
+  ↓
+Cinturón de Kuiper (¡La zona de juegos de los objetos helados!)
+  ↓
+Nube de Oort (¡Donde los cometas viven antes de salir de viaje!)</pre>
+            </div>
+
+            <div class="mt-8 p-5 bg-purple-50 rounded-lg border-l-4 border-purple-600 shadow-sm">
+                <p class="font-semibold text-purple-800 mb-2">🤔 Reflexión Crítica y Creativa:</p>
+                <p class="text-base text-gray-800">¿Cuál es el planeta que más te fascina y por qué? Si pudieras diseñar una misión espacial a ese planeta, ¿qué harías para aprender algo nuevo y sorprendente que aún no sabemos? ¡Deja volar tu imaginación científica!</p>
+            </div>
+
+            <div class="mt-8">
+                <h4 class="text-2xl font-bold text-gray-800 mb-6">Aprovechando la IA en la Educación Astronómica</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="icon-list-item">
+                        <div class="icon icon-idea"></div>
+                        <div>
+                            <h4 class="text-xl">Lluvia de ideas con IA: ¡Galaxias de ideas!</h4>
+                            <p class="text-gray-700">¿Te faltan ideas para un tema específico, como "tipos de estrellas" o "fenómenos cósmicos raros"? Pídele a la IA que te sugiera enfoques. <span class="tooltip">Caso de uso real:<span class="tooltiptext">Un docente necesita ideas para un proyecto de ciencias que sea práctico y divertido para niños de 8 años sobre el Sistema Solar. Con IA, puede obtener una lista de opciones en minutos, como "construir un modelo a escala del sistema solar con frutas" o "crear una obra de teatro sobre la vida en Marte", ahorrando horas de investigación y aumentando el factor "guau" en el aula.</span></span></p>
+                        </div>
+                    </div>
+                    <div class="icon-list-item">
+                        <div class="icon icon-quiz"></div>
+                        <div>
+                            <h4 class="text-xl">Generación de Preguntas con IA: Desafía el intelecto cósmico</h4>
+                            <p class="text-gray-700">Puedes pedirle a la IA que cree preguntas que fomenten el pensamiento crítico sobre la formación de planetas o que sirvan para un quiz rápido sobre constelaciones. <span class="tooltip">Caso de uso real:<span class="tooltiptext">Un profesor de filosofía busca preguntas abiertas para estimular una discusión profunda en clase sobre el lugar de la humanidad en el universo. La IA puede proporcionar prompts que inviten a la reflexión, como "¿Si descubriéramos vida extraterrestre, cómo redefiniría esto nuestra identidad y nuestra fe?" o "¿Qué implicaciones éticas tendría la colonización de otros planetas?".</span></span></p>
+                        </div>
+                    </div>
+                    <div class="icon-list-item">
+                        <div class="icon icon-research"></div>
+                        <div>
+                            <h4 class="text-xl">Simulaciones y Modelos con IA: ¡El universo a tu alcance!</h4>
+                            <p class="text-gray-700">Utiliza la IA para generar descripciones o incluso pseudo-código para simulaciones simples de la órbita de los planetas o el comportamiento de las galaxias. Puedes pedirle que te ayude a entender cómo funcionan los modelos climáticos en otros planetas o a visualizar cómo sería un viaje a través de un agujero negro (¡teorías, claro!).</p>
+                        </div>
+                    </div>
+                    <div class="icon-list-item">
+                        <div class="icon icon-project"></div>
+                        <div>
+                            <h4 class="text-xl">Proyectos de Investigación Asistidos por IA: Tu asistente de viaje espacial</h4>
+                            <p class="text-gray-700">Pide a la IA que te ayude a estructurar un proyecto de investigación sobre la materia oscura o la energía oscura, sugiriendo fuentes confiables o líneas de investigación. La IA puede ser tu primer "cosmólogo" personal, ayudándote a formular hipótesis y a buscar información relevante para tu próxima gran tesis sobre el universo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="mark-as-read-btn mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out" data-section-id="section1-2" onclick="markSectionAsRead(this)">Marcar como leído</button>
+        </section>
+
+        <section id="activities" class="my-10 p-8 bg-indigo-50 rounded-lg shadow-xl reveal-on-scroll">
+            <h2 class="text-4xl font-extrabold text-indigo-800 mb-8 text-center">¡Hora de la Acción Estelar!</h2>
+            <p class="text-lg text-gray-700 mb-8 text-center">Es momento de poner a prueba tus conocimientos y tu creatividad cósmica con estas actividades interactivas. ¡Demuestra que eres un verdadero explorador del espacio!</p>
+
+            <div id="quizActivity" class="interactive-activity gamified-card mb-8 p-6 bg-white rounded-lg shadow-md border-t-4 border-blue-500">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4 flex items-center"><span class="mr-2">💡</span> Quiz Estelar: ¿Cuánto sabes del Cosmos?</h3>
+                <p class="text-gray-700 mb-5">Responde las siguientes preguntas sobre conceptos clave. ¡Cada respuesta correcta te acerca a ser un maestro del universo!</p>
+                <div class="space-y-6">
+                    <div class="quiz-question bg-gray-50 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold text-gray-800 mb-3">1. ¿Cuál es el cuerpo celeste más grande de nuestro sistema solar?</p>
+                        <div class="space-y-2">
+                            <button class="quiz-option w-full text-left p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200" data-question-id="q1" data-option="a">a) La Tierra</button>
+                            <button class="quiz-option w-full text-left p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200" data-question-id="q1" data-option="b">b) Júpiter</button>
+                            <button class="quiz-option w-full text-left p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200" data-question-id="q1" data-option="c">c) El Sol</button>
+                        </div>
+                        <div id="feedback-q1" class="feedback-message hidden mt-3"></div>
+                    </div>
+
+                    <div class="quiz-question bg-gray-50 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold text-gray-800 mb-3">2. ¿Qué diferencia a la astronomía de la astrología?</p>
+                        <div class="space-y-2">
+                            <button class="quiz-option w-full text-left p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200" data-question-id="q2" data-option="a">a) La astronomía usa telescopios y la astrología no.</button>
+                            <button class="quiz-option w-full text-left p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200" data-question-id="q2" data-option="b">b) La astronomía es una ciencia y la astrología no.</button>
+                            <button class="quiz-option w-full text-left p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200" data-question-id="q2" data-option="c">c) La astronomía estudia el futuro y la astrología el pasado.</button>
+                        </div>
+                        <div id="feedback-q2" class="feedback-message hidden mt-3"></div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between items-center">
+                    <button id="submitQuizBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full transition duration-300">Enviar Respuestas</button>
+                    <button id="resetQuizBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-full transition duration-300">Reiniciar Quiz</button>
+                    <span class="points text-blue-800 font-semibold">Puntos: <span id="quizScore">0</span> / 2</span>
+                </div>
+            </div>
+
+            <div id="exerciseActivity" class="interactive-activity gamified-card mb-8 p-6 bg-white rounded-lg shadow-md border-t-4 border-green-500">
+                <h3 class="text-2xl font-bold text-green-700 mb-4 flex items-center"><span class="mr-2">✍️</span> Ejercicio Creativo: Tu Prompt de Exploración Espacial</h3>
+                <p class="text-gray-700 mb-5">Imagina que necesitas ideas para un proyecto sobre la <strong class='text-blue-900 font-bold'>exploración espacial</strong> para tus alumnos de secundaria. Escribe un prompt sencillo pero efectivo que le harías a un asistente de IA para obtener ideas innovadoras. ¡Tu creatividad es el límite!</p>
+                <textarea id="exercisePrompt" class="w-full p-3 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 mb-4 h-32" placeholder="Ej: 'Asistente, dame 3 ideas de proyectos sobre exploración espacial para alumnos de 14 años que incluyan realidad aumentada y visitas virtuales a la Estación Espacial Internacional...'"></textarea>
+                <div id="exerciseFeedback" class="feedback-message hidden mt-3"></div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button id="submitExerciseBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-5 rounded-full transition duration-300">Evaluar Prompt</button>
+                    <button id="awardExercisePointsBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full transition duration-300" disabled>Autoevaluar (+1 Punto)</button>
+                    <button id="resetExerciseBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-full transition duration-300">Reiniciar Ejercicio</button>
+                </div>
+                <div class="points text-green-800 font-semibold mt-4">Puntos: <span id="exerciseScore">0</span> / 1</div>
+            </div>
+
+            <div id="problemSolvingActivity" class="interactive-activity gamified-card mb-8 p-6 bg-white rounded-lg shadow-md border-t-4 border-red-500">
+                <h3 class="text-2xl font-bold text-red-700 mb-4 flex items-center"><span class="mr-2">🧠</span> Desafío de Innovación Pedagógica: Enseña la Gravedad</h3>
+                <p class="text-gray-700 mb-5">Imagina que tus alumnos de 10 años tienen dificultades para entender el concepto de <strong class='text-blue-900'>gravedad</strong> y se aburren con las explicaciones teóricas. Escribe un prompt que le harías a un asistente de IA para crear una estrategia innovadora y divertida para enseñar gravedad a este grupo. ¡Piensa fuera de la órbita!</p>
+                <textarea id="problemSolvingPrompt" class="w-full p-3 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 mb-4 h-32" placeholder="Ej: 'Actúa como un experto en pedagogía. Necesito 3 ideas de experimentos interactivos y gamificados para enseñar gravedad a niños de 10 años, que involucren el lanzamiento de objetos y un poco de humor cósmico...'"></textarea>
+                <div id="problemSolvingFeedback" class="feedback-message hidden mt-3"></div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button id="submitProblemSolvingBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-5 rounded-full transition duration-300">Evaluar Prompt</button>
+                    <button id="awardProblemSolvingPointsBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full transition duration-300" disabled>Autoevaluar (+1 Punto)</button>
+                    <button id="resetProblemSolvingBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-full transition duration-300">Reiniciar Desafío</button>
+                </div>
+                <div class="points text-red-800 font-semibold mt-4">Puntos: <span id="problemSolvingScore">0</span> / 1</div>
+            </div>
+
+            <div id="matchingActivity" class="interactive-activity gamified-card mb-8 p-6 bg-white rounded-lg shadow-md border-t-4 border-yellow-500">
+                <h3 class="text-2xl font-bold text-yellow-700 mb-4 flex items-center"><span class="mr-2">🔗</span> Empareja el Concepto: Quién es Quién en el Espacio</h3>
+                <p class="text-gray-700 mb-5">Empareja cada cuerpo celeste con su característica principal. ¡Conviértete en un detective astronómico!</p>
+                <div class="space-y-4">
+                    <div class="matching-pair bg-gray-50 p-4 rounded-md shadow-sm" data-concept="Júpiter">
+                        <p class="font-semibold text-gray-800 mb-2">Júpiter:</p>
+                        <select class="matching-select w-full p-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500" data-correct-value="b">
+                            <option value="">Selecciona una opción</option>
+                            <option value="a">Planeta rocoso</option>
+                            <option value="b">Gigante gaseoso</option>
+                            <option value="c">Planeta enano</option>
+                        </select>
+                        <div class="feedback-message hidden mt-2"></div>
+                    </div>
+                    <div class="matching-pair bg-gray-50 p-4 rounded-md shadow-sm" data-concept="Marte">
+                        <p class="font-semibold text-gray-800 mb-2">Marte:</p>
+                        <select class="matching-select w-full p-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500" data-correct-value="b">
+                            <option value="">Selecciona una opción</option>
+                            <option value="a">Gigante helado</option>
+                            <option value="b">Planeta rojo</option>
+                            <option value="c">Estrella</option>
+                        </select>
+                        <div class="feedback-message hidden mt-2"></div>
+                    </div>
+                    <div class="matching-pair bg-gray-50 p-4 rounded-md shadow-sm" data-concept="Saturno">
+                        <p class="font-semibold text-gray-800 mb-2">Saturno:</p>
+                        <select class="matching-select w-full p-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500" data-correct-value="a">
+                            <option value="">Selecciona una opción</option>
+                            <option value="a">Famoso por sus anillos</option>
+                            <option value="b">El planeta más caliente</option>
+                            <option value="c">El más cercano al Sol</option>
+                        </select>
+                        <div class="feedback-message hidden mt-2"></div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between items-center">
+                    <button id="submitMatchingBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-5 rounded-full transition duration-300">Verificar Emparejamientos</button>
+                    <button id="resetMatchingBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-full transition duration-300">Reiniciar Emparejamientos</button>
+                    <span class="points text-yellow-800 font-semibold">Puntos: <span id="matchingScore">0</span> / 3</span>
+                </div>
+            </div>
+
+            <div id="activityTrueFalse" class="interactive-activity gamified-card mb-8 p-6 bg-white rounded-lg shadow-md border-t-4 border-purple-500">
+                <h3 class="text-2xl font-bold text-purple-700 mb-4 flex items-center"><span class="mr-2">✅❌</span> ¿Verdadero o Falso? Un Viaje de Precisión</h3>
+                <p class="text-gray-700 mb-5">Indica si las siguientes afirmaciones sobre astronomía son Verdaderas o Falsas. ¡Asegúrate de no caer en un agujero negro de desinformación!</p>
+                <div class="space-y-6">
+                    <div class="true-false-question bg-gray-50 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold text-gray-800 mb-3">1. La Vía Láctea es una galaxia espiral.</p>
+                        <div class="flex space-x-4">
+                            <button class="true-false-option true-option p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200 flex-1" data-question-id="tf1" data-option="true">Verdadero</button>
+                            <button class="true-false-option false-option p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200 flex-1" data-question-id="tf1" data-option="false">Falso</button>
+                        </div>
+                        <div id="feedback-tf1" class="feedback-message hidden mt-3"></div>
+                    </div>
+                    <div class="true-false-question bg-gray-50 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold text-gray-800 mb-3">2. Plutón es considerado actualmente un planeta principal de nuestro sistema solar.</p>
+                        <div class="flex space-x-4">
+                            <button class="true-false-option true-option p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200 flex-1" data-question-id="tf2" data-option="true">Verdadero</button>
+                            <button class="true-false-option false-option p-3 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-200 flex-1" data-question-id="tf2" data-option="false">Falso</button>
+                        </div>
+                        <div id="feedback-tf2" class="feedback-message hidden mt-3"></div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between items-center">
+                    <button id="submitTrueFalseBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-5 rounded-full transition duration-300">Comprobar</button>
+                    <button id="resetTrueFalseBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-full transition duration-300">Reiniciar</button>
+                    <span class="points text-purple-800 font-semibold">Puntos: <span id="trueFalseScore">0</span> / 2</span>
+                </div>
+            </div>
+            <div class="total-score text-center text-3xl font-extrabold text-indigo-900 mt-10 p-5 bg-indigo-100 rounded-lg shadow-inner">
+                ¡Tu Puntuación Total de Actividades es: <span id="totalScore">0</span> puntos! ¡Sigue así, astronauta!
+            </div>
+        </section>
+
+
+        <section id="summary" class="my-10 p-8 bg-blue-50 rounded-lg shadow-xl reveal-on-scroll">
+            <h2 class="text-3xl font-bold text-blue-700 mb-6 border-b-2 border-blue-300 pb-3">Resumen del Módulo: Fundamentos de la Astronomía</h2>
+            <p class="text-lg text-gray-700 mb-6">Hemos viajado a través de los conceptos básicos del universo. Aquí están los puntos clave para recordar, como estrellas en el firmamento:</p>
+            <ul class="list-disc pl-8 text-lg text-gray-700 space-y-3">
+                <li class="flex items-start">
+                    <span class="mr-2 text-blue-600">🔭</span>
+                    La astronomía es la ciencia que estudia el universo y sus componentes, usando la observación y la ciencia, ¡nada de bolas de cristal!
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-blue-600">🪐</span>
+                    Nuestro sistema solar incluye planetas rocosos y gaseosos, asteroides, cometas y muchos otros objetos celestes flotando por ahí.
+                </li>
+                <li class="flex items-start">
+                    <span class="mr-2 text-blue-600">🔬</span>
+                    La observación y el método científico son fundamentales en la astronomía para desentrañar los misterios cósmicos. ¡Es como ser un detective espacial!
+                </li>
+            </ul>
+            <p class="text-xl font-semibold text-blue-800 mt-8 text-center p-4 bg-blue-100 rounded-md">
+                La exploración del cosmos es un viaje sin fin que nos invita a la curiosidad y al descubrimiento. ¡Siempre hay algo nuevo por aprender y observar, incluso desde el patio de tu casa!
+            </p>
+        </section>
+
+        <section id="conclusion" class="my-10 p-8 bg-purple-50 rounded-lg shadow-xl reveal-on-scroll">
+            <h2 class="text-3xl font-bold text-purple-700 mb-6 border-b-2 border-purple-300 pb-3">Conclusión y Próximos Pasos en la Astronomía</h2>
+            <p class="text-lg text-gray-700 mb-6">¡Felicidades por completar este módulo introductorio a la astronomía! Has adquirido una base sólida para explorar las maravillas del universo. Ahora eres oficialmente un "Aprendiz de Astronauta Teórico".</p>
+            <p class="text-lg text-gray-700 mb-6">Te animamos a seguir investigando, a unirte a un club de astronomía local (¡sí, existen y son geniales!), y a observar el cielo nocturno. ¡Quién sabe, quizás descubras tu propia estrella o un planeta con forma de aguacate!</p>
+            <p class="text-2xl font-bold text-purple-800 mt-8 text-center animate-pulse">
+                ¡Tu curiosidad es la clave para desvelar los misterios del cosmos! ¡A seguir explorando, valiente!
+            </p>
+        </section>
+
+        <section id="bibliography" class="my-10 p-8 bg-gray-100 rounded-lg shadow-xl reveal-on-scroll">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-gray-300 pb-3">Recursos Adicionales y Bibliografía Estelar</h2>
+            <p class="text-lg text-gray-700 mb-6">Si te quedaste con ganas de más y quieres profundizar en este fascinante mundo, aquí tienes algunas fuentes y recursos confiables. ¡No te quedes con la duda, el universo es enorme!</p>
+            <ul class="list-disc pl-8 text-lg text-gray-700 space-y-3">
+                <li><a href="https://solarsystem.nasa.gov/es/solar-system/our-solar-system/overview/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">NASA: Exploración del Sistema Solar</a> - ¡La fuente oficial para todo lo relacionado con nuestro vecindario cósmico!</li>
+                <li><a href="https://www.esa.int/Space_in_Member_States/Spain/Descubre_el_Universo" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">European Space Agency (ESA): Descubre el Universo</a> - La perspectiva europea en la exploración espacial.</li>
+                <li><a href="https://www.nationalgeographic.es/espacio/astronomia" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">National Geographic: Astronomía</a> - Artículos y fotos espectaculares para alimentar tu curiosidad.</li>
+                <li><a href="https://www.agenciasinc.es/Noticias/La-astronomia-es-la-ciencia-que-mas-respuestas-da-al-ser-humano" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Agencia SINC: La astronomía es la ciencia que más respuestas da al ser humano</a> - Un artículo interesante sobre el impacto filosófico y cultural de la astronomía.</li>
+                <li><a href="https://www.elmundo.es/ciencia-y-salud/ciencia/2019/04/10/5cae00a3fc6c834a028b456e.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">El Mundo: ¿Qué es un agujero negro?</a> - Un resumen fácil de entender sobre estos misteriosos objetos cósmicos.</li>
+            </ul>
+        </section>
+
+        <button id="backToTopBtn" class="back-to-top">⬆️</button>
+
+        <nav id="stickyMenu" class="sticky-menu">
+            <h4 class="font-bold text-lg mb-2">Contenido del Módulo</h4>
+            <ul>
+                <li><a href="#intro-video">Introducción</a></li>
+                <li><a href="#objectives">Objetivos</a></li>
+                <li><a href="#section1-1">¿Qué es la Astronomía?</a></li>
+                <li><a href="#section1-2">El Sistema Solar</a></li>
+                <li><a href="#activities">Actividades</a></li>
+                <li><a href="#summary">Resumen</a></li>
+                <li><a href="#conclusion">Conclusión</a></li>
+                <li><a href="#bibliography">Bibliografía</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <script>
+        // Global data store for quiz answers and activity states
+        const moduleData = {
+            quiz: {
+                instruction: "Responde las siguientes preguntas sobre conceptos clave.",
+                questions: [
+                    {
+                        id: "q1",
+                        text: "¿Cuál es el cuerpo celeste más grande de nuestro sistema solar?",
+                        options: ["a) La Tierra", "b) Júpiter", "c) El Sol"],
+                        correctValue: "c",
+                        feedbackCorrect: "¡Correcto! El Sol es la estrella central y el objeto más masivo de nuestro sistema solar. ¡Es tan grande que podrías meter un millón de Tierras dentro!",
+                        feedbackIncorrect: "Incorrecto. ¡Intenta de nuevo! Piensa en quién le da luz y calor a todo el sistema. Revisa la sección 'El Sistema Solar' para más detalles."
+                    },
+                    {
+                        id: "q2",
+                        text: "¿Qué diferencia a la astronomía de la astrología?",
+                        options: ["a) La astronomía usa telescopios y la astrología no.", "b) La astronomía es una ciencia y la astrología no.", "c) La astronomía estudia el futuro y la astrología el pasado."],
+                        correctValue: "b",
+                        feedbackCorrect: "¡Correcto! La astronomía es una ciencia basada en la observación y el método científico, mientras que la astrología es una pseudociencia. Una es mirar el cielo, la otra, ¡ver si te caerá un asteroide en la cabeza (metafóricamente)!.",
+                        feedbackIncorrect: "Incorrecto. ¡No te confundas! Una es el estudio del universo real, la otra es más como una predicción del horóscopo. Revisa la sección '¿Qué es la Astronomía?'."
+                    }
+                ]
+            },
+            exercise: {
+                instruction: "Imagina que necesitas ideas para un proyecto sobre la <strong class='text-blue-900 font-bold'>exploración espacial</strong> para tus alumnos de secundaria. Escribe un prompt sencillo pero efectivo que le harías a un asistente de IA:",
+                placeholder: "Ej: 'Asistente, dame 3 ideas de proyectos sobre exploración espacial para alumnos de 14 años que incluyan realidad aumentada y visitas virtuales a la Estación Espacial Internacional...'",
+                keywords: ["ideas", "exploración espacial", "proyecto", "alumnos", "innovador", "creativo", "divertido", "secundaria", "realidad aumentada", "visitas virtuales", "Estación Espacial Internacional", "futurista", "misión espacial", "cohete", "planetas", "vida extraterrestre"],
+                minLength: 50,
+                scorePoints: 1,
+                feedbackCorrect: "¡Excelente prompt! Incluye palabras clave y un enfoque claro para obtener ideas útiles. ¡Prepárate para lanzar esos proyectos al espacio!",
+                feedbackIncorrect: "Tu prompt podría ser más específico. Intenta incluir más palabras clave o detalles sobre el tipo de ideas que buscas. ¡No le dejes todo el trabajo a la IA!"
+            },
+            problemSolving: {
+                instruction: "Imagina que tus alumnos de 10 años tienen dificultades para entender el concepto de <strong class='text-blue-900'>gravedad</strong> y se aburren con las explicaciones teóricas. Escribe un prompt que le harías a un asistente de IA para crear una estrategia innovadora y divertida para enseñar gravedad a este grupo.",
+                placeholder: "Ej: 'Actúa como un experto en pedagogía. Necesito 3 ideas de experimentos interactivos y gamificados para enseñar gravedad a niños de 10 años, que involucren el lanzamiento de objetos y un poco de humor cósmico...'",
+                keywords: ["asistente", "gravedad", "estrategia", "divertida", "experimentos", "interactivos", "gamificados", "niños", "primaria", "innovadora", "lanzamiento", "caída", "humor", "cósmico", "simulaciones", "juegos", "actividades prácticas"],
+                minLength: 70,
+                scorePoints: 1,
+                feedbackCorrect: "¡Genial! Este prompt es específico, creativo y pide una estrategia didáctica. ¡Tus alumnos van a amar aprender sobre gravedad ahora!",
+                feedbackIncorrect: "Este prompt necesita más detalles. ¿Qué tipo de actividades quieres? ¿Qué elementos innovadores te interesan? ¡Sé más audaz con la IA, no muerde (aún)!."
+            },
+            matching: {
+                instruction: "Empareja cada cuerpo celeste con su característica principal.",
+                pairs: [
+                    { "concept": "Júpiter", "options": [{ "value": "a", "text": "Planeta rocoso" }, { "value": "b", "text": "Gigante gaseoso" }, { "value": "c", "text": "Planeta enano" }], "correctValue": "b", "feedbackCorrect": "Correcto ✅ ¡El rey de los gigantes gaseosos!", "feedbackIncorrect": "Incorrecto ❌ ¡Júpiter es un coloso de gas!" },
+                    { "concept": "Marte", "options": [{ "value": "a", "text": "Gigante helado" }, { "value": "b", "text": "Planeta rojo" }, { "value": "c", "text": "Estrella" }], "correctValue": "b", "feedbackCorrect": "Correcto ✅ ¡El planeta rojo te espera!", "feedbackIncorrect": "Incorrecto ❌ ¡Marte es famoso por su color!" },
+                    { "concept": "Saturno", "options": [{ "value": "a", "text": "Famoso por sus anillos" }, { "value": "b", "text": "El planeta más caliente" }, { "value": "c", "text": "El más cercano al Sol" }], "correctValue": "a", "feedbackCorrect": "Correcto ✅ ¡Sus anillos son una maravilla cósmica!", "feedbackIncorrect": "Incorrecto ❌ ¡Piensa en su característica más visual!" }
+                ]
+            },
+            trueFalse: {
+                instruction: "Indica si las siguientes afirmaciones sobre astronomía son Verdaderas o Falsas.",
+                questions: [
+                    {
+                        "text": "La Vía Láctea es una galaxia espiral.",
+                        "correctValue": "true",
+                        "feedbackCorrect": "¡Correcto! La Vía Láctea es nuestra galaxia y tiene una forma espiral barrada. ¡Como un remolino gigante de estrellas!",
+                        "feedbackIncorrect": "Incorrecto. La Vía Láctea es una galaxia espiral. ¡Revisa la sección relevante y no te pierdas en el espacio!"
+                    },
+                    {
+                        "text": "Plutón es considerado actualmente un planeta principal de nuestro sistema solar.",
+                        "correctValue": "false",
+                        "feedbackCorrect": "¡Correcto! Plutón fue reclasificado como planeta enano en 2006. ¡No es que no lo queramos, es que las reglas cambiaron un poco!",
+                        "feedbackIncorrect": "Incorrecto. Plutón es un planeta enano. ¡Pobre Plutón, pero la ciencia avanza! Revisa la sección 'El Sistema Solar'."
+                    }
+                ]
+            }
+        };
+
+        const totalSections = 5; // Cover page, intro video, objectives, actual sections
+        let sectionsRead = 0;
+        let totalScore = 0;
+
+        // Custom Modal Functions
+        function showCustomModal(title, message, callback = null) {
+            const modalOverlay = document.getElementById('customModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalCloseButton = document.getElementById('modalCloseButton');
+
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+
+            modalOverlay.classList.add('show');
+
+            modalCloseButton.onclick = () => {
+                modalOverlay.classList.remove('show');
+                if (callback) {
+                    callback();
+                }
+            };
+        }
+
+        // --- Progress Bar & Gamification ---
+        function updateProgressBar() {
+            const sections = document.querySelectorAll('.module-section, #intro-video, #objectives, #activities, #summary, #conclusion, #bibliography');
+            let completedSections = 0;
+            sections.forEach(section => {
+                if (localStorage.getItem(`section-${section.id}-read`) === 'true') {
+                    completedSections++;
+                }
+            });
+
+            // Consider initial cover page as 'read' once module starts
+            const startButton = document.getElementById('startButton');
+            if (startButton && localStorage.getItem('module-started') === 'true') {
+                completedSections++;
+            }
+
+            const totalCount = sections.length + 1; // +1 for the cover page
+            const progress = (completedSections / totalCount) * 100;
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
+
+            console.log(`Progress: ${progress.toFixed(2)}% (${completedSections}/${totalCount} sections read)`);
+        }
+
+        function markSectionAsRead(button) {
+            const sectionId = button.dataset.sectionId;
+            if (sectionId) {
+                localStorage.setItem(`section-${sectionId}-read`, 'true');
+                button.disabled = true;
+                button.textContent = '¡Sección completada!';
+                button.classList.remove('bg-green-500', 'hover:bg-green-600');
+                button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                showCustomModal('¡Sección Completada!', `Has marcado "${document.getElementById(sectionId).querySelector('h3, h2').textContent}" como leído. ¡Buen trabajo!`);
+                updateProgressBar();
+                updateStickyMenu();
+            }
+        }
+
+        function awardPoints(activityId, points) {
+            const currentScore = parseInt(localStorage.getItem(`activity-${activityId}-score`) || '0');
+            const lastAwardedScore = parseInt(document.getElementById(activityId).dataset.lastScore || '0');
+
+            if (points > lastAwardedScore) {
+                const pointsToAdd = points - lastAwardedScore;
+                totalScore += pointsToAdd;
+                localStorage.setItem('totalModuleScore', totalScore);
+                localStorage.setItem(`activity-${activityId}-score`, points); // Store actual score for this activity
+                document.getElementById(activityId).dataset.lastScore = points; // Update last awarded for comparison
+
+                updateScoreDisplay();
+                showCustomModal('¡Puntos Ganados!', `Has ganado ${pointsToAdd} puntos por la actividad de ${activityId}. ¡Sigue así!`);
+            }
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('quizScore').textContent = localStorage.getItem('activity-quizActivity-score') || '0';
+            document.getElementById('exerciseScore').textContent = localStorage.getItem('activity-exerciseActivity-score') || '0';
+            document.getElementById('problemSolvingScore').textContent = localStorage.getItem('activity-problemSolvingActivity-score') || '0';
+            document.getElementById('matchingScore').textContent = localStorage.getItem('activity-matchingActivity-score') || '0';
+            document.getElementById('trueFalseScore').textContent = localStorage.getItem('activity-activityTrueFalse-score') || '0';
+
+            totalScore = parseInt(localStorage.getItem('activity-quizActivity-score') || '0') +
+                         parseInt(localStorage.getItem('activity-exerciseActivity-score') || '0') +
+                         parseInt(localStorage.getItem('activity-problemSolvingActivity-score') || '0') +
+                         parseInt(localStorage.getItem('activity-matchingActivity-score') || '0') +
+                         parseInt(localStorage.getItem('activity-activityTrueFalse-score') || '0');
+            document.getElementById('totalScore').textContent = totalScore;
+        }
+
+        // --- Sticky Menu & Back to Top ---
+        function setupStickyMenuAndBackToTop() {
+            const stickyMenu = document.getElementById('stickyMenu');
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            const coverPage = document.getElementById('coverPage');
+            const moduleContent = document.getElementById('moduleContent');
+
+            const toggleVisibility = () => {
+                if (moduleContent && moduleContent.classList.contains('hidden')) {
+                    stickyMenu.classList.remove('is-visible');
+                    backToTopBtn.classList.remove('is-visible');
+                } else {
+                    if (window.scrollY > 300) {
+                        stickyMenu.classList.add('is-visible');
+                        backToTopBtn.classList.add('is-visible');
+                    } else {
+                        stickyMenu.classList.remove('is-visible');
+                        backToTopBtn.classList.remove('is-visible');
+                    }
+                }
+            };
+
+            window.addEventListener('scroll', () => {
+                toggleVisibility();
+                updateStickyMenu();
+                updateProgressBar(); // Update progress on scroll for dynamic content
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            toggleVisibility(); // Initial check
+            updateStickyMenu(); // Initial active link check
+        }
+
+        function updateStickyMenu() {
+            const sections = document.querySelectorAll('.module-section, #intro-video, #objectives, #activities, #summary, #conclusion, #bibliography');
+            const stickyMenuItems = document.querySelectorAll('#stickyMenu ul li a');
+            let currentActive = null;
+
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                // Check if the section is at least 30% visible in the viewport
+                if (rect.top <= window.innerHeight * 0.3 && rect.bottom >= window.innerHeight * 0.3) {
+                    currentActive = section.id;
+                }
+            });
+
+            stickyMenuItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').substring(1) === currentActive) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+
+        // --- Activity Logic ---
+
+        // Quiz Logic
+        function initializeQuiz() {
+            const quizQuestions = moduleData.quiz.questions;
+            quizQuestions.forEach(q => {
+                const options = document.querySelectorAll(`.quiz-option[data-question-id="${q.id}"]`);
+                options.forEach(optionBtn => {
+                    optionBtn.addEventListener('click', () => {
+                        // Remove selected class from siblings
+                        options.forEach(btn => btn.classList.remove('selected'));
+                        // Add selected class to clicked button
+                        optionBtn.classList.add('selected');
+                    });
+                });
+            });
+
+            document.getElementById('submitQuizBtn').addEventListener('click', () => {
+                let correctAnswers = 0;
+                quizQuestions.forEach(q => {
+                    const selectedOption = document.querySelector(`.quiz-option[data-question-id="${q.id}"].selected`);
+                    const feedbackDiv = document.getElementById(`feedback-${q.id}`);
+                    feedbackDiv.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+
+                    if (selectedOption) {
+                        if (selectedOption.dataset.option === q.correctValue) {
+                            selectedOption.classList.add('correct');
+                            feedbackDiv.classList.add('feedback-correct');
+                            feedbackDiv.textContent = q.feedbackCorrect;
+                            correctAnswers++;
+                        } else {
+                            selectedOption.classList.add('incorrect');
+                            feedbackDiv.classList.add('feedback-incorrect');
+                            feedbackDiv.textContent = q.feedbackIncorrect;
+                            // Also mark the correct one
+                            document.querySelector(`.quiz-option[data-question-id="${q.id}"][data-option="${q.correctValue}"]`).classList.add('correct');
+                        }
+                        options.forEach(btn => btn.disabled = true); // Disable options after submission
+                    } else {
+                        feedbackDiv.classList.add('feedback-incorrect');
+                        feedbackDiv.textContent = "Por favor, selecciona una opción.";
+                    }
+                    feedbackDiv.classList.remove('hidden');
+                });
+                awardPoints('quizActivity', correctAnswers);
+                document.getElementById('submitQuizBtn').disabled = true;
+                document.getElementById('resetQuizBtn').disabled = false;
+            });
+
+            document.getElementById('resetQuizBtn').addEventListener('click', () => {
+                quizQuestions.forEach(q => {
+                    const options = document.querySelectorAll(`.quiz-option[data-question-id="${q.id}"]`);
+                    options.forEach(optionBtn => {
+                        optionBtn.classList.remove('selected', 'correct', 'incorrect');
+                        optionBtn.disabled = false;
+                    });
+                    document.getElementById(`feedback-${q.id}`).classList.add('hidden');
+                });
+                document.getElementById('submitQuizBtn').disabled = false;
+                document.getElementById('resetQuizBtn').disabled = true;
+                localStorage.setItem('activity-quizActivity-score', '0'); // Reset score in local storage
+                document.getElementById('quizActivity').dataset.lastScore = '0'; // Reset last awarded score
+                updateScoreDisplay();
+            });
+            // Restore state if available
+            const savedScore = localStorage.getItem('activity-quizActivity-score');
+            if (savedScore && parseInt(savedScore) > 0) {
+                // If there's a score, assume it was submitted
+                document.getElementById('submitQuizBtn').disabled = true;
+                document.getElementById('resetQuizBtn').disabled = false;
+                // Re-apply correct/incorrect classes if necessary based on stored answers (more complex for full state restoration)
+            } else {
+                document.getElementById('resetQuizBtn').disabled = true;
+            }
+        }
+
+        // Exercise Logic
+        function initializeExercise() {
+            const exercisePrompt = document.getElementById('exercisePrompt');
+            const submitExerciseBtn = document.getElementById('submitExerciseBtn');
+            const exerciseFeedback = document.getElementById('exerciseFeedback');
+            const resetExerciseBtn = document.getElementById('resetExerciseBtn');
+            const awardExercisePointsBtn = document.getElementById('awardExercisePointsBtn');
+
+            submitExerciseBtn.addEventListener('click', () => {
+                const promptText = exercisePrompt.value.toLowerCase();
+                let hasKeywords = moduleData.exercise.keywords.some(keyword => promptText.includes(keyword.toLowerCase()));
+                let isLongEnough = promptText.length >= moduleData.exercise.minLength;
+
+                exerciseFeedback.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+
+                if (hasKeywords && isLongEnough) {
+                    exerciseFeedback.classList.add('feedback-correct');
+                    exerciseFeedback.textContent = moduleData.exercise.feedbackCorrect;
+                    awardExercisePointsBtn.disabled = false;
+                } else {
+                    exerciseFeedback.classList.add('feedback-incorrect');
+                    exerciseFeedback.textContent = moduleData.exercise.feedbackIncorrect +
+                                                    ` (Necesitas al menos ${moduleData.exercise.minLength} caracteres y algunas palabras clave como: ${moduleData.exercise.keywords.slice(0, 5).join(', ')}...)`;
+                    awardExercisePointsBtn.disabled = true;
+                }
+                submitExerciseBtn.disabled = true;
+                resetExerciseBtn.disabled = false;
+            });
+
+            awardExercisePointsBtn.addEventListener('click', () => {
+                awardPoints('exerciseActivity', moduleData.exercise.scorePoints);
+                awardExercisePointsBtn.disabled = true;
+                exercisePrompt.disabled = true; // Disable input after points awarded
+            });
+
+            resetExerciseBtn.addEventListener('click', () => {
+                exercisePrompt.value = '';
+                exercisePrompt.disabled = false;
+                exerciseFeedback.classList.add('hidden');
+                submitExerciseBtn.disabled = false;
+                resetExerciseBtn.disabled = true;
+                awardExercisePointsBtn.disabled = true;
+                localStorage.setItem('activity-exerciseActivity-score', '0');
+                document.getElementById('exerciseActivity').dataset.lastScore = '0';
+                updateScoreDisplay();
+            });
+
+            // Restore state
+            const savedScore = localStorage.getItem('activity-exerciseActivity-score');
+            if (savedScore && parseInt(savedScore) === moduleData.exercise.scorePoints) {
+                awardExercisePointsBtn.disabled = true;
+                exercisePrompt.disabled = true;
+                submitExerciseBtn.disabled = true;
+                resetExerciseBtn.disabled = false;
+                exerciseFeedback.classList.remove('hidden');
+                exerciseFeedback.classList.add('feedback-correct');
+                exerciseFeedback.textContent = moduleData.exercise.feedbackCorrect;
+            } else {
+                awardExercisePointsBtn.disabled = true;
+                resetExerciseBtn.disabled = true;
+            }
+        }
+
+        // Problem Solving Logic
+        function initializeProblemSolving() {
+            const problemSolvingPrompt = document.getElementById('problemSolvingPrompt');
+            const submitProblemSolvingBtn = document.getElementById('submitProblemSolvingBtn');
+            const problemSolvingFeedback = document.getElementById('problemSolvingFeedback');
+            const resetProblemSolvingBtn = document.getElementById('resetProblemSolvingBtn');
+            const awardProblemSolvingPointsBtn = document.getElementById('awardProblemSolvingPointsBtn');
+
+            submitProblemSolvingBtn.addEventListener('click', () => {
+                const promptText = problemSolvingPrompt.value.toLowerCase();
+                let hasKeywords = moduleData.problemSolving.keywords.some(keyword => promptText.includes(keyword.toLowerCase()));
+                let isLongEnough = promptText.length >= moduleData.problemSolving.minLength;
+
+                problemSolvingFeedback.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+
+                if (hasKeywords && isLongEnough) {
+                    problemSolvingFeedback.classList.add('feedback-correct');
+                    problemSolvingFeedback.textContent = moduleData.problemSolving.feedbackCorrect;
+                    awardProblemSolvingPointsBtn.disabled = false;
+                } else {
+                    problemSolvingFeedback.classList.add('feedback-incorrect');
+                    problemSolvingFeedback.textContent = moduleData.problemSolving.feedbackIncorrect +
+                                                         ` (Necesitas al menos ${moduleData.problemSolving.minLength} caracteres y algunas palabras clave como: ${moduleData.problemSolving.keywords.slice(0, 5).join(', ')}...)`;
+                    awardProblemSolvingPointsBtn.disabled = true;
+                }
+                submitProblemSolvingBtn.disabled = true;
+                resetProblemSolvingBtn.disabled = false;
+            });
+
+            awardProblemSolvingPointsBtn.addEventListener('click', () => {
+                awardPoints('problemSolvingActivity', moduleData.problemSolving.scorePoints);
+                awardProblemSolvingPointsBtn.disabled = true;
+                problemSolvingPrompt.disabled = true; // Disable input after points awarded
+            });
+
+            resetProblemSolvingBtn.addEventListener('click', () => {
+                problemSolvingPrompt.value = '';
+                problemSolvingPrompt.disabled = false;
+                problemSolvingFeedback.classList.add('hidden');
+                submitProblemSolvingBtn.disabled = false;
+                resetProblemSolvingBtn.disabled = true;
+                awardProblemSolvingPointsBtn.disabled = true;
+                localStorage.setItem('activity-problemSolvingActivity-score', '0');
+                document.getElementById('problemSolvingActivity').dataset.lastScore = '0';
+                updateScoreDisplay();
+            });
+
+            // Restore state
+            const savedScore = localStorage.getItem('activity-problemSolvingActivity-score');
+            if (savedScore && parseInt(savedScore) === moduleData.problemSolving.scorePoints) {
+                awardProblemSolvingPointsBtn.disabled = true;
+                problemSolvingPrompt.disabled = true;
+                submitProblemSolvingBtn.disabled = true;
+                resetProblemSolvingBtn.disabled = false;
+                problemSolvingFeedback.classList.remove('hidden');
+                problemSolvingFeedback.classList.add('feedback-correct');
+                problemSolvingFeedback.textContent = moduleData.problemSolving.feedbackCorrect;
+            } else {
+                awardProblemSolvingPointsBtn.disabled = true;
+                resetProblemSolvingBtn.disabled = true;
+            }
+        }
+
+        // Matching Logic
+        function initializeMatching() {
+            const matchingPairs = moduleData.matching.pairs;
+            const selectElements = document.querySelectorAll('.matching-select');
+            const submitMatchingBtn = document.getElementById('submitMatchingBtn');
+            const resetMatchingBtn = document.getElementById('resetMatchingBtn');
+
+            selectElements.forEach(select => {
+                select.addEventListener('change', () => {
+                    const feedbackDiv = select.nextElementSibling;
+                    feedbackDiv.classList.add('hidden'); // Hide feedback on change
+                });
+            });
+
+            submitMatchingBtn.addEventListener('click', () => {
+                let correctCount = 0;
+                selectElements.forEach(select => {
+                    const concept = select.closest('.matching-pair').dataset.concept;
+                    const correctValue = select.dataset.correctValue;
+                    const selectedValue = select.value;
+                    const feedbackDiv = select.nextElementSibling; // The div right after the select
+
+                    feedbackDiv.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+
+                    if (selectedValue === correctValue) {
+                        feedbackDiv.classList.add('feedback-correct');
+                        feedbackDiv.textContent = moduleData.matching.pairs.find(p => p.concept === concept).feedbackCorrect;
+                        correctCount++;
+                    } else if (selectedValue === "") {
+                        feedbackDiv.classList.add('feedback-incorrect');
+                        feedbackDiv.textContent = "Por favor, selecciona una opción.";
+                    } else {
+                        feedbackDiv.classList.add('feedback-incorrect');
+                        feedbackDiv.textContent = moduleData.matching.pairs.find(p => p.concept === concept).feedbackIncorrect;
+                    }
+                });
+                awardPoints('matchingActivity', correctCount);
+                submitMatchingBtn.disabled = true;
+                resetMatchingBtn.disabled = false;
+                selectElements.forEach(select => select.disabled = true);
+            });
+
+            resetMatchingBtn.addEventListener('click', () => {
+                selectElements.forEach(select => {
+                    select.value = "";
+                    select.disabled = false;
+                    select.nextElementSibling.classList.add('hidden');
+                });
+                submitMatchingBtn.disabled = false;
+                resetMatchingBtn.disabled = true;
+                localStorage.setItem('activity-matchingActivity-score', '0');
+                document.getElementById('matchingActivity').dataset.lastScore = '0';
+                updateScoreDisplay();
+            });
+
+            const savedScore = localStorage.getItem('activity-matchingActivity-score');
+            if (savedScore && parseInt(savedScore) > 0) {
+                submitMatchingBtn.disabled = true;
+                resetMatchingBtn.disabled = false;
+                selectElements.forEach(select => select.disabled = true);
+                // Re-check and show feedback
+                selectElements.forEach(select => {
+                    const concept = select.closest('.matching-pair').dataset.concept;
+                    const correctValue = select.dataset.correctValue;
+                    const selectedValue = select.value;
+                    const feedbackDiv = select.nextElementSibling;
+
+                    if (selectedValue === correctValue) {
+                        feedbackDiv.classList.remove('hidden', 'feedback-incorrect');
+                        feedbackDiv.classList.add('feedback-correct');
+                        feedbackDiv.textContent = moduleData.matching.pairs.find(p => p.concept === concept).feedbackCorrect;
+                    } else if (selectedValue !== "") {
+                         // If there's a selection but it's incorrect
+                        feedbackDiv.classList.remove('hidden', 'feedback-correct');
+                        feedbackDiv.classList.add('feedback-incorrect');
+                        feedbackDiv.textContent = moduleData.matching.pairs.find(p => p.concept === concept).feedbackIncorrect;
+                    }
+                });
+            } else {
+                resetMatchingBtn.disabled = true;
+            }
+        }
+
+        // True/False Logic
+        function initializeTrueFalse() {
+            const tfQuestions = moduleData.trueFalse.questions;
+            const submitTrueFalseBtn = document.getElementById('submitTrueFalseBtn');
+            const resetTrueFalseBtn = document.getElementById('resetTrueFalseBtn');
+
+            tfQuestions.forEach((q, index) => {
+                const questionDiv = document.querySelector(`.true-false-question:nth-child(${index + 1})`);
+                const options = questionDiv.querySelectorAll('.true-false-option');
+
+                options.forEach(optionBtn => {
+                    optionBtn.addEventListener('click', () => {
+                        options.forEach(btn => btn.classList.remove('selected'));
+                        optionBtn.classList.add('selected');
+                        optionBtn.closest('.true-false-question').querySelector('.feedback-message').classList.add('hidden'); // Hide feedback on new selection
+                    });
+                });
+            });
+
+            submitTrueFalseBtn.addEventListener('click', () => {
+                let correctCount = 0;
+                tfQuestions.forEach((q, index) => {
+                    const questionDiv = document.querySelector(`.true-false-question:nth-child(${index + 1})`);
+                    const selectedOption = questionDiv.querySelector('.true-false-option.selected');
+                    const feedbackDiv = questionDiv.querySelector('.feedback-message');
+
+                    feedbackDiv.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+
+                    if (selectedOption) {
+                        if (selectedOption.dataset.option === q.correctValue) {
+                            selectedOption.classList.add('correct');
+                            feedbackDiv.classList.add('feedback-correct');
+                            feedbackDiv.textContent = q.feedbackCorrect;
+                            correctCount++;
+                        } else {
+                            selectedOption.classList.add('incorrect');
+                            feedbackDiv.classList.add('feedback-incorrect');
+                            feedbackDiv.textContent = q.feedbackIncorrect;
+                            // Highlight correct answer
+                            questionDiv.querySelector(`.true-false-option[data-option="${q.correctValue}"]`).classList.add('correct');
+                        }
+                        questionDiv.querySelectorAll('.true-false-option').forEach(btn => btn.disabled = true);
+                    } else {
+                        feedbackDiv.classList.add('feedback-incorrect');
+                        feedbackDiv.textContent = "Por favor, selecciona una opción (Verdadero o Falso).";
+                    }
+                });
+                awardPoints('activityTrueFalse', correctCount);
+                submitTrueFalseBtn.disabled = true;
+                resetTrueFalseBtn.disabled = false;
+            });
+
+            resetTrueFalseBtn.addEventListener('click', () => {
+                tfQuestions.forEach((q, index) => {
+                    const questionDiv = document.querySelector(`.true-false-question:nth-child(${index + 1})`);
+                    const options = questionDiv.querySelectorAll('.true-false-option');
+                    options.forEach(optionBtn => {
+                        optionBtn.classList.remove('selected', 'correct', 'incorrect');
+                        optionBtn.disabled = false;
+                    });
+                    questionDiv.querySelector('.feedback-message').classList.add('hidden');
+                });
+                submitTrueFalseBtn.disabled = false;
+                resetTrueFalseBtn.disabled = true;
+                localStorage.setItem('activity-activityTrueFalse-score', '0');
+                document.getElementById('activityTrueFalse').dataset.lastScore = '0';
+                updateScoreDisplay();
+            });
+
+            const savedScore = localStorage.getItem('activity-activityTrueFalse-score');
+            if (savedScore && parseInt(savedScore) > 0) {
+                submitTrueFalseBtn.disabled = true;
+                resetTrueFalseBtn.disabled = false;
+                tfQuestions.forEach((q, index) => {
+                    const questionDiv = document.querySelector(`.true-false-question:nth-child(${index + 1})`);
+                    questionDiv.querySelectorAll('.true-false-option').forEach(btn => btn.disabled = true);
+                });
+            } else {
+                resetTrueFalseBtn.disabled = true;
+            }
+        }
+
+        // --- Cover Page & Module Start ---
+        function initializeModuleStart() {
+            const startButton = document.getElementById('startButton');
+            const coverPage = document.getElementById('coverPage');
+            const moduleContent = document.getElementById('moduleContent');
+
+            const hasStartedBefore = localStorage.getItem('module-started') === 'true';
+
+            if (hasStartedBefore) {
+                coverPage.style.display = 'none';
+                moduleContent.classList.remove('hidden');
+                updateProgressBar();
+                updateScoreDisplay();
+            } else {
+                startButton.addEventListener('click', () => {
+                    coverPage.style.display = 'none';
+                    moduleContent.classList.remove('hidden');
+                    localStorage.setItem('module-started', 'true');
+                    updateProgressBar();
+                    updateScoreDisplay();
+                    showCustomModal('¡Bienvenido al Módulo!', '¡Tu viaje por la astronomía ha comenzado! Completa las secciones y actividades para avanzar. ¡Que la fuerza te acompañe!');
+                });
+            }
+        }
+
+        // --- Scroll Reveal Animation ---
+        function setupScrollReveal() {
+            const elementsToReveal = document.querySelectorAll('.reveal-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 }); // Callback fires when at least 10% of the element is visible
+
+            elementsToReveal.forEach(el => observer.observe(el));
+        }
+
+        // --- Initialize all functionalities on DOMContentLoaded ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeModuleStart();
+            setupStickyMenuAndBackToTop();
+            setupScrollReveal();
+            initializeQuiz();
+            initializeExercise();
+            initializeProblemSolving();
+            initializeMatching();
+            initializeTrueFalse();
+            updateScoreDisplay(); // Initial display of all scores
+            updateProgressBar(); // Initial update of progress bar
+
+            // Ensure mark as read buttons reflect saved state
+            document.querySelectorAll('.mark-as-read-btn').forEach(button => {
+                const sectionId = button.dataset.sectionId;
+                if (localStorage.getItem(`section-${sectionId}-read`) === 'true') {
+                    button.disabled = true;
+                    button.textContent = '¡Sección completada!';
+                    button.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    button.classList.add('bg-gray-400', 'cursor-not-allowed');
+                }
+            });
+
+             // Initialize the dataset.lastScore for all activities
+            const activities = document.querySelectorAll('.interactive-activity');
+            activities.forEach(activity => {
+                const activityId = activity.id;
+                activity.dataset.lastScore = localStorage.getItem(`activity-${activityId}-score`) || '0';
+            });
+        });
+    </script>
+</body>
+</html>
+</immersive>
